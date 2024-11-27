@@ -429,9 +429,8 @@ def main():
                 end = splited_line[2]
                 seq_of_interest[name] = (start, end)
         write_dot_SeqModules(seq_of_interest, gene_tree, dict_module_protSeq, dict_prot_seq, f"specSeq_{refseq_file.stem}.dot")
-        print(caca)
-        write_oplma_SeqModules(seq_of_interest, gene_tree, dict_module_protSeq, dict_prot_seq, f"specSeq_{refseq_file.stem}.oplma")
-        make_protomat_logo(f"specSeq_{refseq_file.stem}.oplma")
+        #write_oplma_SeqModules(seq_of_interest, gene_tree, dict_module_protSeq, dict_prot_seq, f"specSeq_{refseq_file.stem}.oplma")
+        #make_protomat_logo(f"specSeq_{refseq_file.stem}.oplma")
     
     for gene, association in dict_gene_association.items():
         module_list = association[2]

@@ -39,7 +39,7 @@ def phylo_char_mod(args) -> None:
     if args.output_directory:
         work_dir = str(args.output_directory)
     else:
-        work_dir = f"multi_phylo_correlation_{fasta_file.stem}_{time.strftime('%Y%m%d-%H%M%S')}"
+        work_dir = f"working_dir_{time.strftime('%Y%m%d-%H%M%S')}"
     if not os.path.exists(work_dir):
         os.makedirs(work_dir)
     w_fasta_file = Path(f"{work_dir}/{fasta_file.name.replace('_','')}").resolve()
@@ -108,6 +108,8 @@ def phylo_char_mod(args) -> None:
         [p.wait() for p in domains_segm_process_list]
         correct_domains_tree_process_list, correct_domains_tree_path_fn = get_domains.correct_domains_tree(domains_fasta_tree_dn, gene_tree_fn)
     print(f"Modules segmentation for {fasta_file.name} is finished -> {modules_fasta_tree_dn.name}")
+    # Write the main output with module descriptions
+    modules_segm.write_2_module_descriptions(modules_fasta_tree_dn, f'{w_fasta_file.parents[1]}/2_module_descriptions.csv')
     print(f"Begin modules tree correction using {gene_tree_fn.name} ...")
     correct_modules_tree_process_list, correct_modules_tree_path_fn = modules_segm.correct_modules_tree(modules_fasta_tree_dn, gene_tree_fn)
     # Wait for the end of these corrections (need it to continue)

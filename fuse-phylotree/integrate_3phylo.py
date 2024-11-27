@@ -814,6 +814,21 @@ def write_complete_function_module_change(dict_gene_moduleChange, dict_nodeName_
             # Write all line
             csv_file.write(f"{gene},{'|'.join(annotations_change[0])},{'|'.join(annotations_change[1])},{'|'.join(dict_gene_moduleChange[gene][0])},{'|'.join(dict_gene_moduleChange[gene][1])}\n")
 
+def write_1_module_annotation_evolutions(dict_nodeName_annotationsList, dict_gene_moduleList, dict_gene_moduleChange, dict_nodeName_annotationsChange, filename) -> None:
+    """
+    Write a csv file with all modules/annotations present/gained
+    """
+    # Make the file 
+    with open(filename, "w+") as csv_file:
+        # Header
+        csv_file.write("gene,modules_present,function_present,module_gained,function_gained,module_lost,function_lost\n") 
+        # For each gene
+        for gene, annotations_change in dict_nodeName_annotationsChange.items():
+            modules_present = [mod.name for mod in dict_gene_moduleList[gene]]
+            annotations_present = [annot.name for annot in dict_nodeName_annotationsList[gene]]
+            # Write all line
+            csv_file.write(f"{gene},{'|'.join(modules_present)},{'|'.join(annotations_present)},{'|'.join(dict_gene_moduleChange[gene][0])},{'|'.join(annotations_change[0])},{'|'.join(dict_gene_moduleChange[gene][1])},{'|'.join(annotations_change[1])}\n")
+
 def write_function_module_change_expanded(gene_tree, dict_gene_moduleList, dict_gene_moduleChange, dict_nodeName_annotationsChange, filename) -> None:
     """
     Write a csv file with nodes with annotations / functions changes, 
@@ -1572,16 +1587,13 @@ def write_itol_geneMapping(filename, gene_list) -> None:
 # Batch itol upload
 #==============================================================================
 
-def itol_uploader(zip_directory) -> None:
+def itol_uploader(zip_directory, api_keys, project_name) -> None:
     """
     Use bash uploader api to uploade :
     gene tree + all his annotations files (in a zip directory)
     """
-    # My itol api access key
-    api_keys = "USSOMCeOlDATvl6RheIUDw"
     # Param request
     batch_uploader = "https://itol.embl.de/batch_uploader.cgi"
-    project_name = "Batch_reconc_upload"
     # Set param
     with open(zip_directory, "rb") as f:
         files = {"zipFile" : f}
@@ -1646,8 +1658,14 @@ def parser():
                         help = "Gene tree file (with branch length)",
                         type=str)
     parser.add_argument("--itol",
-                        help = "Upload directly on my itol account",
+                        help = "Upload directly on my itol account (need --itol_api and --itol_project_name)",
                         action="store_true")
+    parser.add_argument("--itol_api",
+                        help = "User iTOL api key for batch upload",
+                        type=str)
+    parser.add_argument("--itol_project_name",
+                        help = "iTOL project name where to upload",
+                        type=str)
     parser.add_argument("--pastml_tab",
                         help = "Add an annotation pastml tab file for the differents nodes of the gene tree",
                         type=str)
@@ -1678,7 +1696,7 @@ if __name__ == "__main__":
     list_module_gene_recipient = make_module_gene_recipient_list(dict_gene_moduleList, dict_module_mappingList)
     dict_gene_spGeneEvent = {gs_mapping.entity_1 : gs_mapping.event for gs_mapping in gs_mapping_list}
     
-    # If there is an annotations (= GOA terms) pastml tab file, make it in a dict gene : annotations
+    # If there is an annotations pastml tab file, make it in a dict gene : annotations
     if args.pastml_tab:
         dict_nodeName_annotationsList = load_pastml_ancestral_states(args.pastml_tab, gene_tree)
     else:
@@ -1697,8 +1715,13 @@ if __name__ == "__main__":
         #dict_gene_ghostDomains = ghost_domains(dict_gene_domainsModules)
         #dict_gene_freeModules = modules_not_in_domains(dict_gene_moduleList, dict_gene_domainsModules)
 
+    # Main outputs
+    gene_tree.write(format=1, outfile=f"{seadog_output.parents[1]}/0_gene.tree", format_root_node=True)
+    write_1_module_annotation_evolutions(dict_nodeName_annotationsList, dict_gene_moduleList, dict_gene_moduleChange, dict_nodeName_annotationsChange, f'{seadog_output.parents[1]}/1_module_annotation_evolutions.csv')
+    # 2_module_descriptions is writen on the main (fuse-phylotree.py)
+
     # Write itols files
-    directory = f"{seadog_output.parents[0]}/visuReconc_{seadog_output.stem}"
+    directory = f"{seadog_output.parents[1]}/3_visuReconc"
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -1742,7 +1765,7 @@ if __name__ == "__main__":
     if args.itol:
         zip_directory = directory
         shutil.make_archive(zip_directory, "zip", directory) 
-        itol_uploader(f"{zip_directory}.zip")
+        itol_uploader(f"{zip_directory}.zip", args.itol_api, args.itol_project_name)
         
     # Big upload (1 tree per leaf file)
     # whole_model_itol_upload(directory, leaf_itol_directory)

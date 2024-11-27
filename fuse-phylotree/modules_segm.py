@@ -83,6 +83,50 @@ def correct_modules_tree(modules_fasta_tree_dn, gene_tree_fn) -> tuple:
     return process_list, tree_path_fn
 
 #==============================================================================
+# Write main output with full module descriptions
+#==============================================================================
+
+def get_fasta_from_file(multi_fasta) -> dict:
+    """
+    Read the multi fasta file
+    And parse it to return a protein dict
+    """
+    protein_dict = {}
+    sequence = ""
+    with open(multi_fasta, "r") as fasta_file:
+        for line in fasta_file:
+            t_line = line.replace("\n","")
+            if ">" in t_line:
+                if sequence != "":
+                    protein_dict[header.replace(">","")] = sequence
+                    sequence = ""
+                header = t_line
+            else: sequence += t_line.replace("X","A")
+    protein_dict[header.replace(">","")] = sequence
+    return protein_dict
+
+def write_2_module_descriptions(modules_fasta_tree_dn, filename):
+    """
+    Write csv file with all module segments
+    module_name, protein, start, end, segment
+    """
+    # Make the file 
+    with open(filename, "w+") as csv_file:
+        # Header
+        csv_file.write("module,protein,start,end,segment\n") 
+        # Look at all modules fasta (1 fasta = 1 module)
+        for filename in Path(modules_fasta_tree_dn).iterdir():
+            if filename.suffix == ".fasta":
+                fasta = Path(filename).resolve()
+                dict_name_seq = get_fasta_from_file(fasta)
+                # For all segments in the module fasta file
+                for name, segment in dict_name_seq.items():
+                    module, start, end, node = name.split('|')
+                    protein = node.split('_')[1]
+                    # Write all line
+                    csv_file.write(f"{module},{protein},{start},{end},{segment}\n")
+
+#==============================================================================
 # Argparse parser
 #==============================================================================
 

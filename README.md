@@ -86,7 +86,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 
 
 ## Output
-The main workflow output is the list of modules/annotations present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_module_annotation_evolutions.csv``` (Example [here](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/complete_functionChange_moduleChange_seadogMD_214.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree/gene.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
+The main workflow output is the list of modules/annotations present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_module_annotation_evolutions.csv``` (Example [here](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/complete_functionChange_moduleChange_seadogMD_214.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
 
 For an interactive visualisation of these data, various iTOL files are generated in ```3_visuReconc/``` and compressed in ```3_visuReconc.zip``` for batch upload on iTOL.
 
