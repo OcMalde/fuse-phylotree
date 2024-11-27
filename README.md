@@ -1,5 +1,5 @@
 # FUSE-PhyloTree
-*Scripts and data for publication & whole pipeline Docker image*
+*FUSE-PhyloTree enables to identify sequence conservation modules and associate them with functional annotations through phylogenomic analysis.*
 
 ## Phylogenetic Prediction of Functional Sequence Modules
 
@@ -10,7 +10,7 @@ Introducing an original approach to characterizing functional motifs. This metho
 
 The process accepts protein sequences and their associated annotations as input. It then returns the presence of conserved sequence modules, along with their associated annotations, across different ancestral genes.
 
-![Data recuperation](img/method.png)
+![Pipeline](img/method.png)
 
 ## Citation
 
