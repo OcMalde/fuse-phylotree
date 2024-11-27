@@ -1,0 +1,10 @@
+{
+    "@context": "",
+    "@type": "SoftwareSourceCode",
+    "name": "FUSE-PhyloTree",
+    "description": "FUSE-PhyloTree enables to identify sequence conservation modules  and associate them with functional annotations through phylogenomic analysis.",
+    "license": "https://spdx.org/licenses/GPL-3.0-or-later",
+    "identifier": "",
+    "version": "1.0",
+    "keywords": ["protein family", "sequence conservations", "protein sequence", "protein functions", "phylogenetic reconciliations", "phylogenetic tree", "protein-protein interactions", "PPI"]
+}
