@@ -1,0 +1,15 @@
+# PYTHON
+__pycache__/
+.eggs
+*.py[cod]
+*$py.class
+
+# VIM
+*~
+*.swp
+*.swo
+
+#phyD3
+node_modules/
+package-lock.json
+package.json
