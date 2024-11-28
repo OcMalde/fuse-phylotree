@@ -1,0 +1,20 @@
+[PROGRAMS]
+MUSCLE : muscle
+TRIMAL: /opt/conda/bin/trimal
+PHYML : /opt/conda/bin/phyml
+TREEFIX : /opt/conda/envs/env_treefix/bin/treefix
+SEADOG-MD : SEADOG-MD
+PASTML : pastml
+PALOMA-2 : paloma-D
+PLMA2DOT : plma2dot
+
+[ENV]
+MUSCLE :
+TRIMAL:
+PHYML :
+TREEFIX:
+SEADOG-MD:
+PASTML :
+PALOMA-2 :
+PLMA2DOT : 
+

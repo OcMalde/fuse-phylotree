@@ -825,7 +825,7 @@ def write_1_module_annotation_evolutions(dict_nodeName_annotationsList, dict_gen
         # For each gene
         for gene, annotations_change in dict_nodeName_annotationsChange.items():
             modules_present = [mod.name for mod in dict_gene_moduleList[gene]]
-            annotations_present = [annot.name for annot in dict_nodeName_annotationsList[gene]]
+            annotations_present = [annot for annot in dict_nodeName_annotationsList[gene]]
             # Write all line
             csv_file.write(f"{gene},{'|'.join(modules_present)},{'|'.join(annotations_present)},{'|'.join(dict_gene_moduleChange[gene][0])},{'|'.join(annotations_change[0])},{'|'.join(dict_gene_moduleChange[gene][1])},{'|'.join(annotations_change[1])}\n")
 
