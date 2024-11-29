@@ -20,7 +20,7 @@ Flowchart of the detailed pipeline:
 flowchart LR
 
 subgraph one 
-style fill:#f96
+style one fill:#f9f,stroke:#333,stroke-width:4px
 U@{ shape: manual-input, label: "User Input"} --> A
 U --> B
 U --> C
