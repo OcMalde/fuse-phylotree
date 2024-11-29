@@ -19,7 +19,8 @@ Flowchart of the detailed pipeline:
 ```mermaid
 flowchart LR
 
-subgraph one
+subgraph one 
+style fill:#f96
 U@{ shape: manual-input, label: "User Input"} --> A
 U --> B
 U --> C
