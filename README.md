@@ -20,6 +20,8 @@ Flowchart of the detailed pipeline:
 ---
 config:
   layout: elk
+  elk:
+    nodePlacementStrategy: LINEAR_SEGMENTS
   look: classic
   theme: neutral
   fontSize: 50
