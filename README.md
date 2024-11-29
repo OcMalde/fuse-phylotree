@@ -90,6 +90,8 @@ The main workflow output is the list of modules/annotations present/gained/lost 
 
 For an interactive visualisation of these data, various iTOL files are generated in ```3_visuReconc/``` and compressed in ```3_visuReconc.zip``` for batch upload on iTOL.
 
+<details><summary><strong>Working directory</strong></summary>
+
 For all details, all outputs and working files will be available such as (see [this directory](https://github.com/OcMalde/PhyloCharMod_publ/tree/main/data/min5_human_214_t10m1M20) for an example)
 ```
 working_dir
@@ -166,7 +168,7 @@ working_dir
 
 
 ```
-
+</details>
 
 ## Advanced Usage
 
