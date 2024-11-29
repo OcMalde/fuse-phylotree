@@ -39,15 +39,15 @@ subgraph Modules
 A@{ shape: circle, label: "sequences.fasta" } --> m1[modules_segm.segmentation_and_module_phylo]
 m1 --> m2@{ shape: docs, label: "module_segm_dir_seq/" }
 m2 --> m3[tools.segmentation]
-m5@{ shape: tag-rect, label: "paloma-D" } o--o|call| m3
+m5@{ shape: flag, label: "paloma-D" } o--o|call| m3
 m3 --> m4@{ shape: circle, label: "seq_filename.dot" }
 m4 --> m6[tools.modules_fasta]
 m6 --> m7@{ shape: docs, label: "module_seq/*.fasta" }
 m7 --> m8[tools.all_phylo]
-m9@{ shape: tag-rect, label: "PhyML" } o--o|call| m8
+m9@{ shape: flag, label: "PhyML" } o--o|call| m8
 m8 --> m12@{ shape: docs, label: "module_seq/*.tree" }
 m12 --> m10[modules_segm.correct_modules_tree]
-m11@{ shape: tag-rect, label: "TreeFix" } o--o|call| m10
+m11@{ shape: flag, label: "TreeFix" } o--o|call| m10
 m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14@{ shape: circle, label: "modules_path_modules.txt" }
 m13 o--o|describe paths of| m14
@@ -59,11 +59,11 @@ B@{ shape: circle, label: "sequences.tree" } --> g1{gene tree as input ?}
 g1 -->|yes| g2@{ shape: circle, label: "rooted binary gene tree .tree" }
 g1 -->|no| g3[gene_phylo.whole_phylo]
 A -.-> g3
-g4@{ shape: tag-rect, label: "Muscle" } o--o|call| g3
-g5@{ shape: tag-rect, label: "TrimAl" } o--o|call| g3
-g6@{ shape: tag-rect, label: "PhyML" } o--o|call| g3
-g7@{ shape: tag-rect, label: "TreeFix" } o--o|call| g3
-g8@{ shape: tag-rect, label: "PhyML (branch len)" } o--o|call| g3
+g4@{ shape: flag, label: "Muscle" } o--o|call| g3
+g5@{ shape: flag, label: "TrimAl" } o--o|call| g3
+g6@{ shape: flag, label: "PhyML" } o--o|call| g3
+g7@{ shape: flag, label: "TreeFix" } o--o|call| g3
+g8@{ shape: flag, label: "PhyML (branch len)" } o--o|call| g3
 g3 --> g2
 end
 style Gene fill:#BBBBBBE6,stroke:#333,stroke-width:4px
@@ -82,7 +82,7 @@ subgraph Reconciliation
 g2 --> r1[tools.seadog_md]
 m14 --> r1
 s3 --> r1
-r2@{ shape: tag-rect, label: "Seadog-MD" } o--o|call| r1
+r2@{ shape: flag, label: "Seadog-MD" } o--o|call| r1
 r1 --> r3@{ shape: circle, label: "seadogMD.output" }
 r3 --> r4[integrates_3phylo.write_sp_gene_event]
 r4 --> r5@{ shape: circle, label: "seadogMD_sp_gene_event.csv" }
@@ -96,7 +96,7 @@ r5 --> a1
 r6 --> a1
 a1 --> a2@{ shape: circle, label: "pastml_seadogMD.csv" }
 a2 --> a3[tools.pastml]
-a4@{ shape: tag-rect, label: "PastML" } o--o|call| a3
+a4@{ shape: flag, label: "PastML" } o--o|call| a3
 a3 --> a5@{ shape: circle, label: "pastml_seadogMD_combined_ancestral_states.tab" }
 a3 --> a6@{ shape: docs, label: "acs_dir_seadogMD/" }
 end
