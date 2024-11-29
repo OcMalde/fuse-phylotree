@@ -26,7 +26,7 @@ C -->|Two| E[Result 2]
 
 
 
-A (sequences.fasta) --> m1[modules_segm.segmentation_and_module_phylo]
+A(sequences.fasta) --> m1[modules_segm.segmentation_and_module_phylo]
 m1 --> m2(module_segm_dir_seq)
 m2 --> m3[tools.segmentation | paloma-D]
 m3 --> m4(seq_filename.dot)
