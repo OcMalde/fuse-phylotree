@@ -79,7 +79,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
    Refer to [this file](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/leaf_Manual_214.csv) for an example
 
 
-3. ```<gene_tree.tree> (--gene tree)```:
+3. ```<gene_tree.tree> (--gene_tree)```:
 
    This file contains a binary rooted gene tree of the sequences in newick format.
 
@@ -171,8 +171,6 @@ working_dir
 ```
 </details>
 
-## Advanced Usage
-
 ### To use with your own data :
 
 ```python3 fuse-phylotree/fuse-phylotree.py```
@@ -199,6 +197,9 @@ optional arguments:
                         Paloma-2 output file (.agraph format, .dot, or .oplma format)
   --reconc_domains      Do a DGS reconciliation with known modules (pfam / prosite)
 ```
+
+## Advanced Usage
+
 
 ### To integrate already computed results :
 
