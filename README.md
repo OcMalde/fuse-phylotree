@@ -25,10 +25,10 @@ config:
   look: classic
   theme: base
   themeVariables:
-    primaryColor: #000000
-    primaryBorderColor: #000000
-    lineColor: #000000
-    fontSize: 50
+    primaryColor: #fff
+    primaryBorderColor: #fff
+    lineColor: #fff
+    fontSize: 1
 ---
 flowchart TB
 
