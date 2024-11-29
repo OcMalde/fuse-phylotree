@@ -23,8 +23,11 @@ config:
   elk:
     nodePlacementStrategy: SIMPLE
   look: classic
-  theme: dark
-  fontSize: 50
+  theme: base
+  themeVariables:
+    primaryColor: #000000
+    lineColor: #000000
+    fontSize: 50
 ---
 flowchart TB
 
