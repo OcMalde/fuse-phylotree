@@ -28,8 +28,8 @@ C -->|Two| E[Result 2]
 
 A(sequences.fasta) --> m1[modules_segm.segmentation_and_module_phylo]
 m1 --> m2(module_segm_dir_seq)
-m2 --> m3[tools.segmentation - paloma-D]
-m3 o--o m5@{ shape: tag-rect, label: "paloma-D" }
+m2 --> m3[tools.segmentation]
+m5@{ shape: tag-rect, label: "paloma-D" } o--o|call| m3
 m3 --> m4(seq_filename.dot)
 
 ```
