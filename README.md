@@ -23,12 +23,15 @@ config:
   elk:
     nodePlacementStrategy: SIMPLE
   look: classic
+  securityLevel: loose
   theme: base
   themeVariables:
     primaryColor: #fff
     primaryBorderColor: #fff
     lineColor: #fff
-    fontSize: 1
+    nodeBorder: #fff
+    defaultLinkColor: #fff
+    fontSize: 50
 ---
 flowchart TB
 
