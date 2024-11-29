@@ -25,6 +25,7 @@ U --> B
 U --> C
 end
 
+subgraph two
 A(sequences.fasta) --> m1[modules_segm.segmentation_and_module_phylo]
 m1 --> m2@{ shape: docs, label: "module_segm_dir_seq/" }
 m2 --> m3[tools.segmentation]
@@ -40,7 +41,9 @@ m11@{ shape: tag-rect, label: "TreeFix" } o--o|call| m10
 m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14(modules_path_modules_seq.txt)
 m13 o--o|describe paths of| m14
+end
 
+subgraph three
 B(sequences.tree) --> g1{gene tree as input ?}
 g1 -->|yes| g2(rooted binary gene tree .tree)
 g1 -->|no| g3[gene_phylo.whole_phylo]
@@ -51,14 +54,18 @@ g6@{ shape: tag-rect, label: "PhyML" } o--o|call| g3
 g7@{ shape: tag-rect, label: "TreeFix" } o--o|call| g3
 g8@{ shape: tag-rect, label: "PhyML (fixed topo, only branch length)" } o--o|call| g3
 g3 --> g2
+end
 
+subgraph four
 A --> s1[species_phylo.taxid_from_fasta]
 s2@{ shape: cyl, label: "NCBI Taxonomy" } o--o|use| s1
 s1 --> s3(species.tree)
+end
 
 A --> d1[tools.known_domains]
 d1 --> d2(domains.csv)
 
+subgraph five
 g2 --> r1[tools.seadog_md]
 m14 --> r1
 s3 --> r1
@@ -67,7 +74,9 @@ r1 --> r3(seadogMD.output)
 r3 --> r4[integrates_3phylo.write_sp_gene_event]
 r4 --> r5(seadogMD_sp_gene_event.csv)
 r4 --> r6(seadogMD_gene.tree)
+end
 
+subgraph six
 C(functional annotations.csv) --> a1[ances_scenario.acs_inference]
 r5 --> a1
 r6 --> a1
@@ -76,18 +85,22 @@ a2 --> a3[tools.pastml]
 a4@{ shape: tag-rect, label: "PastML" } o--o|call| a3
 a3 --> a5(pastml_seadogMD_combined_ancestral_states.tab)
 a3 --> a6@{ shape: docs, label: "acs_dir_seadogMD/" }
+end
 
+subgraph seven
 r3 --> i1[integrate_3phylo.py]
 g2 --> i1
 a5 --> i1
 d2 --> i1
+end
 
+subgraph eight
 i1 --> i2(0_gene_tree.tree)
 i1 --> i3(1_module_annotation_evolutions.csv)
 i1 --> i4(2_module_descriptions.csv)
 i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
 i1 --> i6@{ shape: docs, label: "working_dir/" }
-
+end
 ```
 </details>
 
