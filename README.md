@@ -123,10 +123,10 @@ style Output fill:#fff,stroke:#333,stroke-width:1px
 classDef tools fill:#fff,stroke:#000,stroke-width:5px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
 
-classDef files fill:#fff,stroke:#000,stroke-width:10px;
-class A,B,C,m2,m4,m7,m12,m13,m14,g2,s3,r3,r5,r6,a2,a5,a6,i2,i3,i4,i5,i6 files
+classDef files fill:#fff,stroke:#000,stroke-width:4px;
+class A,B,C,m2,m4,m7,m12,m13,m14,g2,s3,r3,r5,r6,a2,a5,a6,i2,i3,i4,i5,i6,d2 files
 
-classDef scripts fill:#fff,stroke:#000,stroke-width:4px;
+classDef scripts fill:#fff,stroke:#000,stroke-width:10px;
 class m1,m3,m6,m8,m10,g3,s1,d1,r1,r4,a1,a3,i1 scripts
 
 ```
