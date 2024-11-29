@@ -19,9 +19,11 @@ Flowchart of the detailed pipeline:
 ```mermaid
 flowchart LR
 
+subgraph one
 U@{ shape: manual-input, label: "User Input"} --> A
 U --> B
 U --> C
+end
 
 A(sequences.fasta) --> m1[modules_segm.segmentation_and_module_phylo]
 m1 --> m2@{ shape: docs, label: "module_segm_dir_seq/" }
