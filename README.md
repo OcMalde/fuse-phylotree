@@ -23,7 +23,7 @@ config:
   look: classic
   theme: default
 ---
-flowchart LR
+flowchart TB
 
 subgraph Input
 U@{ shape: manual-input, label: "User Input"} --> A
