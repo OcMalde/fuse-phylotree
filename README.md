@@ -13,6 +13,9 @@ The process accepts protein sequences and their associated annotations as input.
 ![Pipeline](img/method.png)
 
 <details><summary><strong>Detailed Pipeline</strong></summary>
+
+Flowchart of the detailed pipeline:
+
 ```mermaid
 flowchart LR
 
