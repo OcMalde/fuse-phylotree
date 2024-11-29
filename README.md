@@ -40,7 +40,18 @@ m12 --> m10[modules_segm.correct_modules_tree]
 m11@{ shape: tag-rect, label: "TreeFix" } o--o|call| m10
 m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14(modules_path_modules_seq.txt)
-m10 o--o|describe paths of| m14
+m13 o--o|describe paths of| m14
+
+B(sequences.tree) --> g1{gene tree as input ?}
+g1 -->|yes| g2(rooted binary gene tree .tree)
+g1 -->|no| g3[gene_phylo.whole_phylo]
+A -.-> g3
+g4@{ shape: tag-rect, label: "Muscle" } o--o|call| g3
+g5@{ shape: tag-rect, label: "TrimAl" } o--o|call| g3
+g6@{ shape: tag-rect, label: "PhyML" } o--o|call| g3
+g7@{ shape: tag-rect, label: "TreeFix" } o--o|call| g3
+g7@{ shape: tag-rect, label: "PhyML (fixed topo, only branch length)" } o--o|call| g3
+g3 --> g2
 
 ```
 </details>
