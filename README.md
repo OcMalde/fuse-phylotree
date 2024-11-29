@@ -111,7 +111,7 @@ end
 style Integration fill:#228833E6,stroke:#333,stroke-width:4px
 
 subgraph Output
-i1 --> i2{ shape: circle, label: "0_gene_tree.tree" }
+i1 --> i2@{ shape: circle, label: "0_gene_tree.tree" }
 i1 --> i3@{ shape: circle, label: "1_module_annotation_evolutions.csv" }
 i1 --> i4@{ shape: circle, label: "2_module_descriptions.csv" }
 i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
