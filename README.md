@@ -27,10 +27,19 @@ C -->|Two| E[Result 2]
 
 
 A(sequences.fasta) --> m1[modules_segm.segmentation_and_module_phylo]
-m1 --> m2@{ shape: processes, label: "module_segm_dir_seq/" }
+m1 --> m2@{ shape: docs, label: "module_segm_dir_seq/" }
 m2 --> m3[tools.segmentation]
 m5@{ shape: tag-rect, label: "paloma-D" } o--o|call| m3
 m3 --> m4(seq_filename.dot)
+m4 --> m6[tools.modules_fasta]
+m6 --> m7@{ shape: docs, label: "module_seq/*.fasta" }
+m7 --> m8[tools.all_phylo]
+m9@{ shape: tag-rect, label: "PhyML" } o--o|call| m8
+m8 --> m12@{ shape: docs, label: "module_seq/*.tree" }
+m12 --> m10[modules_segm.correct_modules_tree]
+m11@{ shape: tag-rect, label: "TreeFix" } o--o|call| m10
+m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
+m10 --> m14(modules_path_modules_seq.txt)
 
 ```
 </details>
