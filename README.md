@@ -21,7 +21,7 @@ Flowchart of the detailed pipeline:
 config:
   layout: elk
   elk:
-    nodePlacementStrategy: NETWORK_SIMPLEX
+    nodePlacementStrategy: SIMPLE
   look: classic
   theme: neutral
   fontSize: 50
