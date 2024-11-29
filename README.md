@@ -40,6 +40,7 @@ m12 --> m10[modules_segm.correct_modules_tree]
 m11@{ shape: tag-rect, label: "TreeFix" } o--o|call| m10
 m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14(modules_path_modules_seq.txt)
+m10 o--o|describe paths of| m14
 
 ```
 </details>
