@@ -23,10 +23,10 @@ config:
   look: classic
   theme: default
   fontSize: 60
-  primaryColor: #ffffff
-  primaryBorderColor: #000000
-  lineColor: #000000,
-  secondaryColor: #ffffff
+  primaryColor: "#ffffff"
+  primaryBorderColor: "#000000"
+  lineColor: "#000000"
+  secondaryColor: "#ffffff"
 ---
 flowchart TB
 
