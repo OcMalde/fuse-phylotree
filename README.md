@@ -17,14 +17,20 @@ The process accepts protein sequences and their associated annotations as input.
 Flowchart of the detailed pipeline:
 
 ```mermaid
+---
+config:
+  layout: elk
+  look: handDrawn
+  theme: default
+---
 flowchart LR
 
-subgraph ED
+subgraph IN
 U@{ shape: manual-input, label: "User Input"} --> A
 U --> B
 U --> C
 end
-style ED fill:#f9f,stroke:#333,stroke-width:4px
+style IN fill:#f9f,stroke:#333,stroke-width:4px
 
 subgraph two
 A(sequences.fasta) --> m1[modules_segm.segmentation_and_module_phylo]
