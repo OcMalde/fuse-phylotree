@@ -22,7 +22,7 @@ config:
   layout: elk
   look: classic
   theme: neutral
-  fontSize: 40
+  fontSize: 30
 ---
 flowchart TB
 
@@ -50,7 +50,7 @@ m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14(modules_path_modules_seq.txt)
 m13 o--o|describe paths of| m14
 end
-style Modules fill:#E67,stroke:#333,stroke-width:4px
+style Modules fill:#EE6677B3,stroke:#333,stroke-width:4px
 
 subgraph Gene
 B(sequences.tree) --> g1{gene tree as input ?}
