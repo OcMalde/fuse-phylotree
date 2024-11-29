@@ -46,7 +46,6 @@ m9@{ shape: tag-rect, label: "PhyML" } o--o|call| m8
 m8 --> m12@{ shape: docs, label: "module_seq/*.tree" }
 m12 --> m10[modules_segm.correct_modules_tree]
 m11@{ shape: tag-rect, label: "TreeFix" } o--o|call| m10
-g2 -->|as template| m11
 m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14(modules_path_modules_seq.txt)
 m13 o--o|describe paths of| m14
@@ -62,7 +61,6 @@ g4@{ shape: tag-rect, label: "Muscle" } o--o|call| g3
 g5@{ shape: tag-rect, label: "TrimAl" } o--o|call| g3
 g6@{ shape: tag-rect, label: "PhyML" } o--o|call| g3
 g7@{ shape: tag-rect, label: "TreeFix" } o--o|call| g3
-s3 -->|as template| g7
 g8@{ shape: tag-rect, label: "PhyML (fixed topo, only branch length)" } o--o|call| g3
 g3 --> g2
 end
