@@ -23,15 +23,8 @@ config:
   elk:
     nodePlacementStrategy: SIMPLE
   look: classic
-  securityLevel: loose
   theme: base
-  themeVariables:
-    primaryColor: #fff
-    primaryBorderColor: #fff
-    lineColor: #fff
-    nodeBorder: #fff
-    defaultLinkColor: #fff
-    fontSize: 50
+  fontSize: 50
 ---
 flowchart TB
 
@@ -125,6 +118,11 @@ i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
 i1 --> i6@{ shape: docs, label: "working_dir/" }
 end
 style Output fill:#fff,stroke:#333,stroke-width:4px
+
+
+classDef tools fill:#fff,stroke:#000,stroke-width:6px;
+class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
+
 
 ```
 </details>
