@@ -22,7 +22,7 @@ config:
   layout: elk
   look: classic
   theme: neutral
-  fontSize: 60
+  fontSize: 40
 ---
 flowchart TB
 
