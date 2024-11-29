@@ -33,7 +33,7 @@ U@{ shape: manual-input, label: "User Input"} --> A
 U --> B
 U --> C
 end
-style Input fill:#fff,stroke:#333,stroke-width:1px
+style Input fill:#fff,stroke:#333,stroke-width:4px
 
 subgraph Modules
 A@{ shape: doc, label: "sequences.fasta" } --> m1[modules_segm.segmentation_and_module_phylo]
@@ -117,16 +117,16 @@ i1 --> i4@{ shape: doc, label: "2_module_descriptions.csv" }
 i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
 i1 --> i6@{ shape: docs, label: "working_dir/" }
 end
-style Output fill:#fff,stroke:#333,stroke-width:1px
+style Output fill:#fff,stroke:#333,stroke-width:4px
 
 
-classDef tools fill:#fff,stroke:#000,stroke-width:5px;
+classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
 
-classDef files fill:#fff,stroke:#000,stroke-width:4px;
+classDef files fill:#fff,stroke:#000,stroke-width:2px;
 class A,B,C,m2,m4,m7,m12,m13,m14,g2,s3,r3,r5,r6,a2,a5,a6,i2,i3,i4,i5,i6,d2 files
 
-classDef scripts fill:#fff,stroke:#000,stroke-width:10px;
+classDef scripts fill:#9BD184,stroke:#000,stroke-width:2px;
 class m1,m3,m6,m8,m10,g3,s1,d1,r1,r4,a1,a3,i1 scripts
 
 ```
