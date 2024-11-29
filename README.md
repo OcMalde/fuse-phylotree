@@ -70,17 +70,18 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 
    These files can be generated using orthogroups and GFF files, all of which are included in the Docker image for the nine species. You only need to compile a file with a list of RefSeq of interest. For detailed instructions, please refer to [To-build-a-sequence-dataset-based-on-orthogroups](https://github.com/OcMalde/PhyloCharMod_publ/tree/main#to-build-a-sequence-dataset-based-on-orthogroups).
 
-2. ```<gene_tree.tree>```:
-
-   This file contains a binary rooted gene tree of the sequences in newick format.
-
-3. ```<annotations.csv>```:
+2. ```<annotations.csv>```:
 
    This file contains annotations associated with the different sequences
 
    Each line should be formatted as: ```SeqID,Annotation_1|Annotation_2```. Here, ```SeqID``` is the unique sequence identifier. It's separated from the list of annotations by a comma (```,```), and individual annotations are separated by a pipe (```|```) (e.g., ```NP_620594.1,P00451_F8|P04275_VWF```). Annotations must be more than one character in length.
 
    Refer to [this file](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/leaf_Manual_214.csv) for an example
+
+
+3. ```<gene_tree.tree> (--gene tree)```:
+
+   This file contains a binary rooted gene tree of the sequences in newick format.
 
 > :warning: **Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input, a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the --gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
 
