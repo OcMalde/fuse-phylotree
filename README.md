@@ -22,7 +22,11 @@ config:
   layout: elk
   look: classic
   theme: default
-  fontSize: 30
+  fontSize: 60
+  primaryColor: #ffffff
+  primaryBorderColor: #000000
+  lineColor: #000000,
+  secondaryColor: #ffffff
 ---
 flowchart TB
 
