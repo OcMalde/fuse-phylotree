@@ -26,6 +26,7 @@ config:
   theme: base
   themeVariables:
     primaryColor: #000000
+    primaryBorderColor: #000000
     lineColor: #000000
     fontSize: 50
 ---
