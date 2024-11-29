@@ -33,7 +33,7 @@ U@{ shape: manual-input, label: "User Input"} --> A
 U --> B
 U --> C
 end
-style Input fill:#fff,stroke:#333,stroke-width:4px
+style Input fill:#fff,stroke:#333,stroke-width:1px
 
 subgraph Modules
 A@{ shape: doc, label: "sequences.fasta" } --> m1[modules_segm.segmentation_and_module_phylo]
@@ -52,7 +52,7 @@ m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14@{ shape: doc, label: "modules_path_modules.txt" }
 m13 o--o|describe paths of| m14
 end
-style Modules fill:#EE6677E6,stroke:#333,stroke-width:4px
+style Modules fill:#EE6677E6,stroke:#333,stroke-width:1px
 
 subgraph Gene
 B@{ shape: doc, label: "sequences.tree" } --> g1{gene tree as input ?}
@@ -66,14 +66,14 @@ g7@{ shape: flag, label: "TreeFix" } o--o|call| g3
 g8@{ shape: flag, label: "PhyML (branch len)" } o--o|call| g3
 g3 --> g2
 end
-style Gene fill:#BBBBBBE6,stroke:#333,stroke-width:4px
+style Gene fill:#BBBBBBE6,stroke:#333,stroke-width:1px
 
 subgraph Species
 A --> s1[species_phylo.taxid_from_fasta]
 s2@{ shape: cyl, label: "NCBI Taxonomy" } o--o|use| s1
 s1 --> s3@{ shape: doc, label: "species.tree" }
 end
-style Species fill:#66CCEEE6,stroke:#333,stroke-width:4px
+style Species fill:#66CCEEE6,stroke:#333,stroke-width:1px
 
 A --> d1[tools.known_domains]
 d1 --> d2@{ shape: doc, label: "domains.csv" }
@@ -88,7 +88,7 @@ r3 --> r4[integrates_3phylo.write_sp_gene_event]
 r4 --> r5@{ shape: doc, label: "seadogMD_sp_gene_event.csv" }
 r4 --> r6@{ shape: doc, label: "seadogMD_gene.tree" }
 end
-style Reconciliation fill:#CCBB44E6,stroke:#333,stroke-width:4px
+style Reconciliation fill:#CCBB44E6,stroke:#333,stroke-width:1px
 
 subgraph Annotations
 C@{ shape: doc, label: "functional annotations.csv" } --> a1[ances_scenario.acs_inference]
@@ -100,7 +100,7 @@ a4@{ shape: flag, label: "PastML" } o--o|call| a3
 a3 --> a5@{ shape: doc, label: "pastml_seadogMD_combined_ancestral_states.tab" }
 a3 --> a6@{ shape: docs, label: "acs_dir_seadogMD/" }
 end
-style Annotations fill:#4477AAE6,stroke:#333,stroke-width:4px
+style Annotations fill:#4477AAE6,stroke:#333,stroke-width:1px
 
 subgraph Integration
 r3 --> i1[integrate_3phylo.py]
@@ -108,7 +108,7 @@ g2 --> i1
 a5 --> i1
 d2 --> i1
 end
-style Integration fill:#228833E6,stroke:#333,stroke-width:4px
+style Integration fill:#228833E6,stroke:#333,stroke-width:1px
 
 subgraph Output
 i1 --> i2@{ shape: doc, label: "0_gene_tree.tree" }
@@ -117,12 +117,17 @@ i1 --> i4@{ shape: doc, label: "2_module_descriptions.csv" }
 i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
 i1 --> i6@{ shape: docs, label: "working_dir/" }
 end
-style Output fill:#fff,stroke:#333,stroke-width:4px
+style Output fill:#fff,stroke:#333,stroke-width:1px
 
 
-classDef tools fill:#fff,stroke:#000,stroke-width:6px;
+classDef tools fill:#fff,stroke:#000,stroke-width:5px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
 
+classDef files fill:#fff,stroke:#000,stroke-width:10px;
+class A,B,C,m2,m4,m7,m12,m13,m14,g2,s3,r3,r5,r6,a2,a5,a6,i2,i3,i4,i5,i6 files
+
+classDef scripts fill:#fff,stroke:#000,stroke-width:4px;
+class m1,m3,m6,m8,m10,g3,s1,d1,r1,r4,a1,a3,i1 scripts
 
 ```
 </details>
