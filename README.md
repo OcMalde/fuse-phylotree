@@ -23,7 +23,7 @@ config:
   elk:
     nodePlacementStrategy: SIMPLE
   look: classic
-  theme: neutral
+  theme: dark
   fontSize: 50
 ---
 flowchart TB
