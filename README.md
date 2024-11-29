@@ -22,7 +22,7 @@ config:
   layout: elk
   look: classic
   theme: neutral
-  fontSize: 20
+  fontSize: 50
 ---
 flowchart TB
 
@@ -50,7 +50,7 @@ m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14(modules_path_modules_seq.txt)
 m13 o--o|describe paths of| m14
 end
-style Modules fill:#EE6677B1,stroke:#333,stroke-width:4px
+style Modules fill:#EE6677D9,stroke:#333,stroke-width:4px
 
 subgraph Gene
 B(sequences.tree) --> g1{gene tree as input ?}
@@ -64,14 +64,14 @@ g7@{ shape: tag-rect, label: "TreeFix" } o--o|call| g3
 g8@{ shape: tag-rect, label: "PhyML (fixed topo, only branch length)" } o--o|call| g3
 g3 --> g2
 end
-style Gene fill:#BBBBBBB1,stroke:#333,stroke-width:4px
+style Gene fill:#BBBBBBD9,stroke:#333,stroke-width:4px
 
 subgraph Species
 A --> s1[species_phylo.taxid_from_fasta]
 s2@{ shape: cyl, label: "NCBI Taxonomy" } o--o|use| s1
 s1 --> s3(species.tree)
 end
-style Species fill:#66CCCEEB1,stroke:#333,stroke-width:4px
+style Species fill:#66CCEED9,stroke:#333,stroke-width:4px
 
 A --> d1[tools.known_domains]
 d1 --> d2(domains.csv)
@@ -86,7 +86,7 @@ r3 --> r4[integrates_3phylo.write_sp_gene_event]
 r4 --> r5(seadogMD_sp_gene_event.csv)
 r4 --> r6(seadogMD_gene.tree)
 end
-style Reconciliation fill:#CCBB44B1,stroke:#333,stroke-width:4px
+style Reconciliation fill:#CCBB44D9,stroke:#333,stroke-width:4px
 
 subgraph Annotations
 C(functional annotations.csv) --> a1[ances_scenario.acs_inference]
@@ -98,7 +98,7 @@ a4@{ shape: tag-rect, label: "PastML" } o--o|call| a3
 a3 --> a5(pastml_seadogMD_combined_ancestral_states.tab)
 a3 --> a6@{ shape: docs, label: "acs_dir_seadogMD/" }
 end
-style Annotations fill:#4477AAB1,stroke:#333,stroke-width:4px
+style Annotations fill:#4477AAD9,stroke:#333,stroke-width:4px
 
 subgraph Integration
 r3 --> i1[integrate_3phylo.py]
@@ -106,7 +106,7 @@ g2 --> i1
 a5 --> i1
 d2 --> i1
 end
-style Integration fill:#228833B1,stroke:#333,stroke-width:4px
+style Integration fill:#228833D9,stroke:#333,stroke-width:4px
 
 subgraph Output
 i1 --> i2(0_gene_tree.tree)
