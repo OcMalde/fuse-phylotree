@@ -19,13 +19,6 @@ Flowchart of the detailed pipeline:
 ```mermaid
 flowchart LR
 
-A[Hard] -->|Text| B(Round)
-B --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-
-
-
 A(sequences.fasta) --> m1[modules_segm.segmentation_and_module_phylo]
 m1 --> m2@{ shape: docs, label: "module_segm_dir_seq/" }
 m2 --> m3[tools.segmentation]
@@ -50,8 +43,44 @@ g4@{ shape: tag-rect, label: "Muscle" } o--o|call| g3
 g5@{ shape: tag-rect, label: "TrimAl" } o--o|call| g3
 g6@{ shape: tag-rect, label: "PhyML" } o--o|call| g3
 g7@{ shape: tag-rect, label: "TreeFix" } o--o|call| g3
-g7@{ shape: tag-rect, label: "PhyML (fixed topo, only branch length)" } o--o|call| g3
+g8@{ shape: tag-rect, label: "PhyML (fixed topo, only branch length)" } o--o|call| g3
 g3 --> g2
+
+A --> s1[species_phylo.taxid_from_fasta]
+s2@{ shape: cyl, label: "NCBI Taxonomy" } o--o|use| s1
+s1 --> s3(species.tree)
+
+A --> d1[tools.known_domains]
+d1 --> d2(domains.csv)
+
+g2 --> r1[tools.seadog_md]
+m14 --> r1
+s3 --> r1
+r2@{ shape: tag-rect, label: "Seadog-MD" } o--o|call| r1
+r1 --> r3(seadogMD.output)
+r3 --> r4[integrates_3phylo.write_sp_gene_event]
+r4 --> r5(seadogMD_sp_gene_event.csv)
+r4 --> r6(seadogMD_gene.tree)
+
+C(functional annotations.csv) --> a1[ances_scenario.acs_inference]
+r5 --> a1
+r6 --> a1
+a1 --> a2(pastml_seadogMD.csv)
+a2 --> a3[tools.pastml]
+a4@{ shape: tag-rect, label: "PastML" } o--o|call| a3
+a3 --> a5(pastml_seadogMD_combined_ancestral_states.tab)
+a3 --> a6@{ shape: docs, label: "acs_dir_seadogMD/" }
+
+r3 --> i1[integrate_3phylo.py]
+g2 --> i1
+a5 --> i1
+d2 --> i1
+
+i1 --> i2(0_gene_tree.tree)
+i1 --> i3(1_module_annotation_evolutions.csv)
+i1 --> i4(2_module_descriptions.csv)
+i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
+i1 --> i6@{ shape: docs, label: "working_dir/" }
 
 ```
 </details>
