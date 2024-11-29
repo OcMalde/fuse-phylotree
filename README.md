@@ -171,7 +171,7 @@ working_dir
 ```
 </details>
 
-### To use with your own data :
+## Usage
 
 ```python3 fuse-phylotree/fuse-phylotree.py```
 
