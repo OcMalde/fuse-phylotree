@@ -169,6 +169,13 @@ linkStyle 47 stroke:gold, stroke-width:20px
 linkStyle 48 stroke:gold, stroke-width:20px
 linkStyle 49 stroke:gold, stroke-width:20px
 linkStyle 50 stroke:gold, stroke-width:20px
+linkStyle 51 stroke:gold, stroke-width:20px
+linkStyle 52 stroke:gold, stroke-width:20px
+linkStyle 53 stroke:gold, stroke-width:20px
+linkStyle 54 stroke:gold, stroke-width:20px
+linkStyle 55 stroke:gold, stroke-width:20px
+linkStyle 56 stroke:gold, stroke-width:20px
+linkStyle 57 stroke:gold, stroke-width:20px
 
 classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
