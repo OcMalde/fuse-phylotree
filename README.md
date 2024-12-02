@@ -23,7 +23,6 @@ config:
   theme: default
   themeVariables:
     fontSize: 50px
-    defaultLinkColor: #990000
 
 ---
 flowchart TB
@@ -119,6 +118,13 @@ i1 --> i6@{ shape: docs, label: "working_dir/" }
 end
 style Output fill:#fff,stroke:#333,stroke-width:4px
 
+linkStyle 0 stroke:gold, stroke-width:40px
+linkStyle 1 stroke:gold, stroke-width:40px
+linkStyle 4 stroke:gold, stroke-width:40px
+linkStyle 6 stroke:gold, stroke-width:40px
+linkStyle 7 stroke:gold, stroke-width:40px
+linkStyle 8 stroke:gold, stroke-width:40px
+linkStyle 9 stroke:gold, stroke-width:40px
 
 classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
