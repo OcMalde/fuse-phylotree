@@ -22,7 +22,7 @@ config:
   look: classic
   theme: default
   themeVariables:
-    fontSize: 500px
+    fontSize: 150px
 ---
 flowchart TB
 
