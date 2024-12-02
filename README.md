@@ -131,8 +131,8 @@ linkStyle 27 stroke:#BBBBBB, stroke-width:20px
 linkStyle 28 stroke:#66CCEE, stroke-width:20px
 linkStyle 29 stroke:#66CCEE, stroke-width:20px
 linkStyle 30 stroke:#66CCEE, stroke-width:20px
-linkStyle 31 stroke:#66CCEE, stroke-width:20px
-linkStyle 32 stroke:gold, stroke-width:20px
+linkStyle 31 stroke:brown, stroke-width:20px
+linkStyle 32 stroke:brown, stroke-width:20px
 linkStyle 33 stroke:gold, stroke-width:20px
 linkStyle 34 stroke:gold, stroke-width:20px
 linkStyle 35 stroke:gold, stroke-width:20px
