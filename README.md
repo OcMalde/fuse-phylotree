@@ -27,12 +27,9 @@ config:
 ---
 flowchart TB
 
-subgraph Input
 U@{ shape: manual-input, label: "User Input"} --> A
 U --> B
 U --> C
-end
-style Input fill:#fff,stroke:#333,stroke-width:4px
 
 A@{ shape: doc, label: "sequences.fasta" } --> m1[modules_segm.segmentation_and_module_phylo]
 m1 --> m2@{ shape: docs, label: "module_segm_dir_seq/" }
