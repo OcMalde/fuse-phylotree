@@ -61,17 +61,13 @@ g7@{ shape: flag, label: "TreeFix" } o--o|call| g3
 g8@{ shape: flag, label: "PhyML (branch len)" } o--o|call| g3
 g3 --> g2
 
-subgraph Species
 A --> s1[species_phylo.taxid_from_fasta]
 s2@{ shape: cyl, label: "NCBI Taxonomy" } o--o|use| s1
 s1 --> s3@{ shape: doc, label: "species.tree" }
-end
-style Species fill:#66CCEEE6,stroke:#333,stroke-width:1px
 
 A --> d1[tools.known_domains]
 d1 --> d2@{ shape: doc, label: "domains.csv" }
 
-subgraph Reconciliation
 g2 --> r1[tools.seadog_md]
 m14 --> r1
 s3 --> r1
@@ -80,8 +76,6 @@ r1 --> r3@{ shape: doc, label: "seadogMD.output" }
 r3 --> r4[integrates_3phylo.write_sp_gene_event]
 r4 --> r5@{ shape: doc, label: "seadogMD_sp_gene_event.csv" }
 r4 --> r6@{ shape: doc, label: "seadogMD_gene.tree" }
-end
-style Reconciliation fill:#CCBB44E6,stroke:#333,stroke-width:1px
 
 C@{ shape: doc, label: "functional annotations.csv" } --> a1[ances_scenario.acs_inference]
 r5 --> a1
@@ -144,7 +138,7 @@ linkStyle 34 stroke:gold, stroke-width:20px
 linkStyle 35 stroke:gold, stroke-width:20px
 linkStyle 36 stroke:gold, stroke-width:20px
 linkStyle 37 stroke:gold, stroke-width:20px
-linkStyle 38 stroke:gold, stroke-width:20px
+linkStyle 38 stroke:#4477AA, stroke-width:20px
 linkStyle 39 stroke:#4477AA, stroke-width:20px
 linkStyle 40 stroke:#4477AA, stroke-width:20px
 linkStyle 41 stroke:#4477AA, stroke-width:20px
@@ -153,11 +147,11 @@ linkStyle 43 stroke:#4477AA, stroke-width:20px
 linkStyle 44 stroke:#4477AA, stroke-width:20px
 linkStyle 45 stroke:#4477AA, stroke-width:20px
 linkStyle 46 stroke:#4477AA, stroke-width:20px
-linkStyle 47 stroke:#228833, stroke-width:20px
-linkStyle 48 stroke:#228833, stroke-width:20px
-linkStyle 49 stroke:#228833, stroke-width:20px
-linkStyle 50 stroke:#228833, stroke-width:20px
-linkStyle 51 stroke:#228833, stroke-width:20px
+linkStyle 47 stroke:#4477AA, stroke-width:20px
+linkStyle 48 stroke:#4477AA, stroke-width:20px
+linkStyle 49 stroke:gold, stroke-width:20px
+linkStyle 50 stroke:#BBBBBB, stroke-width:20px
+linkStyle 51 stroke:#4477AA, stroke-width:20px
 linkStyle 52 stroke:#228833, stroke-width:20px
 linkStyle 53 stroke:#228833, stroke-width:20px
 linkStyle 54 stroke:#228833, stroke-width:20px
