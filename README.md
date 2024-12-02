@@ -23,6 +23,7 @@ config:
   theme: default
   themeVariables:
     fontSize: 50px
+    defaultLinkColor: #990000
 
 ---
 flowchart TB
