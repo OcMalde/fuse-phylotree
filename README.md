@@ -83,7 +83,6 @@ r4 --> r6@{ shape: doc, label: "seadogMD_gene.tree" }
 end
 style Reconciliation fill:#CCBB44E6,stroke:#333,stroke-width:1px
 
-subgraph Annotations
 C@{ shape: doc, label: "functional annotations.csv" } --> a1[ances_scenario.acs_inference]
 r5 --> a1
 r6 --> a1
@@ -92,16 +91,11 @@ a2 --> a3[tools.pastml]
 a4@{ shape: flag, label: "PastML" } o--o|call| a3
 a3 --> a5@{ shape: doc, label: "pastml_seadogMD_combined_ancestral_states.tab" }
 a3 --> a6@{ shape: docs, label: "acs_dir_seadogMD/" }
-end
-style Annotations fill:#4477AAE6,stroke:#333,stroke-width:1px
 
-subgraph Integration
 r3 --> i1[integrate_3phylo.py]
 g2 --> i1
 a5 --> i1
 d2 --> i1
-end
-style Integration fill:#228833E6,stroke:#333,stroke-width:1px
 
 subgraph Output
 i1 --> i2@{ shape: doc, label: "0_gene_tree.tree" }
@@ -151,25 +145,25 @@ linkStyle 35 stroke:gold, stroke-width:20px
 linkStyle 36 stroke:gold, stroke-width:20px
 linkStyle 37 stroke:gold, stroke-width:20px
 linkStyle 38 stroke:gold, stroke-width:20px
-linkStyle 39 stroke:gold, stroke-width:20px
-linkStyle 40 stroke:gold, stroke-width:20px
-linkStyle 41 stroke:gold, stroke-width:20px
-linkStyle 42 stroke:gold, stroke-width:20px
-linkStyle 43 stroke:gold, stroke-width:20px
-linkStyle 44 stroke:gold, stroke-width:20px
-linkStyle 45 stroke:gold, stroke-width:20px
-linkStyle 46 stroke:gold, stroke-width:20px
-linkStyle 47 stroke:gold, stroke-width:20px
-linkStyle 48 stroke:gold, stroke-width:20px
-linkStyle 49 stroke:gold, stroke-width:20px
-linkStyle 50 stroke:gold, stroke-width:20px
-linkStyle 51 stroke:gold, stroke-width:20px
-linkStyle 52 stroke:gold, stroke-width:20px
-linkStyle 53 stroke:gold, stroke-width:20px
-linkStyle 54 stroke:gold, stroke-width:20px
-linkStyle 55 stroke:gold, stroke-width:20px
-linkStyle 56 stroke:gold, stroke-width:20px
-linkStyle 57 stroke:gold, stroke-width:20px
+linkStyle 39 stroke:#4477AA, stroke-width:20px
+linkStyle 40 stroke:#4477AA, stroke-width:20px
+linkStyle 41 stroke:#4477AA, stroke-width:20px
+linkStyle 42 stroke:#4477AA, stroke-width:20px
+linkStyle 43 stroke:#4477AA, stroke-width:20px
+linkStyle 44 stroke:#4477AA, stroke-width:20px
+linkStyle 45 stroke:#4477AA, stroke-width:20px
+linkStyle 46 stroke:#4477AA, stroke-width:20px
+linkStyle 47 stroke:#228833, stroke-width:20px
+linkStyle 48 stroke:#228833, stroke-width:20px
+linkStyle 49 stroke:#228833, stroke-width:20px
+linkStyle 50 stroke:#228833, stroke-width:20px
+linkStyle 51 stroke:#228833, stroke-width:20px
+linkStyle 52 stroke:#228833, stroke-width:20px
+linkStyle 53 stroke:#228833, stroke-width:20px
+linkStyle 54 stroke:#228833, stroke-width:20px
+linkStyle 55 stroke:#228833, stroke-width:20px
+linkStyle 56 stroke:#228833, stroke-width:20px
+linkStyle 57 stroke:#228833, stroke-width:20px
 
 classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
