@@ -20,11 +20,11 @@ Flowchart of the detailed pipeline:
 ---
 config:
   layout: elk
+  look: classic
+  theme: dark
+  fontSize: 500
   elk:
     nodePlacementStrategy: SIMPLE
-  look: classic
-  theme: base
-  fontSize: 50
 ---
 flowchart TB
 
