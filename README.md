@@ -153,6 +153,22 @@ linkStyle 31 stroke:gold, stroke-width:20px
 linkStyle 32 stroke:gold, stroke-width:20px
 linkStyle 33 stroke:gold, stroke-width:20px
 linkStyle 34 stroke:gold, stroke-width:20px
+linkStyle 35 stroke:gold, stroke-width:20px
+linkStyle 36 stroke:gold, stroke-width:20px
+linkStyle 37 stroke:gold, stroke-width:20px
+linkStyle 38 stroke:gold, stroke-width:20px
+linkStyle 39 stroke:gold, stroke-width:20px
+linkStyle 40 stroke:gold, stroke-width:20px
+linkStyle 41 stroke:gold, stroke-width:20px
+linkStyle 42 stroke:gold, stroke-width:20px
+linkStyle 43 stroke:gold, stroke-width:20px
+linkStyle 44 stroke:gold, stroke-width:20px
+linkStyle 45 stroke:gold, stroke-width:20px
+linkStyle 46 stroke:gold, stroke-width:20px
+linkStyle 47 stroke:gold, stroke-width:20px
+linkStyle 48 stroke:gold, stroke-width:20px
+linkStyle 49 stroke:gold, stroke-width:20px
+linkStyle 50 stroke:gold, stroke-width:20px
 
 classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
