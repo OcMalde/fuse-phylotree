@@ -118,13 +118,41 @@ i1 --> i6@{ shape: docs, label: "working_dir/" }
 end
 style Output fill:#fff,stroke:#333,stroke-width:4px
 
-linkStyle 0 stroke:gold, stroke-width:40px
-linkStyle 1 stroke:gold, stroke-width:40px
-linkStyle 4 stroke:gold, stroke-width:40px
-linkStyle 6 stroke:gold, stroke-width:40px
-linkStyle 7 stroke:gold, stroke-width:40px
-linkStyle 8 stroke:gold, stroke-width:40px
-linkStyle 9 stroke:gold, stroke-width:40px
+linkStyle 0 stroke:gold, stroke-width:20px
+linkStyle 1 stroke:gold, stroke-width:20px
+linkStyle 2 stroke:gold, stroke-width:20px
+linkStyle 3 stroke:gold, stroke-width:20px
+linkStyle 4 stroke:gold, stroke-width:20px
+linkStyle 5 stroke:gold, stroke-width:20px
+linkStyle 6 stroke:gold, stroke-width:20px
+linkStyle 7 stroke:gold, stroke-width:20px
+linkStyle 8 stroke:gold, stroke-width:20px
+linkStyle 9 stroke:gold, stroke-width:20px
+linkStyle 10 stroke:gold, stroke-width:20px
+linkStyle 11 stroke:gold, stroke-width:20px
+linkStyle 12 stroke:gold, stroke-width:20px
+linkStyle 13 stroke:gold, stroke-width:20px
+linkStyle 14 stroke:gold, stroke-width:20px
+linkStyle 15 stroke:gold, stroke-width:20px
+linkStyle 16 stroke:gold, stroke-width:20px
+linkStyle 17 stroke:gold, stroke-width:20px
+linkStyle 18 stroke:gold, stroke-width:20px
+linkStyle 19 stroke:gold, stroke-width:20px
+linkStyle 20 stroke:gold, stroke-width:20px
+linkStyle 21 stroke:gold, stroke-width:20px
+linkStyle 22 stroke:gold, stroke-width:20px
+linkStyle 23 stroke:gold, stroke-width:20px
+linkStyle 24 stroke:gold, stroke-width:20px
+linkStyle 25 stroke:gold, stroke-width:20px
+linkStyle 26 stroke:gold, stroke-width:20px
+linkStyle 27 stroke:gold, stroke-width:20px
+linkStyle 28 stroke:gold, stroke-width:20px
+linkStyle 29 stroke:gold, stroke-width:20px
+linkStyle 30 stroke:gold, stroke-width:20px
+linkStyle 31 stroke:gold, stroke-width:20px
+linkStyle 32 stroke:gold, stroke-width:20px
+linkStyle 33 stroke:gold, stroke-width:20px
+linkStyle 34 stroke:gold, stroke-width:20px
 
 classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
