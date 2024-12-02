@@ -20,7 +20,7 @@ Flowchart of the detailed pipeline:
 ---
 config:
   look: classic
-  theme: default
+  theme: base
   themeVariables:
     fontSize: 50
 ---
