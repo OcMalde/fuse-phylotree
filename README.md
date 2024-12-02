@@ -34,7 +34,6 @@ U --> C
 end
 style Input fill:#fff,stroke:#333,stroke-width:4px
 
-subgraph Modules
 A@{ shape: doc, label: "sequences.fasta" } --> m1[modules_segm.segmentation_and_module_phylo]
 m1 --> m2@{ shape: docs, label: "module_segm_dir_seq/" }
 m2 --> m3[tools.segmentation]
@@ -50,8 +49,6 @@ m11@{ shape: flag, label: "TreeFix" } o--o|call| m10
 m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14@{ shape: doc, label: "modules_path_modules.txt" }
 m13 o--o|describe paths of| m14
-end
-style Modules fill:#EE6677E6,stroke:#333,stroke-width:1px
 
 subgraph Gene
 B@{ shape: doc, label: "sequences.tree" } --> g1{gene tree as input ?}
@@ -118,37 +115,37 @@ i1 --> i6@{ shape: docs, label: "working_dir/" }
 end
 style Output fill:#fff,stroke:#333,stroke-width:4px
 
-linkStyle 0 stroke:#EE6677E6, stroke-width:20px
-linkStyle 1 stroke:#EE6677E6, stroke-width:20px
-linkStyle 2 stroke:#EE6677E6, stroke-width:20px
-linkStyle 3 stroke:#EE6677E6, stroke-width:20px
-linkStyle 4 stroke:#EE6677E6, stroke-width:20px
-linkStyle 5 stroke:#EE6677E6, stroke-width:20px
-linkStyle 6 stroke:#EE6677E6, stroke-width:20px
-linkStyle 7 stroke:#EE6677E6, stroke-width:20px
-linkStyle 8 stroke:#EE6677E6, stroke-width:20px
-linkStyle 9 stroke:#EE6677E6, stroke-width:20px
-linkStyle 10 stroke:#EE6677E6, stroke-width:20px
-linkStyle 11 stroke:#EE6677E6, stroke-width:20px
-linkStyle 12 stroke:#EE6677E6, stroke-width:20px
-linkStyle 13 stroke:#EE6677E6, stroke-width:20px
-linkStyle 14 stroke:#EE6677E6, stroke-width:20px
-linkStyle 15 stroke:#EE6677E6, stroke-width:20px
-linkStyle 16 stroke:#EE6677E6, stroke-width:20px
-linkStyle 17 stroke:#EE6677E6, stroke-width:20px
-linkStyle 18 stroke:#EE6677E6, stroke-width:20px
-linkStyle 19 stroke:#EE6677E6, stroke-width:20px
-linkStyle 20 stroke:gold, stroke-width:20px
-linkStyle 21 stroke:gold, stroke-width:20px
-linkStyle 22 stroke:gold, stroke-width:20px
-linkStyle 23 stroke:gold, stroke-width:20px
-linkStyle 24 stroke:gold, stroke-width:20px
-linkStyle 25 stroke:gold, stroke-width:20px
-linkStyle 26 stroke:gold, stroke-width:20px
-linkStyle 27 stroke:gold, stroke-width:20px
-linkStyle 28 stroke:gold, stroke-width:20px
-linkStyle 29 stroke:gold, stroke-width:20px
-linkStyle 30 stroke:gold, stroke-width:20px
+linkStyle 0 stroke:black, stroke-width:20px
+linkStyle 1 stroke:black, stroke-width:20px
+linkStyle 2 stroke:black, stroke-width:20px
+linkStyle 3 stroke:#EE6677, stroke-width:20px
+linkStyle 4 stroke:#EE6677, stroke-width:20px
+linkStyle 5 stroke:#EE6677, stroke-width:20px
+linkStyle 6 stroke:#EE6677, stroke-width:20px
+linkStyle 7 stroke:#EE6677, stroke-width:20px
+linkStyle 8 stroke:#EE6677, stroke-width:20px
+linkStyle 9 stroke:#EE6677, stroke-width:20px
+linkStyle 10 stroke:#EE6677, stroke-width:20px
+linkStyle 11 stroke:#EE6677, stroke-width:20px
+linkStyle 12 stroke:#EE6677, stroke-width:20px
+linkStyle 13 stroke:#EE6677, stroke-width:20px
+linkStyle 14 stroke:#EE6677, stroke-width:20px
+linkStyle 15 stroke:#EE6677, stroke-width:20px
+linkStyle 16 stroke:#EE6677, stroke-width:20px
+linkStyle 17 stroke:#EE6677, stroke-width:20px
+linkStyle 18 stroke:#BBBBBB, stroke-width:20px
+linkStyle 19 stroke:#BBBBBB, stroke-width:20px
+linkStyle 20 stroke:#BBBBBB, stroke-width:20px
+linkStyle 21 stroke:#BBBBBB, stroke-width:20px
+linkStyle 22 stroke:#BBBBBB, stroke-width:20px
+linkStyle 23 stroke:#BBBBBB, stroke-width:20px
+linkStyle 24 stroke:#BBBBBB, stroke-width:20px
+linkStyle 25 stroke:#BBBBBB, stroke-width:20px
+linkStyle 26 stroke:#BBBBBB, stroke-width:20px
+linkStyle 27 stroke:#BBBBBB, stroke-width:20px
+linkStyle 28 stroke:#BBBBBB, stroke-width:20px
+linkStyle 29 stroke:#BBBBBB, stroke-width:20px
+linkStyle 30 stroke:#BBBBBB, stroke-width:20px
 linkStyle 31 stroke:gold, stroke-width:20px
 linkStyle 32 stroke:gold, stroke-width:20px
 linkStyle 33 stroke:gold, stroke-width:20px
