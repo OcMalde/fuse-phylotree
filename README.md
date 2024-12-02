@@ -14,7 +14,7 @@ The process accepts protein sequences and their associated annotations as input.
 
 <details><summary><strong>Detailed Pipeline</strong></summary>
 
-Flowchart of the detailed pipeline:
+Mermaid flowchart of the detailed pipeline (python3 scripts/functions in green, files in white, external software in mauve):
 
 ```mermaid
 ---
@@ -160,7 +160,7 @@ classDef files fill:#fff,stroke:#000,stroke-width:2px;
 class m2,m4,m7,m12,m13,m14,g2,s3,r3,r5,r6,a2,a5,a6,d2 files
 
 classDef input stroke:#000,stroke-width:15px;
-class A,B,C,i2,i3,i4,i5,i6 input
+class U,A,B,C,i2,i3,i4,i5,i6 input
 
 classDef scripts fill:#9BD184,stroke:#000,stroke-width:2px;
 class m1,m3,m6,m8,m10,g3,s1,d1,r1,r4,a1,a3,i1 scripts
