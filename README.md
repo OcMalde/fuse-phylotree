@@ -20,9 +20,9 @@ Flowchart of the detailed pipeline:
 ---
 config:
   look: classic
-  theme: base
+  theme: default
   themeVariables:
-    fontSize: 50
+    fontSize: 500px
 ---
 flowchart TB
 
