@@ -157,9 +157,9 @@ classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
 
 classDef files fill:#fff,stroke:#000,stroke-width:2px;
-class m2,m4,m7,m12,m13,m14,g2,s3,r3,r5,r6,a2,a5,a6,i2,i3,i4,i5,i6,d2 files
+class m2,m4,m7,m12,m13,m14,g2,s3,r3,r5,r6,a2,a5,a6,d2 files
 
-classDef input fill:#fff,stroke:#000,stroke-width:5px;
+classDef input fill:#fff,stroke:#000,stroke-width:15px;
 class A,B,C,i2,i3,i4,i5,i6 input
 
 classDef scripts fill:#9BD184,stroke:#000,stroke-width:2px;
