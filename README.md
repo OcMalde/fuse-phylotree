@@ -23,6 +23,8 @@ config:
   theme: default
   themeVariables:
     fontSize: 150px
+    darkMode: True
+    
 ---
 flowchart TB
 
