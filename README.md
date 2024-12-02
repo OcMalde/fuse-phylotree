@@ -50,7 +50,6 @@ m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14@{ shape: doc, label: "modules_path_modules.txt" }
 m13 o--o|describe paths of| m14
 
-subgraph Gene
 B@{ shape: doc, label: "sequences.tree" } --> g1{gene tree as input ?}
 g1 -->|yes| g2@{ shape: doc, label: "rooted binary gene tree .tree" }
 g1 -->|no| g3[gene_phylo.whole_phylo]
@@ -61,8 +60,6 @@ g6@{ shape: flag, label: "PhyML" } o--o|call| g3
 g7@{ shape: flag, label: "TreeFix" } o--o|call| g3
 g8@{ shape: flag, label: "PhyML (branch len)" } o--o|call| g3
 g3 --> g2
-end
-style Gene fill:#BBBBBBE6,stroke:#333,stroke-width:1px
 
 subgraph Species
 A --> s1[species_phylo.taxid_from_fasta]
@@ -144,9 +141,9 @@ linkStyle 25 stroke:#BBBBBB, stroke-width:20px
 linkStyle 26 stroke:#BBBBBB, stroke-width:20px
 linkStyle 27 stroke:#BBBBBB, stroke-width:20px
 linkStyle 28 stroke:#BBBBBB, stroke-width:20px
-linkStyle 29 stroke:#BBBBBB, stroke-width:20px
-linkStyle 30 stroke:#BBBBBB, stroke-width:20px
-linkStyle 31 stroke:gold, stroke-width:20px
+linkStyle 29 stroke:#66CCEE, stroke-width:20px
+linkStyle 30 stroke:#66CCEE, stroke-width:20px
+linkStyle 31 stroke:#66CCEE, stroke-width:20px
 linkStyle 32 stroke:gold, stroke-width:20px
 linkStyle 33 stroke:gold, stroke-width:20px
 linkStyle 34 stroke:gold, stroke-width:20px
