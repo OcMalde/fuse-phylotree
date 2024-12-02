@@ -19,13 +19,10 @@ Flowchart of the detailed pipeline:
 ```mermaid
 ---
 config:
-  layout: elk
   look: classic
   theme: default
   themeVariables:
     fontSize: 50
-  elk:
-    nodePlacementStrategy: SIMPLE
 ---
 flowchart TB
 
