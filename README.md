@@ -118,26 +118,26 @@ i1 --> i6@{ shape: docs, label: "working_dir/" }
 end
 style Output fill:#fff,stroke:#333,stroke-width:4px
 
-linkStyle 0 stroke:gold, stroke-width:20px
-linkStyle 1 stroke:gold, stroke-width:20px
-linkStyle 2 stroke:gold, stroke-width:20px
-linkStyle 3 stroke:gold, stroke-width:20px
-linkStyle 4 stroke:gold, stroke-width:20px
-linkStyle 5 stroke:gold, stroke-width:20px
-linkStyle 6 stroke:gold, stroke-width:20px
-linkStyle 7 stroke:gold, stroke-width:20px
-linkStyle 8 stroke:gold, stroke-width:20px
-linkStyle 9 stroke:gold, stroke-width:20px
-linkStyle 10 stroke:gold, stroke-width:20px
-linkStyle 11 stroke:gold, stroke-width:20px
-linkStyle 12 stroke:gold, stroke-width:20px
-linkStyle 13 stroke:gold, stroke-width:20px
-linkStyle 14 stroke:gold, stroke-width:20px
-linkStyle 15 stroke:gold, stroke-width:20px
-linkStyle 16 stroke:gold, stroke-width:20px
-linkStyle 17 stroke:gold, stroke-width:20px
-linkStyle 18 stroke:gold, stroke-width:20px
-linkStyle 19 stroke:gold, stroke-width:20px
+linkStyle 0 stroke:#EE6677E6, stroke-width:20px
+linkStyle 1 stroke:#EE6677E6, stroke-width:20px
+linkStyle 2 stroke:#EE6677E6, stroke-width:20px
+linkStyle 3 stroke:#EE6677E6, stroke-width:20px
+linkStyle 4 stroke:#EE6677E6, stroke-width:20px
+linkStyle 5 stroke:#EE6677E6, stroke-width:20px
+linkStyle 6 stroke:#EE6677E6, stroke-width:20px
+linkStyle 7 stroke:#EE6677E6, stroke-width:20px
+linkStyle 8 stroke:#EE6677E6, stroke-width:20px
+linkStyle 9 stroke:#EE6677E6, stroke-width:20px
+linkStyle 10 stroke:#EE6677E6, stroke-width:20px
+linkStyle 11 stroke:#EE6677E6, stroke-width:20px
+linkStyle 12 stroke:#EE6677E6, stroke-width:20px
+linkStyle 13 stroke:#EE6677E6, stroke-width:20px
+linkStyle 14 stroke:#EE6677E6, stroke-width:20px
+linkStyle 15 stroke:#EE6677E6, stroke-width:20px
+linkStyle 16 stroke:#EE6677E6, stroke-width:20px
+linkStyle 17 stroke:#EE6677E6, stroke-width:20px
+linkStyle 18 stroke:#EE6677E6, stroke-width:20px
+linkStyle 19 stroke:#EE6677E6, stroke-width:20px
 linkStyle 20 stroke:gold, stroke-width:20px
 linkStyle 21 stroke:gold, stroke-width:20px
 linkStyle 22 stroke:gold, stroke-width:20px
