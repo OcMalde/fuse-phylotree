@@ -23,7 +23,7 @@ config:
   look: classic
   theme: default
   themeVariables:
-    fontSize: 16
+    fontSize: 50
   elk:
     nodePlacementStrategy: SIMPLE
 ---
