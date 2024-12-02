@@ -88,14 +88,11 @@ g2 --> i1
 a5 --> i1
 d2 --> i1
 
-subgraph Output
 i1 --> i2@{ shape: doc, label: "0_gene_tree.tree" }
 i1 --> i3@{ shape: doc, label: "1_module_annotation_evolutions.csv" }
 i1 --> i4@{ shape: doc, label: "2_module_descriptions.csv" }
 i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
 i1 --> i6@{ shape: docs, label: "working_dir/" }
-end
-style Output fill:#fff,stroke:#333,stroke-width:4px
 
 linkStyle 0 stroke:black, stroke-width:20px
 linkStyle 1 stroke:black, stroke-width:20px
