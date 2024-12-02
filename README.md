@@ -22,7 +22,8 @@ config:
   layout: elk
   look: classic
   theme: default
-  font-size: 500
+  themeVariables:
+    fontSize: 16
   elk:
     nodePlacementStrategy: SIMPLE
 ---
