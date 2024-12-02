@@ -128,7 +128,7 @@ linkStyle 24 stroke:#BBBBBB, stroke-width:20px
 linkStyle 25 stroke:#BBBBBB, stroke-width:20px
 linkStyle 26 stroke:#BBBBBB, stroke-width:20px
 linkStyle 27 stroke:#BBBBBB, stroke-width:20px
-linkStyle 28 stroke:#BBBBBB, stroke-width:20px
+linkStyle 28 stroke:#66CCEE, stroke-width:20px
 linkStyle 29 stroke:#66CCEE, stroke-width:20px
 linkStyle 30 stroke:#66CCEE, stroke-width:20px
 linkStyle 31 stroke:#66CCEE, stroke-width:20px
