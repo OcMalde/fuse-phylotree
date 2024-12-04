@@ -8,6 +8,15 @@ Introducing an original approach to characterizing functional motifs. This metho
 2. Phylogenetic inference of species/genes/modules/functions evolutionary histories
 3. Identification of co-appearances of modules and functions
 
+The process accepts protein sequences and their associated annotations as input. It then returns the presence of conserved sequence modules, along with their associated annotations, across different ancestral genes.
+
+![Pipeline](img/method.png)
+
+<details><summary><strong>Detailed Pipeline</strong></summary>
+
+Legend:
+Flowchart of the detailed pipeline:
+
 ```mermaid
 ---
 config:
@@ -35,32 +44,8 @@ class l1 inputl
 
 classDef scriptsl fill:#9BD184,stroke:#000,stroke-width:2px;
 class l3 scriptsl
-```
 
-The process accepts protein sequences and their associated annotations as input. It then returns the presence of conserved sequence modules, along with their associated annotations, across different ancestral genes.
 
-![Pipeline](img/method.png)
-
-<details><summary><strong>Detailed Pipeline</strong></summary>
-
-Legend:
-
-```mermaid
-flowchart LR
-  A[Start] --> B[End]
-```
-
-Flowchart of the detailed pipeline:
-
-```mermaid
----
-config:
-  look: classic
-  theme: default
-  themeVariables:
-    fontSize: 50px
-
----
 flowchart TB
 
 U@{ shape: manual-input, label: "User Input"} --> A
