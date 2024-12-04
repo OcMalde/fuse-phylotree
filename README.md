@@ -14,7 +14,7 @@ The process accepts protein sequences and their associated annotations as input.
 
 <details><summary><strong>Detailed Pipeline</strong></summary>
 
-Flowchart of the detailed pipeline:
+Legend:
 
 ```mermaid
 ---
@@ -44,6 +44,8 @@ classDef scriptsl fill:#9BD184,stroke:#000,stroke-width:2px;
 class l3 scriptsl
 
 ```
+
+Flowchart of the detailed pipeline:
 
 ```mermaid
 ---
