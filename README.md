@@ -19,18 +19,9 @@ Legend:
 ```mermaid
 
 flowchart LR
-  l1[Input and Output File] --- l2[Intermediate File]
-  l2 --- l3[Python Script and Function]
-  l3 --- l4[External Software]
-
-```
-
-```mermaid
-
-flowchart LR
 
 l1@{ shape: doc, label: "input and output file" } --- l2@{ shape: doc, label: "intermediate file" };
-l2 --- l3[python3 script and function];
+l2 --- l3[python3];
 l3 --- l4@{ shape: flag, label: "external software" };
 
 classDef toolsl fill:#E0B0FF,stroke:#000,stroke-width:4px;
