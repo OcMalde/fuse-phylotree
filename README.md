@@ -153,6 +153,13 @@ linkStyle 55 stroke:#228833, stroke-width:20px
 linkStyle 56 stroke:#228833, stroke-width:20px
 linkStyle 57 stroke:#228833, stroke-width:20px
 
+subgraph Legend
+      l1@{ shape: doc, label: "input/output file" }
+      l2@{ shape: doc, label: "intermediate file" }
+      l3[python3 script/function]
+      l4@{ shape: flag, label: "external software" }
+end
+
 classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
 
