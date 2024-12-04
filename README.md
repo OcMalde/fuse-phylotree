@@ -43,9 +43,7 @@ classDef inputl stroke:#670067,stroke-width:15px;
 class l1 inputl
 
 classDef scriptsl fill:#9BD184,stroke:#000,stroke-width:2px;
-class l3 scriptsl
-
-end 
+class l3 scriptsl;
 
 flowchart TB
 
