@@ -168,10 +168,9 @@ class m1,m3,m6,m8,m10,g3,s1,d1,r1,r4,a1,a3,i1,l3 scripts
 
 ```
 
-</details>
-
 <details><summary><weak>Legend</weak></summary>
-Legend:
+
+Legend of the detailed pipeline:
 
 ```mermaid id="legend-diagram"
 ---
@@ -203,6 +202,7 @@ class l3 legend4
 
 ```
 
+</details>
 </details>
 
 ## Citation
