@@ -32,23 +32,31 @@ l1@{ shape: doc, label: "input/output file" } --- l2@{ shape: doc, label: "inter
 l2 --- l3[python3 script/function]
 l3 --- l4@{ shape: flag, label: "external software" }
 
-classDef toolsl fill:#E0B0FF,stroke:#000,stroke-width:4px
-class l4 toolsl
+classDef legend1 fill:#E0B0FF,stroke:#000,stroke-width:4px
+class l4 legend1
 
-classDef filesl fill:#fff,stroke:#000,stroke-width:2px;
-class l2 filesl
+classDef legend2 fill:#fff,stroke:#000,stroke-width:2px;
+class l2 legend2
 
-classDef inputl stroke:#670067,stroke-width:15px;
-class l1 inputl
+classDef legend3 stroke:#670067,stroke-width:15px;
+class l1 legend3
 
-classDef scriptsl fill:#9BD184,stroke:#000,stroke-width:2px;
-class l3 scriptsl
+classDef legend4 fill:#9BD184,stroke:#000,stroke-width:2px;
+class l3 legend4
 
 ```
 
 Flowchart of the detailed pipeline:
 
 ```mermaid
+---
+config:
+  look: classic
+  theme: default
+  themeVariables:
+    fontSize: 50px
+
+---
 
 flowchart TB
 
