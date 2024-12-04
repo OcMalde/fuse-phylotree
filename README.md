@@ -14,7 +14,8 @@ The process accepts protein sequences and their associated annotations as input.
 
 <details><summary><strong>Detailed Pipeline</strong></summary>
 
-Legend:
+
+### Legend
 
 ```mermaid
 ---
@@ -46,7 +47,7 @@ class l3 legend4
 
 ```
 
-Flowchart of the detailed pipeline:
+### Flowchart of the detailed pipeline
 
 ```mermaid
 ---
