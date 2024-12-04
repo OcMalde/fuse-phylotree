@@ -17,14 +17,7 @@ The process accepts protein sequences and their associated annotations as input.
 Legend:
 
 ```mermaid
----
-config:
-  look: classic
-  theme: default
-  themeVariables:
-    fontSize: 50px
 
----
 flowchart LR
 
 l1@{ shape: doc, label: "input and output file" } --- l2@{ shape: doc, label: "intermediate file" }
