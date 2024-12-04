@@ -16,7 +16,7 @@ The process accepts protein sequences and their associated annotations as input.
 
 Flowchart of the detailed pipeline:
 
-```mermaid
+```mermaid id="pipeline-diagram"
 ---
 config:
   look: classic
@@ -170,7 +170,7 @@ class m1,m3,m6,m8,m10,g3,s1,d1,r1,r4,a1,a3,i1,l3 scripts
 
 Legend:
 
-```mermaid
+```mermaid id="legend-diagram"
 ---
 config:
   look: classic
