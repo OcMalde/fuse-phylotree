@@ -167,7 +167,7 @@ classDef scripts fill:#9BD184,stroke:#000,stroke-width:2px;
 class m1,m3,m6,m8,m10,g3,s1,d1,r1,r4,a1,a3,i1,l3 scripts
 
 ```
-<a href="img/detailed-pipeline.pdf" target="_blank">Open as PDF in new tab</a>
+<a href="img/detailed-pipeline.pdf" target="_blank">Detailed pipeline as a PDF</a>
 
 
 <details><summary><weak>Legend of the detailed pipeline</weak></summary>
