@@ -155,10 +155,9 @@ linkStyle 57 stroke:#228833, stroke-width:20px
 
 subgraph Legend
       direction LR
-      l1@{ shape: doc, label: "input/output file" }
-      l2@{ shape: doc, label: "intermediate file" }
-      l3[python3 script/function]
-      l4@{ shape: flag, label: "external software" }
+      l1@{ shape: doc, label: "input/output file" } --> l2@{ shape: doc, label: "intermediate file" }
+      l2 --> l3[python3 script/function]
+      l3 --> l4@{ shape: flag, label: "external software" }
 end
 
 classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
