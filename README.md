@@ -20,21 +20,21 @@ Legend:
 
 flowchart LR
 
-l1@{ shape: doc, label: "input and output file" } --- l2@{ shape: doc, label: "intermediate file" }
-l2 --- l3[python3 script and function]
-l3 --- l4@{ shape: flag, label: "external software" }
+l1@{ shape: doc, label: "input and output file" } --- l2@{ shape: doc, label: "intermediate file" };
+l2 --- l3[python3 script and function];
+l3 --- l4@{ shape: flag, label: "external software" };
 
 classDef toolsl fill:#E0B0FF,stroke:#000,stroke-width:4px;
-class l4 toolsl
+class l4 toolsl;
 
 classDef filesl fill:#fff,stroke:#000,stroke-width:2px;
-class l2 filesl
+class l2 filesl;
 
 classDef inputl stroke:#670067,stroke-width:15px;
-class l1 inputl
+class l1 inputl;
 
 classDef scriptsl fill:#9BD184,stroke:#000,stroke-width:2px;
-class l3 scriptsl
+class l3 scriptsl;
 
 ```
 
