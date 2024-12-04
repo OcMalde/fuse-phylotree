@@ -14,7 +14,37 @@ The process accepts protein sequences and their associated annotations as input.
 
 <details><summary><strong>Detailed Pipeline</strong></summary>
 
-Mermaid flowchart of the detailed pipeline (python3 scripts/functions in green, files in white, external software in mauve):
+Flowchart of the detailed pipeline:
+
+```mermaid
+---
+config:
+  look: classic
+  theme: default
+  themeVariables:
+    fontSize: 50px
+
+---
+flowchart LR
+subgraph Legend
+      direction LR
+      l1@{ shape: doc, label: "input/output file" } --> l2@{ shape: doc, label: "intermediate file" }
+      l2 --> l3[python3 script/function]
+      l3 --> l4@{ shape: flag, label: "external software" }
+end
+
+classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
+class l4 tools
+
+classDef files fill:#fff,stroke:#000,stroke-width:2px;
+class l2 files
+
+classDef input stroke:#670067,stroke-width:15px;
+class l1 input
+
+classDef scripts fill:#9BD184,stroke:#000,stroke-width:2px;
+class l3 scripts
+```
 
 ```mermaid
 ---
@@ -152,13 +182,6 @@ linkStyle 54 stroke:#228833, stroke-width:20px
 linkStyle 55 stroke:#228833, stroke-width:20px
 linkStyle 56 stroke:#228833, stroke-width:20px
 linkStyle 57 stroke:#228833, stroke-width:20px
-
-subgraph Legend
-      direction LR
-      l1@{ shape: doc, label: "input/output file" } --> l2@{ shape: doc, label: "intermediate file" }
-      l2 --> l3[python3 script/function]
-      l3 --> l4@{ shape: flag, label: "external software" }
-end
 
 classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
 class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4,l4 tools
