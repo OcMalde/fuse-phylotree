@@ -14,40 +14,7 @@ The process accepts protein sequences and their associated annotations as input.
 
 <details><summary><strong>Detailed Pipeline</strong></summary>
 
-
-### Legend
-
-```mermaid
----
-config:
-  look: classic
-  theme: default
-  themeVariables:
-    fontSize: 50px
-
----
-
-flowchart LR
-
-l1@{ shape: doc, label: "input/output file" } --- l2@{ shape: doc, label: "intermediate file" }
-l2 --- l3[python3 script/function]
-l3 --- l4@{ shape: flag, label: "external software" }
-
-classDef legend1 fill:#E0B0FF,stroke:#000,stroke-width:4px
-class l4 legend1
-
-classDef legend2 fill:#fff,stroke:#000,stroke-width:2px;
-class l2 legend2
-
-classDef legend3 stroke:#670067,stroke-width:15px;
-class l1 legend3
-
-classDef legend4 fill:#9BD184,stroke:#000,stroke-width:2px;
-class l3 legend4
-
-```
-
-### Flowchart of the detailed pipeline
+Flowchart of the detailed pipeline:
 
 ```mermaid
 ---
@@ -200,6 +167,39 @@ classDef scripts fill:#9BD184,stroke:#000,stroke-width:2px;
 class m1,m3,m6,m8,m10,g3,s1,d1,r1,r4,a1,a3,i1,l3 scripts
 
 ```
+
+Legend:
+
+```mermaid
+---
+config:
+  look: classic
+  theme: default
+  themeVariables:
+    fontSize: 50px
+
+---
+
+flowchart LR
+
+l1@{ shape: doc, label: "input/output file" } --- l2@{ shape: doc, label: "intermediate file" }
+l2 --- l3[python3 script/function]
+l3 --- l4@{ shape: flag, label: "external software" }
+
+classDef legend1 fill:#E0B0FF,stroke:#000,stroke-width:4px
+class l4 legend1
+
+classDef legend2 fill:#fff,stroke:#000,stroke-width:2px;
+class l2 legend2
+
+classDef legend3 stroke:#670067,stroke-width:15px;
+class l1 legend3
+
+classDef legend4 fill:#9BD184,stroke:#000,stroke-width:2px;
+class l3 legend4
+
+```
+
 </details>
 
 ## Citation
