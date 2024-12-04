@@ -26,24 +26,22 @@ config:
 
 ---
 flowchart LR
-subgraph Legend
-      direction LR
-      l1@{ shape: doc, label: "input/output file" } --> l2@{ shape: doc, label: "intermediate file" }
-      l2 --> l3[python3 script/function]
-      l3 --> l4@{ shape: flag, label: "external software" }
-end
 
-classDef tools fill:#E0B0FF,stroke:#000,stroke-width:4px;
-class l4 tools
+l1@{ shape: doc, label: "input/output file" } --> l2@{ shape: doc, label: "intermediate file" }
+l2 --> l3[python3 script/function]
+l3 --> l4@{ shape: flag, label: "external software" }
 
-classDef files fill:#fff,stroke:#000,stroke-width:2px;
-class l2 files
+classDef toolsl fill:#E0B0FF,stroke:#000,stroke-width:4px;
+class l4 toolsl
 
-classDef input stroke:#670067,stroke-width:15px;
-class l1 input
+classDef filesl fill:#fff,stroke:#000,stroke-width:2px;
+class l2 filesl
 
-classDef scripts fill:#9BD184,stroke:#000,stroke-width:2px;
-class l3 scripts
+classDef inputl stroke:#670067,stroke-width:15px;
+class l1 inputl
+
+classDef scriptsl fill:#9BD184,stroke:#000,stroke-width:2px;
+class l3 scriptsl
 ```
 
 ```mermaid
