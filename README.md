@@ -46,10 +46,8 @@ The process accepts protein sequences and their associated annotations as input.
 Legend:
 
 ```mermaid
-
 flowchart LR
   A[Start] --> B[End]
-
 ```
 
 Flowchart of the detailed pipeline:
