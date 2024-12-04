@@ -94,9 +94,9 @@ i1 --> i4@{ shape: doc, label: "2_module_descriptions.csv" }
 i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
 i1 --> i6@{ shape: docs, label: "working_dir/" }
 
-linkStyle 0 stroke:black, stroke-width:20px
-linkStyle 1 stroke:black, stroke-width:20px
-linkStyle 2 stroke:black, stroke-width:20px
+linkStyle 0 stroke:#AA3377, stroke-width:25px
+linkStyle 1 stroke:#AA3377, stroke-width:25px
+linkStyle 2 stroke:#AA3377, stroke-width:25px
 linkStyle 3 stroke:#EE6677, stroke-width:20px
 linkStyle 4 stroke:#EE6677, stroke-width:20px
 linkStyle 5 stroke:#EE6677, stroke-width:20px
@@ -159,7 +159,7 @@ class m5,m9,m11,g4,g5,g6,g7,g8,s2,r2,a4 tools
 classDef files fill:#fff,stroke:#000,stroke-width:2px;
 class m2,m4,m7,m12,m13,m14,g2,s3,r3,r5,r6,a2,a5,a6,d2 files
 
-classDef input stroke:#000,stroke-width:15px;
+classDef input stroke:#AA3377,stroke-width:15px;
 class U,A,B,C,i2,i3,i4,i5,i6 input
 
 classDef scripts fill:#9BD184,stroke:#000,stroke-width:2px;
