@@ -27,8 +27,8 @@ config:
 ---
 flowchart LR
 
-l1@{ shape: doc, label: "input/output file" } --- l2@{ shape: doc, label: "intermediate file" }
-l2 --- l3[python3 script/function]
+l1@{ shape: doc, label: "input and output file" } --- l2@{ shape: doc, label: "intermediate file" }
+l2 --- l3[python3 script and function]
 l3 --- l4@{ shape: flag, label: "external software" }
 
 classDef toolsl fill:#E0B0FF,stroke:#000,stroke-width:4px;
