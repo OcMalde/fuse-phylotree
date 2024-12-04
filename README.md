@@ -168,9 +168,7 @@ class m1,m3,m6,m8,m10,g3,s1,d1,r1,r4,a1,a3,i1,l3 scripts
 
 ```
 
-<details><summary><weak>Legend</weak></summary>
-
-Legend of the detailed pipeline:
+<details><summary><weak>Legend of the detailed pipeline</weak></summary>
 
 ```mermaid id="legend-diagram"
 ---
