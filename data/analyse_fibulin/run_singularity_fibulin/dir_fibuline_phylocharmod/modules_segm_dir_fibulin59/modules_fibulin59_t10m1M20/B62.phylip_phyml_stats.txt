@@ -1,0 +1,41 @@
+
+ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+                                  ---  PhyML 3.3.20190909  ---                                             
+                              http://www.atgc-montpellier.fr/phyml                                          
+                             Copyright CNRS - Universite Montpellier                                 
+ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+. Sequence filename: 			B62.phylip
+. Data set: 				#1
+. Initial tree: 			BioNJ
+. Model of amino acids substitution: 	LG
+. Number of taxa: 			21
+. Log-likelihood: 			-238.41940
+. Unconstrained log-likelihood: 	-19.77502
+. Composite log-likelihood: 		-594.32883
+. Parsimony: 				51
+. Tree size: 				5.86077
+. Discrete gamma model: 		Yes
+  - Number of classes: 			4
+  - Gamma shape parameter: 		0.147
+  - Relative rate in class 1: 		0.00004 [freq=0.250000] 		
+  - Relative rate in class 2: 		0.00984 [freq=0.250000] 		
+  - Relative rate in class 3: 		0.23311 [freq=0.250000] 		
+  - Relative rate in class 4: 		3.75701 [freq=0.250000] 		
+
+. Run ID:				none
+. Random seed:				1733924413
+. Subtree patterns aliasing:		no
+. Version:				3.3.20190909
+. Time used:				0h0m5s (5 seconds)
+
+ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+ Suggested citations:
+ S. Guindon, JF. Dufayard, V. Lefort, M. Anisimova, W. Hordijk, O. Gascuel
+ "New algorithms and methods to estimate maximum-likelihood phylogenies: assessing the performance of PhyML 3.0."
+ Systematic Biology. 2010. 59(3):307-321.
+
+ S. Guindon & O. Gascuel
+ "A simple, fast, and accurate algorithm to estimate large phylogenies by maximum likelihood"
+ Systematic Biology. 2003. 52(5):696-704.
+ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
