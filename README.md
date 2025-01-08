@@ -10,7 +10,7 @@ Introducing an original approach to characterizing functional motifs. This metho
 
 The process accepts protein sequences and their associated annotations as input. It then returns the presence of conserved sequence modules, along with their associated annotations, across different ancestral genes.
 
-![Pipeline](img/method.png)
+![Pipeline](img/fig1.png)
 
 <details><summary><strong>Detailed Pipeline</strong></summary>
 
