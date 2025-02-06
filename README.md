@@ -387,7 +387,7 @@ optional arguments:
   --gene_tree GENE_TREE
                         Gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, must correspond to the sequences in the multi fasta file !)
   --plma_file PLMA_FILE
-                        Paloma-2 output file (.agraph format, .dot, or .oplma format)
+                        Paloma-D output file (.agraph format, .dot, or .oplma format)
   --reconc_domains      Do a DGS reconciliation with known modules (pfam / prosite)
 ```
 
@@ -503,5 +503,5 @@ If not, their path must be specified in the config file ;
 
 [PastML](https://pastml.pasteur.fr/) (v1.9.33), for ancestral characters inference, [Pip package](https://pypi.org/project/pastml/)
 
-[paloma-2](http://tools.genouest.org/tools/protomata/learn/) (v0.1), for sequence segmentation. 
+[paloma-D](http://tools.genouest.org/tools/protomata/learn/) (v0.1), for sequence segmentation. 
 
