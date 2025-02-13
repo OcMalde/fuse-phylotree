@@ -1717,7 +1717,7 @@ if __name__ == "__main__":
 
     # Main outputs
     gene_tree.write(format=1, outfile=f"{seadog_output.parents[1]}/0_gene.tree", format_root_node=True)
-    write_1_module_annotation_evolutions(dict_nodeName_annotationsList, dict_gene_moduleList, dict_gene_moduleChange, dict_nodeName_annotationsChange, f'{seadog_output.parents[1]}/1_module_annotation_evolutions.csv')
+    write_1_module_annotation_evolutions(dict_nodeName_annotationsList, dict_gene_moduleList, dict_gene_moduleChange, dict_nodeName_annotationsChange, f'{seadog_output.parents[1]}/1_module_and_function_evolutions.csv')
     # 2_module_descriptions is writen on the main (fuse-phylotree.py)
 
     # Write itols files

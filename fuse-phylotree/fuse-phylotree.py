@@ -89,17 +89,17 @@ def phylo_char_mod(args) -> None:
         domain_process, domain_csv = tools.known_domains(w_fasta_file)
     
     # Gene tree
-    if args.gene_tree:
-        # Use the provided gene tree
-        gene_tree_fn = w_gene_tree
-        print(f"Gene tree {gene_tree_fn.name} is provided ...")
-    else:
+    if args.infer_gene_tree:
         # Launch the gene phylogeny
-        print(f"Begin gene phylogeny for {fasta_file.name} ...")
+        print(f"[Gene tree inference - CAUTION ABOUT THE DEFAULT ROOT !!!] Begin gene phylogeny for {fasta_file.name} ...")
         gene_phylo_process, gene_tree_fn = gene_phylo.whole_phylo(w_fasta_file, species_tree)
         # Wait the gene phylo (need the gene tree to continue)
         gene_phylo_process.wait()
         print(f"Gene phylogeny for {fasta_file.name} is finished -> {gene_tree_fn.name}")
+    else:
+        # Use the provided gene tree
+        gene_tree_fn = w_gene_tree
+        print(f"Gene tree {gene_tree_fn.name} is provided ...")
 
     # Wait the modules segmentation (need the modules trees to continue)
     for ms_proc in modules_segm_process_list: 
@@ -159,14 +159,17 @@ def parser():
     parser.add_argument("leaf_functions_csv",
                         help = "csv file containing for each of our sequence, the list of his functions (ex : XP_012810820.2, P59509 | P999999)",
                         type=str)
+    parser.add_argument("gene_tree",
+                        help = "Gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, must correspond to the sequences in the multi fasta file !)",
+                        type=str)
     parser.add_argument("--output_directory",
                         help = "output directory name",
                         type=str)
     parser.add_argument("--species_tree",
                         help = "Species tree to use as a support for the reconciliations (WARNING, must correspond to the taxid use in the other files !)",
                         type=str)
-    parser.add_argument("--gene_tree",
-                        help = "Gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, must correspond to the sequences in the multi fasta file !)",
+    parser.add_argument("--infer_gene_tree",
+                        help = "Infer gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, user should check it and reroot it - we advise to only use it if you know what you are doing !)",
                         type=str)
     parser.add_argument("--plma_file",
                         help = "Paloma-2 output file (.agraph format, .dot, or .oplma format)",
