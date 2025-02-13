@@ -435,7 +435,7 @@ def main():
     for gene, association in dict_gene_association.items():
         module_list = association[2]
         write_oplma_signature(gene, module_list, gene_tree, dict_module_protSeq, dict_prot_seq, f"signature_{gene}.oplma")
-        make_protomat_logo(f"signature_{gene}.oplma")
+        #make_protomat_logo(f"signature_{gene}.oplma")
         #write_oplma_Allmodules(gene, gene_tree, dict_module_protSeq, dict_prot_seq, f"allModDesc_{gene}.oplma") 
         #make_protomat_logo(f"allModDesc_{gene}.oplma")
         # Human module signature (module only if present in at least 1 human sequence descendant)
@@ -451,7 +451,7 @@ def main():
                             continue
         print(gene, len(module_list), len(hs_module_list))
         write_oplma_signature(gene, hs_module_list, gene_tree, dict_module_protSeq, dict_prot_seq, f"hs_signature_{gene}.oplma")
-        make_protomat_logo(f"hs_signature_{gene}.oplma")
+        #make_protomat_logo(f"hs_signature_{gene}.oplma")
 
 
 if __name__ == '__main__':
