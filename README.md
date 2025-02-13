@@ -8,7 +8,7 @@ Introducing an original approach to characterizing functional motifs. This metho
 2. Phylogenetic inference of species/genes/modules/functions evolutionary histories
 3. Identification of co-appearances of modules and functions
 
-The process accepts protein sequences and their associated annotations as input. It then returns the presence of conserved sequence modules, along with their associated annotations, across different ancestral genes.
+The process accepts protein sequences and their associated functional annotations as input. It then returns the presence of conserved sequence modules, along with their associated functional annotations, across different ancestral genes.
 
 ![Pipeline](img/fig1.png)
 
@@ -90,7 +90,7 @@ a5 --> i1
 d2 --> i1
 
 i1 --> i2@{ shape: doc, label: "0_gene_tree.tree" }
-i1 --> i3@{ shape: doc, label: "1_module_annotation_evolutions.csv" }
+i1 --> i3@{ shape: doc, label: "1_module_and_function_evolutions.csv" }
 i1 --> i4@{ shape: doc, label: "2_module_descriptions.csv" }
 i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
 i1 --> i6@{ shape: docs, label: "working_dir/" }
@@ -265,22 +265,22 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 
 2. ```<annotations.csv>```:
 
-   This file contains annotations associated with the different sequences
+   This file contains the functional annotations associated with the different sequences (e.g., PPI)
 
    Each line should be formatted as: ```SeqID,Annotation_1|Annotation_2```. Here, ```SeqID``` is the unique sequence identifier. It's separated from the list of annotations by a comma (```,```), and individual annotations are separated by a pipe (```|```) (e.g., ```NP_620594.1,P00451_F8|P04275_VWF```). Annotations must be more than one character in length.
 
    Refer to [this file](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/leaf_Manual_214.csv) for an example
 
 
-3. ```<gene_tree.tree> (--gene_tree)```:
+3. ```<gene_tree.tree> (gene_tree)```:
 
    This file contains a binary rooted gene tree of the sequences in newick format.
 
-> :warning: **Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input, a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the --gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
+> :warning: **Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the --gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
 
 
 ## Output
-The main workflow output is the list of modules/annotations present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_module_annotation_evolutions.csv``` (Example [here](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/complete_functionChange_moduleChange_seadogMD_214.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
+The main workflow output is the list of modules/functions present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_module_and_function_evolutions.csv``` (Example [here](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/complete_functionChange_moduleChange_seadogMD_214.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
 
 For an interactive visualisation of these data, various iTOL files are generated in ```3_visuReconc/``` and compressed in ```3_visuReconc.zip``` for batch upload on iTOL.
 
@@ -291,7 +291,7 @@ For all details, all outputs and working files will be available such as (see [t
 working_dir
 │ 
 ├── gene.fasta                                                    -----> The input fasta file
-├── leaf_Manual.csv                                               -----> The input annotation file
+├── leaf_Manual.csv                                               -----> The input with gene functional annotation file
 ├── gene.tree                                                     -----> The input gene tree file (if given as input)
 ├── t*m*M*_plma.dot                                               -----> The input plma file (if given as input)
 │
