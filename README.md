@@ -281,6 +281,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
   </details>
 
 <details><summary><weak>Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format (see ```python3 fuse-phylotree/fuse-phylotree.py --help``` for details)</weak></summary>
+
 ```
 usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--species_tree SPECIES_TREE] [--gene_tree GENE_TREE] [--plma_file PLMA_FILE] [--reconc_domains] multi_fasta_file leaf_functions_csv
 
@@ -300,6 +301,7 @@ optional arguments:
                         Paloma-D output file (.agraph format, .dot, or .oplma format)
   --reconc_domains      Do a DGS reconciliation with known modules (pfam / prosite)
 ```
+
 </details>
 
 ## Output
