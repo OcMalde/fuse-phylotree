@@ -276,11 +276,10 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 
    This file contains a binary rooted gene tree of the sequences in newick format.
 
-  <details><summary><weak>> :warning: Infering the gene tree using the pipeline</weak></summary>
-  > :warning: **Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
-  </details>
 
-<details><summary><weak>Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format (see ```python3 fuse-phylotree/fuse-phylotree.py --help``` for details)</weak></summary>
+Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format 
+
+<details><summary><weak> See ```python3 fuse-phylotree/fuse-phylotree.py --help``` for all options</weak></summary>
 
 ```
 usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--species_tree SPECIES_TREE] [--gene_tree GENE_TREE] [--plma_file PLMA_FILE] [--reconc_domains] multi_fasta_file leaf_functions_csv
@@ -302,6 +301,10 @@ optional arguments:
   --reconc_domains      Do a DGS reconciliation with known modules (pfam / prosite)
 ```
 
+</details>
+
+<details><summary><weak> :warning: Infering the gene tree using the pipeline</weak></summary>
+   :warning: **Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
 </details>
 
 ## Output
