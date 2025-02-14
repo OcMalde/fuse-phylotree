@@ -393,9 +393,9 @@ working_dir
 ```
 </details>
 
-## 🐳 Docker Image Usage
+# 🐳 Docker Image Usage
 
-### Docker Installation
+## Docker Installation
 For ease of use, considering the various software and dependencies required, we strongly recommend using our Docker image. 
 After installing [Docker](https://www.docker.com/get-started/), you can pull our Docker image using the following command:
 
@@ -403,7 +403,7 @@ After installing [Docker](https://www.docker.com/get-started/), you can pull our
 docker pull ghcr.io/ocmalde/fuse-phylotree:1.0
 ```
 
-### Run the Docker Image
+## Run the Docker Image
 
 First, you need to make a container and connect interactivly to it:
 
@@ -435,7 +435,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 ```
 
 
-## Advanced Usage
+# Advanced Usage
 
 
 ### To integrate already computed results :
@@ -517,9 +517,9 @@ The fasta file containing only the longest sequence by gene will be written in `
 
 </details>
 
-## Standalone Modules
+# Standalone Modules
 
-### Modules
+## Modules
 Specific [modules of the pipeline](https://github.com/OcMalde/fuse-phylotree/tree/main/fusephylotree) can be executed independently (see their ```--help``` for all usage details).
 
 For example, to compute a phylogenetic tree using Muscle/Trimal/PhyML/Treefix: 
@@ -531,7 +531,7 @@ To only compute the final intergration module:
 python3 /fuse-phylotree/integrate_3phylo.py <seadogMD.output> <gene_tree.tree> --pastml_tab <pastml_seadogMD_combined_ancestral_states.tab> --domains_csv <domains.csv>
 ```
 
-### Softwares
+## Softwares
 All the different [included softwares](https://github.com/OcMalde/fuse-phylotree/tree/main#softwares) are usable using the Docker image.
 For example, paloma-D can be used with:
 ```
@@ -540,14 +540,14 @@ docker start <CONTAINER ID> && docker exec <CONTAINER ID> /bin/bash -c ". ~/.bas
 Or simply: ```paloma-D --help``` if connected to a container
 
 
-## Dependencies
+# Dependencies
 
 All these programs are mandatory to run *FUSE-PhyloTree*, and must be in ;
 ```/usr/local/bin/```
 If not, their path must be specified in the config file ;
 ```fuse-phylotree/config.txt```
 
-#### Softwares
+### Softwares
 
 [Muscle](http://www.drive5.com/muscle/) (v3.8.31), one of the best-performing multiple alignment programs, [Conda package](https://anaconda.org/bioconda/muscle)
 
