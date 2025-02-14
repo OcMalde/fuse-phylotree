@@ -205,13 +205,13 @@ class l3 legend4
 </details>
 </details>
 
-## Citation
+## :books: Citation
 
 *Application note in preparation*
 
 For a more detailed explanation of the methodology, refer to the following article [[Dennler et al. 2023]](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011404), or the following PhD thesis (only [available in French](https://www.theses.fr/2022REN1B079)).
 
-# Simple Usage
+# :gear: Simple Usage
 ### Docker Installation
 For ease of use, considering the various software and dependencies required, we strongly recommend using our Docker image. 
 After installing [Docker](https://www.docker.com/get-started/), you can pull our Docker image using the following command:
@@ -279,7 +279,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 
 Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format 
 
-<details><summary>:gear: :memo: :bulb:  :information_source: For all options</summary>
+<details><summary>:information_source: For all options</summary>
 
 ```
 usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--species_tree SPECIES_TREE] [--gene_tree GENE_TREE] [--plma_file PLMA_FILE] [--reconc_domains] multi_fasta_file leaf_functions_csv
