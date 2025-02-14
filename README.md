@@ -211,7 +211,7 @@ class l3 legend4
 
 For a more detailed explanation of the methodology, refer to the following article [[Dennler et al. 2023]](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011404), or the following PhD thesis (only [available in French](https://www.theses.fr/2022REN1B079)).
 
-## Simple Usage
+# Simple Usage
 ### Docker Installation
 For ease of use, considering the various software and dependencies required, we strongly recommend using our Docker image. 
 After installing [Docker](https://www.docker.com/get-started/), you can pull our Docker image using the following command:
@@ -272,12 +272,35 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
    Refer to [this file](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/leaf_Manual_214.csv) for an example
 
 
-3. ```<gene_tree.tree> (gene_tree)```:
+3. ```<gene_tree.tree>```:
 
    This file contains a binary rooted gene tree of the sequences in newick format.
 
-> :warning: **Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the --gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
+  <details><summary><weak>Infering the gene tree using the pipeline...</weak></summary>
+  > :warning: **Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
+  </details>
 
+<details><summary><weak>Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format (see ```python3 fuse-phylotree/fuse-phylotree.py --help``` for details)</weak></summary>
+```
+usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--species_tree SPECIES_TREE] [--gene_tree GENE_TREE] [--plma_file PLMA_FILE] [--reconc_domains] multi_fasta_file leaf_functions_csv
+
+positional arguments:
+  multi_fasta_file      Multi fasta file, with specific formated header >RefSeq_taxid (ex : >XP_012810820.2_8364)
+  leaf_functions_csv    csv file containing for each of our sequence, the list of his functions (ex : XP_012810820.2, P59509 | P999999)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --output_directory OUTPUT_DIRECTORY
+                        output directory name
+  --species_tree SPECIES_TREE
+                        Species tree to use as a support for the reconciliations (WARNING, must correspond to the taxid use in the other files !)
+  --gene_tree GENE_TREE
+                        Gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, must correspond to the sequences in the multi fasta file !)
+  --plma_file PLMA_FILE
+                        Paloma-D output file (.agraph format, .dot, or .oplma format)
+  --reconc_domains      Do a DGS reconciliation with known modules (pfam / prosite)
+```
+</details>
 
 ## Output
 The main workflow output is the list of modules/functions present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_modules_and_functions_evolution.csv``` (Example [here](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/complete_functionChange_moduleChange_seadogMD_214.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
@@ -364,32 +387,7 @@ working_dir
 ```
 </details>
 
-## Usage
 
-```python3 fuse-phylotree/fuse-phylotree.py```
-
-Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the imposed header format.
-(see ```--help``` for details)
-
-```
-usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--species_tree SPECIES_TREE] [--gene_tree GENE_TREE] [--plma_file PLMA_FILE] [--reconc_domains] multi_fasta_file leaf_functions_csv
-
-positional arguments:
-  multi_fasta_file      Multi fasta file, with specific formated header >RefSeq_taxid (ex : >XP_012810820.2_8364)
-  leaf_functions_csv    csv file containing for each of our sequence, the list of his functions (ex : XP_012810820.2, P59509 | P999999)
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --output_directory OUTPUT_DIRECTORY
-                        output directory name
-  --species_tree SPECIES_TREE
-                        Species tree to use as a support for the reconciliations (WARNING, must correspond to the taxid use in the other files !)
-  --gene_tree GENE_TREE
-                        Gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, must correspond to the sequences in the multi fasta file !)
-  --plma_file PLMA_FILE
-                        Paloma-D output file (.agraph format, .dot, or .oplma format)
-  --reconc_domains      Do a DGS reconciliation with known modules (pfam / prosite)
-```
 
 ## Advanced Usage
 
