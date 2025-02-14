@@ -212,45 +212,6 @@ class l3 legend4
 For a more detailed explanation of the methodology, refer to the following article [[Dennler et al. 2023]](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011404), or the following PhD thesis (only [available in French](https://www.theses.fr/2022REN1B079)).
 
 # :gear: Simple Usage
-### Docker Installation
-For ease of use, considering the various software and dependencies required, we strongly recommend using our Docker image. 
-After installing [Docker](https://www.docker.com/get-started/), you can pull our Docker image using the following command:
-
-```
-docker pull ghcr.io/ocmalde/fuse-phylotree:1.0
-```
-
-### Run the Docker Image
-
-First, you need to make a container and connect interactivly to it:
-
-```
-docker run -it --entrypoint /bin/bash ghcr.io/ocmalde/fuse-phylotree:1.0 
-```
-
-Then you can simply execute the whole pipeline using:
-
-```
-python3 /fuse-phylotree/fuse-phylotree.py <sequences.fasta> <annotations.csv>
-```
-To quit it, simply type ```exit```
-
-Example with test files provided in the Docker image (you need to connect to the container first):
-```
-cd test_dir/ && python3 ../fuse-phylotree/fuse-phylotree.py 712buddy37seq.fasta leaf_Manual_712.csv
-```
-
-If you already made a container, you can obtain its ```<CONTAINER ID>``` using ```docker ps -a```.
-Using the ```<CONTAINER ID>```, you can connect to the existing container with:
-```
-docker start <CONTAINER ID> && docker attach <CONTAINER ID>
-```
-
-To use move file from/to the container, use:
-```
-docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
-```
-
 
 ## Input 
 1. ```<sequences.fasta>```:
@@ -432,6 +393,46 @@ working_dir
 ```
 </details>
 
+## 🐳 Docker Image Usage
+
+### Docker Installation
+For ease of use, considering the various software and dependencies required, we strongly recommend using our Docker image. 
+After installing [Docker](https://www.docker.com/get-started/), you can pull our Docker image using the following command:
+
+```
+docker pull ghcr.io/ocmalde/fuse-phylotree:1.0
+```
+
+### Run the Docker Image
+
+First, you need to make a container and connect interactivly to it:
+
+```
+docker run -it --entrypoint /bin/bash ghcr.io/ocmalde/fuse-phylotree:1.0 
+```
+
+Then you can simply execute the whole pipeline using:
+
+```
+python3 /fuse-phylotree/fuse-phylotree.py <sequences.fasta> <annotations.csv>
+```
+To quit it, simply type ```exit```
+
+Example with test files provided in the Docker image (you need to connect to the container first):
+```
+cd test_dir/ && python3 ../fuse-phylotree/fuse-phylotree.py 712buddy37seq.fasta leaf_Manual_712.csv
+```
+
+If you already made a container, you can obtain its ```<CONTAINER ID>``` using ```docker ps -a```.
+Using the ```<CONTAINER ID>```, you can connect to the existing container with:
+```
+docker start <CONTAINER ID> && docker attach <CONTAINER ID>
+```
+
+To use move file from/to the container, use:
+```
+docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
+```
 
 
 ## Advanced Usage
