@@ -279,7 +279,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 
 Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format 
 
-<details><summary>:information_source: For all options</summary>
+<details><summary>:bulb: For all options</summary>
 
 ```
 usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--species_tree SPECIES_TREE] [--gene_tree GENE_TREE] [--plma_file PLMA_FILE] [--reconc_domains] multi_fasta_file leaf_functions_csv
