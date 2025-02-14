@@ -279,7 +279,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 
 Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format 
 
-<details><summary><weak> See ```python3 fuse-phylotree/fuse-phylotree.py --help``` for all options</weak></summary>
+<details><summary>See ```python3 fuse-phylotree/fuse-phylotree.py --help``` for all options</summary>
 
 ```
 usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--species_tree SPECIES_TREE] [--gene_tree GENE_TREE] [--plma_file PLMA_FILE] [--reconc_domains] multi_fasta_file leaf_functions_csv
@@ -303,14 +303,29 @@ optional arguments:
 
 </details>
 
-<details><summary><weak> :warning: Infering the gene tree using the pipeline</weak></summary>
+<details><summary>:warning: Infering the gene tree using the pipeline</summary>
    **Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
 </details>
 
 ## Output
 The main workflow output is the list of modules/functions present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_modules_and_functions_evolution.csv``` (Example [here](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/complete_functionChange_moduleChange_seadogMD_214.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
-
 For an interactive visualisation of these data, various iTOL files are generated in ```3_visuReconc/``` and compressed in ```3_visuReconc.zip``` for batch upload on iTOL.
+
+0. ```0_gene_tree.tree```:
+
+      This file contains the binary rooted gene tree of the sequences in newick format with internal node names.
+
+1. ```1_modules_and_functions_evolution.csv```:
+
+      This file contains the list of modules/functions present/gained/lost at the different ancestral and actual genes, i.e., for all nodes in the gene tree.
+
+2. ```2_module_descriptions.csv```:
+
+      This file contains all module descriptions: all their segments, proteins, and positions in the protein sequences.
+
+3. ```3_visuReconc/```:
+
+      This directory contains various iTOL files for the interactive visualisation.
 
 <details><summary><strong>Working directory</strong></summary>
 
