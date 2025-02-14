@@ -447,7 +447,15 @@ python3 /fuse-phylotree/integrate_3phylo.py seadogMD_{input}.output gene_tree_{i
 
 ### To build a sequence dataset based on orthogroups
 
-<details><summary><strong>:mag: :mag_right: Step by step</strong></summary>
+Using simple lists of RefSeq IDs for your in-group and out-group proteins and a FUSE-PhyloTree Docker or Singularity image, you can easily generate a formatted FASTA file for the pipeline. This file will contain the longest protein sequence for each homolog (both orthologs and paralogs) in your input family. Simply run one of these scripts:
+
+- [make_orthogroup_fasta_docker.sh](https://github.com/OcMalde/fuse-phylotree/blob/main/helper-scripts/make_orthogroup_fasta_docker.sh)
+- [make_orthogroup_fasta_singularity.sh](https://github.com/OcMalde/fuse-phylotree/blob/main/helper-scripts/make_orthogroup_fasta_singularity.sh)
+
+```Usage: helper-scripts/make_orthogroup_fasta_docker.sh <id_seq_file> <id_outgroup_file> <name> <docker_image>```
+
+
+<details><summary><strong>:mag: Step by step</strong></summary>
 
 You can use as input any fasta file with ortholog and paralog sequences, as long as their headers are formatted. But we propose a sequence dataset building based on orthogroups from the [OrthoFinder](https://github.com/davidemms/OrthoFinder) tool. As a prerequisite, you will need to select a set of species (and one assembly per species) and to have: 
 - The ```Orthgroup.tsv``` file, computed with OrthoFinder on the proteomes of the selected assemblies of the selected species (to do so, run ```orthofinder -f <directory with all assemblie proteomes in fasta>```).
