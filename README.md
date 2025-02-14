@@ -218,7 +218,7 @@ To run the full pipeline, simply use:
 python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
 ```
 
->To install and run this command, you need a proper environment. We strongly recommend using the available [Docker](https://github.com/OcMalde/fuse-phylotree/tree/main?tab=readme-ov-file#-docker-image-usage) image (recommended for personal computers) or Singularity (recommended for high-performance computing clusters).
+>To install and run this command, you need a proper environment. We strongly recommend using the available [Docker](https://github.com/OcMalde/fuse-phylotree/tree/main?tab=readme-ov-file#-docker-image-usage) image (recommended for personal computers) or [Singularity](https://github.com/OcMalde/fuse-phylotree/tree/main?tab=readme-ov-file#-singularity-image-usage) image (recommended for high-performance computing clusters).
 
 ## Input 
 1. ```<sequences.fasta>```:
@@ -440,6 +440,22 @@ To use move file from/to the container, use:
 ```
 docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 ```
+
+# 🌀 Singularity Image Usage
+
+## Singularity Installation
+On most High Performance Computing clusters, you can pull directly pull our Singularity image using the following command:
+
+```
+wget https://github.com/OcMalde/fuse-phylotree/releases/download/V1.0.0/fuse_phylotree.sif
+```
+
+## Run the Singularity Image
+
+```
+singularity exec <fuse_phylotree.sif> "python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>"
+```
+
 
 
 # Advanced Usage
