@@ -213,6 +213,13 @@ For a more detailed explanation of the methodology, refer to the following artic
 
 # :gear: Simple Usage
 
+To run the full pipeline, simply use: 
+```
+python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
+```
+
+>To install and run the pipeline, you need a proper environment. We recommend using the available Docker image (recommended for personal computers) or Singularity (recommended for high-performance computing clusters).
+
 ## Input 
 1. ```<sequences.fasta>```:
    
