@@ -90,7 +90,7 @@ a5 --> i1
 d2 --> i1
 
 i1 --> i2@{ shape: doc, label: "0_gene_tree.tree" }
-i1 --> i3@{ shape: doc, label: "1_module_and_function_evolutions.csv" }
+i1 --> i3@{ shape: doc, label: "1_modules_and_functions_evolution.csv" }
 i1 --> i4@{ shape: doc, label: "2_module_descriptions.csv" }
 i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
 i1 --> i6@{ shape: docs, label: "working_dir/" }
@@ -280,7 +280,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 
 
 ## Output
-The main workflow output is the list of modules/functions present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_module_and_function_evolutions.csv``` (Example [here](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/complete_functionChange_moduleChange_seadogMD_214.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
+The main workflow output is the list of modules/functions present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_modules_and_functions_evolution.csv``` (Example [here](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/complete_functionChange_moduleChange_seadogMD_214.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
 
 For an interactive visualisation of these data, various iTOL files are generated in ```3_visuReconc/``` and compressed in ```3_visuReconc.zip``` for batch upload on iTOL.
 
