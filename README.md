@@ -218,7 +218,7 @@ To run the full pipeline, simply use:
 python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
 ```
 
->To install and run the pipeline, you need a proper environment. We recommend using the available Docker image (recommended for personal computers) or Singularity (recommended for high-performance computing clusters).
+>To install and run this command, you need a proper environment. We strongly recommend using the available [Docker](https://github.com/OcMalde/PhyloCharMod_publ/tree/main?tab=readme-ov-file#-docker-image-usage) image (recommended for personal computers) or Singularity (recommended for high-performance computing clusters).
 
 ## Input 
 1. ```<sequences.fasta>```:
