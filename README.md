@@ -444,7 +444,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 # 🌀 Singularity Image Usage
 
 ## Singularity Installation
-On most High Performance Computing clusters, you can pull directly pull our Singularity image using the following command:
+On most High Performance Computing clusters, you can directly pull our Singularity image using the following command:
 
 ```
 wget https://github.com/OcMalde/fuse-phylotree/releases/download/V1.0.0/fuse_phylotree.sif
