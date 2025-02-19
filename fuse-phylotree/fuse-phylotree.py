@@ -34,6 +34,12 @@ def phylo_char_mod(args) -> None:
     cwd = os.getcwd()
     fasta_file = Path(fasta_file).resolve()
     leaf_functions_csv = Path(leaf_functions_csv).resolve()
+
+    # Test for gene provide or not 
+    if args.infer_gene_tree is None and args.gene_tree is None : 
+        raise ValueError("You must provide a tree file if --infer_gene_tree is not used.")
+    if args.infer_gene_tree is not None and args.gene_tree is not None : 
+        raise ValueError("You use both the --infer_gene_tree option and supply a tree, choose one way only please")
     
     # Prepare work directory
     if args.output_directory:
@@ -161,7 +167,7 @@ def parser():
                         type=str)
     parser.add_argument("gene_tree",
                         help = "Gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, must correspond to the sequences in the multi fasta file !)",
-                        type=str)
+                        type=str, nargs = "?")
     parser.add_argument("--output_directory",
                         help = "output directory name",
                         type=str)
