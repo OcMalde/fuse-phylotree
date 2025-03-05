@@ -236,11 +236,11 @@ python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
     MTKARRMTGGLLAV
     ```
    
-    Refer to [this file](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/214.fasta) for an example
+    Refer to [this file](https://github.com/OcMalde/fuse-phylotree/blob/main/data/analyse_fibulin/run_singularity_fibulin/fibulin_59.fasta) for an example
    
     Please refrain from using special characters in the header (e.g.```, |,()`":;```). Use only ```_``` as a separator.
 
-   These files can be generated using orthogroups and GFF files, all of which are included in the Docker image for the nine species. You only need to compile a file with a list of RefSeq of interest. For detailed instructions, please refer to [To-build-a-sequence-dataset-based-on-orthogroups](https://github.com/OcMalde/PhyloCharMod_publ/tree/main#to-build-a-sequence-dataset-based-on-orthogroups).
+   These files can be generated using orthogroups and GFF files, all of which are included in the Docker image for the nine species. You only need to compile a file with a list of RefSeq of interest. For detailed instructions, please refer to [To build a sequence dataset based on orthogroups](https://github.com/OcMalde/fuse-phylotree/tree/main?tab=readme-ov-file#to-build-a-sequence-dataset-based-on-orthogroups).
 
 
 2. ```<annotations.csv>```:
@@ -256,7 +256,7 @@ python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
     NP_00004.3,Interact_with_A    
     ```
 
-   Refer to [this file](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/leaf_Manual_214.csv) for an example
+   Refer to [this file](https://github.com/OcMalde/fuse-phylotree/blob/main/data/analyse_fibulin/run_singularity_fibulin/ppi_shared.csv) for an example
 
 
 3. ```<gene_tree.tree>```:
@@ -302,7 +302,7 @@ optional arguments:
 </details>
 
 ## Output
-The main workflow output is the list of modules/functions present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_modules_and_functions_evolution.csv``` (Example [here](https://github.com/OcMalde/PhyloCharMod_publ/blob/main/data/min5_human_214_t10m1M20/complete_functionChange_moduleChange_seadogMD_214.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
+The main workflow output is the list of modules/functions present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_modules_and_functions_evolution.csv``` (Example [here](https://github.com/OcMalde/fuse-phylotree/blob/main/data/analyse_fibulin/run_singularity_fibulin/1_modules_and_functions_evolution.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
 For an interactive visualisation of these data, various iTOL files are generated in ```3_visuReconc/``` and compressed in ```3_visuReconc.zip``` for batch upload on iTOL.
 
 0. ```0_gene_tree.tree```:
@@ -323,7 +323,7 @@ For an interactive visualisation of these data, various iTOL files are generated
 
 <details><summary><strong>Working directory</strong></summary>
 
-For all details, all outputs and working files will be available such as (see [this directory](https://github.com/OcMalde/PhyloCharMod_publ/tree/main/data/min5_human_214_t10m1M20) for an example)
+For all details, all outputs and working files will be available such as (see [this directory](https://github.com/OcMalde/fuse-phylotree/tree/main/data/analyse_fibulin/run_singularity_fibulin) for an example)
 ```
 working_directory
 ├── 0_gene.tree										-----> file contains the binary rooted gene tree of the sequences in newick format with internal node names
@@ -531,7 +531,7 @@ With the ```--download``` argument, a fasta directory will be build, containing 
 
 Example for a file ```<refseqID.txt>``` (simply one refseq ID by line) using pre-computed orthogroups for 9 species: 
 ```
-docker run -w $(pwd) -v $(pwd):$(pwd) --rm ghcr.io/ocmalde/fuse-phylotree:1.0 /fuse-phylotree/myOrthogroups_fasta.py /data_9sp/Orthogroups.tsv <refseqID.txt>  /data_9sp/assocF_taxid_spName.csv --download
+docker run -w $(pwd) -v $(pwd):$(pwd) --rm ghcr.io/ocmalde/fuse-phylotree:v1.0.0 /fuse-phylotree/myOrthogroups_fasta.py /data_9sp/Orthogroups.tsv <refseqID.txt>  /data_9sp/assocF_taxid_spName.csv --download
 ```
 
 #### 2. Regroup the protein by gene, based on genomic annotation (gff) and keep only the longest isoform for each gene, with ```python3 fuse-phylotree/gff_regroup_iso_locus.py```.
@@ -551,7 +551,7 @@ optional arguments:
 
 Example for ```<orthogroup_dir>``` (computed on previous step):
 ```
-docker run -w $(pwd) -v $(pwd):$(pwd) --rm ghcr.io/ocmalde/fuse-phylotree:1.0 python3 /fuse-phylotree/gff_regroup_iso_locus.py --fasta_directory <orthogroup_dir> --assoc_file /data_9sp/assocF_taxid_dbnt.csv --gff_directory /data_9sp/gff
+docker run -w $(pwd) -v $(pwd):$(pwd) --rm ghcr.io/ocmalde/fuse-phylotree:v1.0.0 python3 /fuse-phylotree/gff_regroup_iso_locus.py --fasta_directory <orthogroup_dir> --assoc_file /data_9sp/assocF_taxid_dbnt.csv --gff_directory /data_9sp/gff
 ```
 The fasta file containing only the longest sequence by gene will be written in ```<orthogroup_dir>/isoforms_per_locus/longest_isoform.fasta``` 
 
@@ -560,7 +560,7 @@ The fasta file containing only the longest sequence by gene will be written in `
 # Standalone Modules
 
 ## Modules
-Specific [modules of the pipeline](https://github.com/OcMalde/fuse-phylotree/tree/main/fusephylotree) can be executed independently (see their ```--help``` for all usage details).
+Specific [modules of the pipeline](https://github.com/OcMalde/fuse-phylotree/tree/main/fuse-phylotree) can be executed independently (see their ```--help``` for all usage details).
 
 For example, to compute a phylogenetic tree using Muscle/Trimal/PhyML/Treefix: 
 ```
@@ -572,12 +572,16 @@ python3 /fuse-phylotree/integrate_3phylo.py <seadogMD.output> <gene_tree.tree> -
 ```
 
 ## Softwares
-All the different [included softwares](https://github.com/OcMalde/fuse-phylotree/tree/main#softwares) are usable using the Docker image.
+All the different [included softwares](https://github.com/OcMalde/fuse-phylotree/tree/main#softwares) are usable using the Docker or Singularity image.
 For example, paloma-D can be used with:
 ```
 docker start <CONTAINER ID> && docker exec <CONTAINER ID> /bin/bash -c ". ~/.bashrc && paloma-D --help && exit"
 ``` 
 Or simply: ```paloma-D --help``` if connected to a container
+
+```
+singularity exec fuse_phylotree.sif paloma-D --help
+``` 
 
 
 # Dependencies
