@@ -211,6 +211,8 @@ class l3 legend4
 
 For a more detailed explanation of the methodology, refer to the following article [[Dennler et al. 2023]](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011404), or the following PhD thesis (only [available in French](https://www.theses.fr/2022REN1B079)).
 
+>❔Differences from PhyloCharMod: FUSE-PhyloTree is an actively maintained fork of [PhyloCharMod](https://github.com/OcMalde/PhyloCharMod_publ), originally developed for studying the ADAMTS-TSL protein family.
+
 # :gear: Simple Usage
 
 To run the full pipeline, simply use: 
