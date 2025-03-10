@@ -490,13 +490,20 @@ python3 /fuse-phylotree/integrate_3phylo.py seadogMD_{input}.output gene_tree_{i
 
 ### To build a sequence dataset based on orthogroups
 
-Using simple lists of RefSeq IDs for your in-group and out-group proteins and a FUSE-PhyloTree Docker or Singularity image, you can easily generate a formatted FASTA file for the pipeline. This file will contain the longest protein sequence for each homolog (both orthologs and paralogs) in your input family. Simply run one of these scripts:
+Using simple lists of RefSeq IDs proteins and a FUSE-PhyloTree Docker or Singularity image, you can easily generate a formatted FASTA file for the pipeline. This file will contain the longest protein sequence for each homolog (both orthologs and paralogs) in your input family. Simply run one of the following script:
 
-- [make_orthogroup_fasta_docker.sh](https://github.com/OcMalde/fuse-phylotree/blob/main/helper-scripts/make_orthogroup_fasta_docker.sh)
-- [make_orthogroup_fasta_singularity.sh](https://github.com/OcMalde/fuse-phylotree/blob/main/helper-scripts/make_orthogroup_fasta_singularity.sh)
+- [make_orthogroup_fasta.sh](https://github.com/OcMalde/fuse-phylotree/blob/main/helper-scripts/make_orthogroup_fasta.sh)
 
-```Usage: helper-scripts/make_orthogroup_fasta_docker.sh <id_seq_file> <id_outgroup_file> <name> <docker_image>```
+```Usage: make_orthogroup_fasta.sh <id_seq_file> <name> <docker_image|singularity_image_path>```
 
+> 📑 ```<id_seq_file>``` example:
+```txt
+NP_001987.2
+NP_006476.2
+NP_006477.2
+NP_006478.2
+...
+```
 
 <details><summary><strong>:mag: Step by step</strong></summary>
 
