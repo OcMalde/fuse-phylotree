@@ -270,6 +270,8 @@ python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
     ((NP_00001.1:0.16,XP_00002.1:0.23):0.87,(NP_00003.1:0.35,NP_00004.3:0.42):0.47);
     ```
 
+   Refer to [this file](https://github.com/OcMalde/fuse-phylotree/blob/main/data/analyse_fibulin/run_singularity_fibulin/fibulin_tree_root.tree) for an example
+
 
 Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format 
 
