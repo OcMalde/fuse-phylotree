@@ -33,7 +33,7 @@ U@{ shape: manual-input, label: "User Input"} --> A
 U --> B
 U --> C
 
-A@{ shape: doc, label: "sequences.fasta" } --> m1[label:"modules_segm.py: segmentation_and_module_phylo()"]
+A@{ shape: doc, label: "sequences.fasta" } --> m1@{label:"modules_segm.py: segmentation_and_module_phylo()"}
 m1 --> m2@{ shape: docs, label: "module_segm_dir_seq/" }
 m2 --> m3[tools.py: segmentation()]
 m5@{ shape: flag, label: "paloma-D" } o--o|call| m3
