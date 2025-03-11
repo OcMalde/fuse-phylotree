@@ -5,27 +5,17 @@
 #SBATCH --mem=50G
 #SBATCH --output=sortie_lanceur.out
 
-date
-image_path=/home/genouest/inra_umr1349/echenel/fuse_phylotree.sif
-
+# File paths
+image_path="fuse-phylotree.sif"
 file_fasta="fibulin_59.fasta"
-
-file_ppi="ppi_shared.csv"
-name=$(basename "$file_fasta" | cut -d. -f1)
-
+file_annotation="ppi_shared.csv"
 gene_tree="fibulin_tree_root.tree"
+output_dir="dir_analysis_fuse_phylotree"
 
-cmd2="python3 /fuse-phylotree/fuse-phylotree.py --output_directory dir_fibuline_phylocharmod --gene_tree $gene_tree $file_fasta $file_ppi"
+# Command to launch tool
+cmd="python3 /fuse-phylotree/fuse-phylotree.py --output_directory ${output_dir} $file_fasta $file_annotation $gene_tree"
 
-sortir="sortie_fibulin_analyse.txt"
-
-echo "Path to output : "
-echo $output_dir
-
-echo "Begin with the singularity image"
-singularity exec ${image_path} ${cmd2} > $sortir
-
-echo "Analyse finished" 
-date
+# Start analysis
+singularity exec ${image_path} ${cmd}
 
 
