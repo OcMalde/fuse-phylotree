@@ -273,8 +273,6 @@ python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
    Refer to [this file](https://github.com/OcMalde/fuse-phylotree/blob/main/data/analyse_fibulin/run_singularity_fibulin/fibulin_tree_root.tree) for an example
 
 
-Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format 
-
 <details><summary><strong>:bulb: For other option</strong></summary>
 
 ```
@@ -298,11 +296,9 @@ optional arguments:
   --reconc_domains      Do a DGS reconciliation with known modules (pfam / prosite)
 ```
 
-</details>
+>Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format. 
 
-<details><summary><strong>:warning: Infering the gene tree using the pipeline option ```--infer_gene_tree```</strong></summary>
-
->**Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
+>**:warning: Infering the gene tree using the pipeline option ```--infer_gene_tree```** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
 
 </details>
 
