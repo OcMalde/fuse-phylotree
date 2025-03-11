@@ -8,13 +8,14 @@ Introducing an original approach to characterizing functional motifs. This metho
 2. Phylogenetic inference of species/genes/modules/functions evolutionary histories
 3. Identification of co-appearances of modules and functions
 
-The process accepts protein sequences and their associated functional annotations as input. It then returns the presence of conserved sequence modules, along with their associated functional annotations, across different ancestral genes.
+The process considers protein sequences and their associated functional annotations as input. It then returns the presence of the conserved sequence modules and of the functional annotations in each ancestral gene along the gene phylogeny.
+
 
 ![Pipeline](img/fig1.png)
 
 <details><summary><strong>Detailed Pipeline</strong></summary>
 
-Flowchart of the detailed pipeline:
+Detailed flowchart of the pipeline:
 
 ```mermaid id="pipeline-diagram"
 ---
@@ -89,7 +90,7 @@ g2 --> i1
 a5 --> i1
 d2 --> i1
 
-i1 --> i2@{ shape: doc, label: "0_gene_tree.tree" }
+i1 --> i2@{ shape: doc, label: "0_gene.tree" }
 i1 --> i3@{ shape: doc, label: "1_modules_and_functions_evolution.csv" }
 i1 --> i4@{ shape: doc, label: "2_module_descriptions.csv" }
 i1 --> i5@{ shape: docs, label: "3_visuReconc/" }
@@ -225,7 +226,7 @@ python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
 ## Input 
 1. ```<sequences.fasta>```:
    
-    Each sequence header must adhere to the format: ```>SeqID_taxid```, where ```SeqID``` represents the unique sequence identifier and ```taxid``` is the NCBI species taxid (e.g., ```>NP031426.2_10090```)
+    Each sequence header must satisfies the format: ```>SeqID_taxid```, where ```SeqID``` represents the unique sequence identifier and ```taxid``` is the NCBI species taxid (e.g., ```>NP031426.2_10090```)
 
     ```fasta
     >NP00001.1_9913
@@ -242,14 +243,14 @@ python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
    
     Please refrain from using special characters in the header (e.g.```, |,()`":;```). Use only ```_``` as a separator.
 
-   These files can be generated using orthogroups and GFF files, all of which are included in the Docker image for the nine species. You only need to compile a file with a list of RefSeq of interest. For detailed instructions, please refer to [To build a sequence dataset based on orthogroups](https://github.com/OcMalde/fuse-phylotree/tree/main?tab=readme-ov-file#to-build-a-sequence-dataset-based-on-orthogroups).
+   These files can be generated using orthogroups and GFF files, all of which are included in the Docker image for the nine species. You only need to provide a file with a list of RefSeq of interest. For detailed instructions, please refer to [To build a sequence dataset based on orthogroups](https://github.com/OcMalde/fuse-phylotree/tree/main?tab=readme-ov-file#to-build-a-sequence-dataset-based-on-orthogroups).
 
 
 2. ```<annotations.csv>```:
 
    This file contains the functional annotations associated with the different sequences (e.g., PPI)
 
-   Each line should be formatted as: ```SeqID,Annotation_1|Annotation_2```. Here, ```SeqID``` is the unique sequence identifier. It's separated from the list of annotations by a comma (```,```), and individual annotations are separated by a pipe (```|```) (e.g., ```NP_620594.1,P00451_F8|P04275_VWF```). Annotations must be more than one character in length.
+   Each line should be formatted as: ```SeqID,Annotation_1|Annotation_2```. Here, ```SeqID``` is the unique sequence identifier. It is separated from the list of annotations by a comma (```,```), and individual annotations are separated by pipe symbols (```|```) (e.g., ```NP_620594.1,P00451_F8|P04275_VWF```). Annotations must have more than one character in length.
 
     ```csv
     NP_00001.1,Interact_with_A|Interact_with_B
@@ -272,7 +273,7 @@ python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
 
 Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format 
 
-<details><summary><strong>:bulb: For all options</strong></summary>
+<details><summary><strong>:bulb: For other option</strong></summary>
 
 ```
 usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--species_tree SPECIES_TREE] [--infer_gene_tree INFER_GENE_TREE] [--plma_file PLMA_FILE] [--reconc_domains] multi_fasta_file leaf_functions_csv [gene_tree]
@@ -297,23 +298,22 @@ optional arguments:
 
 </details>
 
-<details><summary><strong>:warning: Infering the gene tree using the pipeline</strong></summary>
+<details><summary><strong>:warning: Infering the gene tree using the pipeline option ```--infer_gene_tree```</strong></summary>
 
 >**Important Notice: Default Execution and Gene Tree Input.** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
 
 </details>
 
 ## Output
-The main workflow output is the list of modules/functions present/gained/lost at the different ancestral genes. This output is presented as a table in the file ```1_modules_and_functions_evolution.csv``` (Example [here](https://github.com/OcMalde/fuse-phylotree/blob/main/data/analyse_fibulin/run_singularity_fibulin/1_modules_and_functions_evolution.csv)). It is strongly advised to also look at the the final gene tree (with internal node names) ```0_gene_tree.tree``` to visualise the annotated gene nodes. Plus, description of all modules are available in ```2_module_descriptions.csv``` and enable to get module segments (sequences and positions) based on module names.
-For an interactive visualisation of these data, various iTOL files are generated in ```3_visuReconc/``` and compressed in ```3_visuReconc.zip``` for batch upload on iTOL.
+The main workflow output is the list of modules and functions that are present, gained or lost at the different ancestral genes. This output is presented as a table in the file ```1_modules_and_functions_evolution.csv``` (Example [here](https://github.com/OcMalde/fuse-phylotree/blob/main/data/analyse_fibulin/run_singularity_fibulin/1_modules_and_functions_evolution.csv)). It is strongly advised to also look at the final gene tree (with internal node names) ```0_gene.tree``` to visualise the annotated gene nodes. The file ```0_gene.tree``` corresponds to the input phylogenetic tree and assigns an ancestor name  to each internal node. The description of all the modules is available in ```2_module_descriptions.csv``` and it enables to get module segments (sequences and positions) based on module names. For an interactive visualisation of these data, various iTOL files are generated in ```3_visuReconc/``` and compressed in ```3_visuReconc.zip``` for batch upload on iTOL.
 
-0. ```0_gene_tree.tree```:
+0. ```0_gene.tree```:
 
       This file contains the binary rooted gene tree of the sequences in newick format with internal node names.
 
 1. ```1_modules_and_functions_evolution.csv```:
 
-      This file contains the list of modules/functions present/gained/lost at the different ancestral and actual genes, i.e., for all nodes in the gene tree.
+      This file contains the list of modules and functions that are present, gained or lost at the different ancestral and actual genes, i.e., for all nodes in the gene tree.
 
 2. ```2_module_descriptions.csv```:
 
@@ -325,7 +325,7 @@ For an interactive visualisation of these data, various iTOL files are generated
 
 <details><summary><strong>Working directory</strong></summary>
 
-For all details, all outputs and working files will be available such as (see [this directory](https://github.com/OcMalde/fuse-phylotree/tree/main/data/analyse_fibulin/run_singularity_fibulin) for an example)
+The intermediates outputs obtained at each of the pipeline steps are provided in a directory called ```working_dir_*``` (see [this directory](https://github.com/OcMalde/fuse-phylotree/tree/main/data/analyse_fibulin/run_singularity_fibulin) for an example)
 ```
 working_directory
 ├── 0_gene.tree										-----> file contains the binary rooted gene tree of the sequences in newick format with internal node names
