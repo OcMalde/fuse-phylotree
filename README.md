@@ -243,7 +243,7 @@ python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
    
     Please refrain from using special characters in the header (e.g.```, |,()`":;```). Use only ```_``` as a separator.
 
-   These files can be generated using orthogroups and GFF files, all of which are included in the Docker image for the nine species. You only need to provide a file with a list of RefSeq of interest. For detailed instructions, please refer to [To build a sequence dataset based on orthogroups](https://github.com/OcMalde/fuse-phylotree/tree/main?tab=readme-ov-file#to-build-a-sequence-dataset-based-on-orthogroups).
+   These files can be generated using orthogroups and GFF files, all of which are included in the Docker and Singularity images for nine species (*Homo sapiens, Mus musculus, Bos taurus, Gallus gallus, Xenopus tropicalis, Danio rerio, Ciona intestinalis, Drosophila melanogaster, Caenorhabditis elegans*). You only need to provide a file with a list of RefSeq of interest. For detailed instructions, please refer to [To build a sequence dataset based on orthogroups](https://github.com/OcMalde/fuse-phylotree/tree/main?tab=readme-ov-file#to-build-a-sequence-dataset-based-on-orthogroups).
 
 
 2. ```<annotations.csv>```:
