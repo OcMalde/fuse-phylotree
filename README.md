@@ -35,15 +35,15 @@ U --> C
 
 A@{ shape: doc, label: "sequences.fasta" } --> m1@{label:"modules_segm.py: segmentation_and_module_phylo()"}
 m1 --> m2@{ shape: docs, label: "module_segm_dir_seq/" }
-m2 --> m3[tools.py: segmentation()]
+m2 --> m3@{tools.py: segmentation()}
 m5@{ shape: flag, label: "paloma-D" } o--o|call| m3
 m3 --> m4@{ shape: doc, label: "seq_filename.dot" }
-m4 --> m6[tools.py: modules_fasta()]
+m4 --> m6@{tools.py: modules_fasta()}
 m6 --> m7@{ shape: docs, label: "module_seq/*.fasta" }
-m7 --> m8[tools.py: all_phylo()]
+m7 --> m8@{tools.py: all_phylo()}
 m9@{ shape: flag, label: "PhyML" } o--o|call| m8
 m8 --> m12@{ shape: docs, label: "module_seq/*.tree" }
-m12 --> m10[modules_segm.py: correct_modules_tree()]
+m12 --> m10@{modules_segm.py: correct_modules_tree()}
 m11@{ shape: flag, label: "TreeFix" } o--o|call| m10
 m10 --> m13@{ shape: docs, label: "module_seq/*.treefix.tree" }
 m10 --> m14@{ shape: doc, label: "modules_path_modules.txt" }
@@ -51,7 +51,7 @@ m13 o--o|describe paths of| m14
 
 B@{ shape: doc, label: "sequences.tree" } --> g1{gene tree as input ?}
 g1 -->|yes| g2@{ shape: doc, label: "rooted binary gene tree .tree" }
-g1 -->|no| g3[gene_phylo.py: whole_phylo()]
+g1 -->|no| g3@{gene_phylo.py: whole_phylo()}
 A -.-> g3
 g4@{ shape: flag, label: "Muscle" } o--o|call| g3
 g5@{ shape: flag, label: "TrimAl" } o--o|call| g3
@@ -60,32 +60,32 @@ g7@{ shape: flag, label: "TreeFix" } o--o|call| g3
 g8@{ shape: flag, label: "PhyML (branch len)" } o--o|call| g3
 g3 --> g2
 
-A --> s1[species_phylo.py: taxid_from_fasta()]
+A --> s1@{species_phylo.py: taxid_from_fasta()}
 s2@{ shape: cyl, label: "NCBI Taxonomy" } o--o|use| s1
 s1 --> s3@{ shape: doc, label: "species.tree" }
 
-A --> d1[tools.py: known_domains()]
+A --> d1@{tools.py: known_domains()}
 d1 --> d2@{ shape: doc, label: "domains.csv" }
 
-g2 --> r1[tools.py: seadog_md()]
+g2 --> r1@{tools.py: seadog_md()}
 m14 --> r1
 s3 --> r1
 r2@{ shape: flag, label: "Seadog-MD" } o--o|call| r1
 r1 --> r3@{ shape: doc, label: "seadogMD.output" }
-r3 --> r4[integrates_3phylo.py: write_sp_gene_event()]
+r3 --> r4@{integrates_3phylo.py: write_sp_gene_event()}
 r4 --> r5@{ shape: doc, label: "seadogMD_sp_gene_event.csv" }
 r4 --> r6@{ shape: doc, label: "seadogMD_gene.tree" }
 
-C@{ shape: doc, label: "functional annotations.csv" } --> a1[ances_scenario.py: acs_inference()]
+C@{ shape: doc, label: "functional annotations.csv" } --> a1@{ances_scenario.py: acs_inference()}
 r5 --> a1
 r6 --> a1
 a1 --> a2@{ shape: doc, label: "pastml_seadogMD.csv" }
-a2 --> a3[tools.py: pastml()]
+a2 --> a3@{tools.py: pastml()}
 a4@{ shape: flag, label: "PastML" } o--o|call| a3
 a3 --> a5@{ shape: doc, label: "pastml_seadogMD_combined_ancestral_states.tab" }
 a3 --> a6@{ shape: docs, label: "acs_dir_seadogMD/" }
 
-r3 --> i1[integrate_3phylo.py: __main__()]
+r3 --> i1@{integrate_3phylo.py: __main__()}
 g2 --> i1
 a5 --> i1
 d2 --> i1
