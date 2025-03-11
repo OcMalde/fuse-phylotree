@@ -512,8 +512,11 @@ python3 /fuse-phylotree/integrate_3phylo.py <seadogMD.output> <gene_tree.tree> -
 ```
 For the fibulins example, move in [the working directory](https://github.com/OcMalde/fuse-phylotree/tree/main/data/analyse_fibulin/run_singularity_fibulin/dir_fibuline_phylocharmod)
 :
+
 ```cd dir_fibuline_phylocharmod``` 
+
 and execute the integration module:
+
 ```
 python3 /fuse-phylotree/integrate_3phylo.py seadogMD_fibulin59.output gene_tree_fibulin59/fibulin59.tree --pastml_tab acs_dir_seadogMD_fibulin59_gene/pastml_seadogMD_fibulin59_gene_leaf_Manual_fibulin59_combined_ancestral_states.tab --domains_csv domains_fibulin59.csv
 ``` 
