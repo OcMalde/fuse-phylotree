@@ -321,7 +321,7 @@ The main workflow output is the list of modules and functions that are present, 
 
       This directory contains various iTOL files for the interactive visualisation.
 
-4. *Working directory* - ```working_dir/```:
+v. *Working directory* - ```working_dir/```:
 
       The intermediates outputs obtained at each of the pipeline steps are provided in a directory called ```working_dir_*``` (see [this directory](https://github.com/OcMalde/fuse-phylotree/tree/main/data/analyse_fibulin/run_singularity_fibulin) for an example)
 
