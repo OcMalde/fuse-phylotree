@@ -186,7 +186,7 @@ config:
 flowchart LR
 
 l1@{ shape: doc, label: "input/output file" } --- l2@{ shape: doc, label: "intermediate file" }
-l2 --- l3@{ shape: rectangle, label: "python3_script.py: function()}
+l2 --- l3@{ shape: rectangle, label: "python3_script.py: function()"}
 l3 --- l4@{ shape: flag, label: "external software" }
 
 classDef legend1 fill:#E0B0FF,stroke:#000,stroke-width:4px
