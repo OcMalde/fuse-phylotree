@@ -478,26 +478,15 @@ singularity exec fuse-phylotree.sif python3 /fuse-phylotree/fuse-phylotree.py <s
 
 
 
-# Advanced Usage
+# To build a sequence dataset based on orthogroups
 
+Using simple lists of RefSeq IDs proteins and a FUSE-PhyloTree Docker or Singularity image, you can easily generate a formatted FASTA file for the pipeline. This file will contain the longest protein sequence for each homolog (both orthologs and paralogs) in your input family. Simply run one the following script:
 
-### To integrate already computed results :
-
-```cd working_dir```
-
-```
-python3 /fuse-phylotree/integrate_3phylo.py seadogMD_{input}.output gene_tree_{input}/{input}.tree --pastml_tab acs_dir_seadogMD_{input}_gene/pastml_seadogMD_{input}_gene_leaf_Manual_{input}_combined_ancestral_states.tab --domains_csv domains_{input}.csv
-``` 
-
-### To build a sequence dataset based on orthogroups
-
-Using simple lists of RefSeq IDs proteins and a FUSE-PhyloTree Docker or Singularity image, you can easily generate a formatted FASTA file for the pipeline. This file will contain the longest protein sequence for each homolog (both orthologs and paralogs) in your input family. Simply run one of the following script:
-
-- [make_orthogroup_fasta.sh](https://github.com/OcMalde/fuse-phylotree/blob/main/helper-scripts/make_orthogroup_fasta.sh)
+[make_orthogroup_fasta.sh](https://github.com/OcMalde/fuse-phylotree/blob/main/helper-scripts/make_orthogroup_fasta.sh)
 
 ```Usage: make_orthogroup_fasta.sh <id_seq_file> <name> <docker_image|singularity_image_path>```
 
-> 📑 ```<id_seq_file>``` example:
+> 📑 ```<id_seq_file>``` short example:
 ```txt
 NP_001987.2
 NP_006476.2
@@ -505,67 +494,8 @@ NP_006477.2
 NP_006478.2
 ...
 ```
+Refer to [this file](https://github.com/OcMalde/fuse-phylotree/blob/main/data/analyse_fibulin/advanced/human_fibulins_ids.txt) for the fibulin file example.
 
-<details><summary><strong>:mag: Step by step</strong></summary>
-
-You can use as input any fasta file with ortholog and paralog sequences, as long as their headers are formatted. But we propose a sequence dataset building based on orthogroups from the [OrthoFinder](https://github.com/davidemms/OrthoFinder) tool. As a prerequisite, you will need to select a set of species (and one assembly per species) and to have: 
-- The ```Orthgroup.tsv``` file, computed with OrthoFinder on the proteomes of the selected assemblies of the selected species (to do so, run ```orthofinder -f <directory with all assemblie proteomes in fasta>```).
-- A directory containing the description in ```.gff``` of the selected assemblies (e.g., ```GCF_000002035.6.gff```).
-- An ```assoc_taxid_spName.csv``` file with taxid and species name associations (e.g., ```7955,Danio rerio```).
-- An ```assoc_taxid_assembly.csv``` file with taxid and assembly name associations (e.g., ```7955,GCF_000002035```).
-- An ```my_protein.txt``` file with refseq of the proteins of interest to study (one refseq per line). 
-
-
-To build your own dataset, we propose a methodology for identifying and selecting the longest protein sequence to represent each gene from a list of protein sequences of interest, which may include multiple isoforms' RefSeq IDs for comprehensiveness. Initially, the process involves searching for (pre-computed) orthogroups that contain the provided RefSeq IDs and extracting all associated protein sequences, including orthologs, paralogs, and their various isoforms. Subsequently, each extracted protein sequence undergoes a search for its genomic locus. Proteins are then grouped by gene based on overlapping genomic loci on the same chromosome strand. For each gene (i.e., a group of protein sequences), the longest protein sequence is selected as the representative sequence. The final output consists of these representative sequences as fasta, which are saved to a specified path ```<orthogroup_dir>/isoforms_per_locus/longest_isoform.fasta```, thus offering a comprehensive representation of the protein family of interest.
-
-#### 0. Cluster the proteomes in orthogroups with the ```OrthoFinder```software.
-
-If you are using the Docker image, pre-computed orthogroups and all associated file for 9 species (*7955 - Danio rerio; 9606 - Homo sapiens; 9913 - Bos taurus; 7719 - Ciona intestinalis; 10090 - Mus musculus; 7227 - Drosophila melanogaster; 8364 - Xenopus tropicalis; 6239 - Caenorhabditis elegans; 9031 - Gallus gallus*) are available in the image directory: ```/data_9sp```
-
-> :warning: **The Orthofinder results used human proteom version: GCF_000001405.39**: recent RefSeq may not be retrived (see S1 Table of the article for version of other species assemblies)
-
-#### 1. Select orthogroups with at least one protein of interest, with ```python3 fuse-phylotree/myOrthogroups_fasta.py```.
-```
-usage: myOrthogroups_fasta.py [-h] [--download] orthogroups_file myProtein_file assocF_taxid_sp
-
-positional arguments:
-  orthogroups_file  csv file containing the orthogroups from an orthofinder analysis
-  myProtein_file    text file containing the ncbi id of the our protein of interest
-  assocF_taxid_sp   association file : taxid, specieName
-
-optional arguments:
-  -h, --help        show this help message and exit
-  --download        download proteins sequences of all the proteins in our orthogroups of interest
-```
-With the ```--download``` argument, a fasta directory will be build, containing all sequences of the proteins in the selected orthogroups (i.e., the one containing the proteins of interest).
-
-Example for a file ```<refseqID.txt>``` (simply one refseq ID by line) using pre-computed orthogroups for 9 species: 
-```
-docker run -w $(pwd) -v $(pwd):$(pwd) --rm ghcr.io/ocmalde/fuse-phylotree:v1.0.0 /fuse-phylotree/myOrthogroups_fasta.py /data_9sp/Orthogroups.tsv <refseqID.txt>  /data_9sp/assocF_taxid_spName.csv --download
-```
-
-#### 2. Regroup the protein by gene, based on genomic annotation (gff) and keep only the longest isoform for each gene, with ```python3 fuse-phylotree/gff_regroup_iso_locus.py```.
-
-```
-usage: gff_regroup_iso_locus.py [-h] [--fasta_directory FASTA_DIRECTORY] [--assoc_file ASSOC_FILE] [--gff_directory GFF_DIRECTORY]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --fasta_directory FASTA_DIRECTORY
-                        Directory containing proteins fasta selection files, name in the format selec_taxid.fasta
-  --assoc_file ASSOC_FILE
-                        .csv association file (taxid, db_name)
-  --gff_directory GFF_DIRECTORY
-                        Directory containing genome at the gff format (filename must contains db_name of the assoc_file)
-```
-
-Example for ```<orthogroup_dir>``` (computed on previous step):
-```
-docker run -w $(pwd) -v $(pwd):$(pwd) --rm ghcr.io/ocmalde/fuse-phylotree:v1.0.0 python3 /fuse-phylotree/gff_regroup_iso_locus.py --fasta_directory <orthogroup_dir> --assoc_file /data_9sp/assocF_taxid_dbnt.csv --gff_directory /data_9sp/gff
-```
-The fasta file containing only the longest sequence by gene will be written in ```<orthogroup_dir>/isoforms_per_locus/longest_isoform.fasta``` 
-
-</details>
 
 # Standalone Modules
 
@@ -576,10 +506,17 @@ For example, to compute a phylogenetic tree using Muscle/Trimal/PhyML/Treefix:
 ```
 python3 /fuse-phylotree/gene_phylo.py <fasta_file> <species_tree>
 ```
-To only compute the final intergration module:
+To only compute the final integration module on computed files:
 ```
 python3 /fuse-phylotree/integrate_3phylo.py <seadogMD.output> <gene_tree.tree> --pastml_tab <pastml_seadogMD_combined_ancestral_states.tab> --domains_csv <domains.csv>
 ```
+For the fibulins example, move in [the working directory](https://github.com/OcMalde/fuse-phylotree/tree/main/data/analyse_fibulin/run_singularity_fibulin/dir_fibuline_phylocharmod)
+:
+```cd dir_fibuline_phylocharmod``` 
+and execute the integration module:
+```
+python3 /fuse-phylotree/integrate_3phylo.py seadogMD_fibulin59.output gene_tree_fibulin59/fibulin59.tree --pastml_tab acs_dir_seadogMD_fibulin59_gene/pastml_seadogMD_fibulin59_gene_leaf_Manual_fibulin59_combined_ancestral_states.tab --domains_csv domains_fibulin59.csv
+``` 
 
 ## Softwares
 All the different [included softwares](https://github.com/OcMalde/fuse-phylotree/tree/main#softwares) are usable using the Docker or Singularity image.
