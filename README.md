@@ -523,7 +523,7 @@ and execute the integration module with:
 python3 /fuse-phylotree/integrate_3phylo.py seadogMD_fibulin59.output gene_tree_fibulin59/fibulin59.tree --pastml_tab acs_dir_seadogMD_fibulin59_gene/pastml_seadogMD_fibulin59_gene_leaf_Manual_fibulin59_combined_ancestral_states.tab --domains_csv domains_fibulin59.csv
 ```
  
-<details>
+</details>
 
 ## Softwares
 All the different [included softwares](https://github.com/OcMalde/fuse-phylotree/tree/main#softwares) are usable using the Docker or Singularity image.
