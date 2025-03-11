@@ -511,7 +511,7 @@ To only compute the final integration module on computed files:
 python3 /fuse-phylotree/integrate_3phylo.py <seadogMD.output> <gene_tree.tree> --pastml_tab <pastml_seadogMD_combined_ancestral_states.tab> --domains_csv <domains.csv>
 ```
 
-<details><summary>For the fibulin example</summary>
+<details><summary>Example: Running only the final integration step on the fibulin working directory</summary>
   
 Move in the working directory ([available here](https://github.com/OcMalde/fuse-phylotree/tree/main/data/analyse_fibulin/run_singularity_fibulin/dir_fibuline_phylocharmod)):
             
