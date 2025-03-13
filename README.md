@@ -534,7 +534,7 @@ docker start <CONTAINER ID> && docker exec <CONTAINER ID> /bin/bash -c ". ~/.bas
 Or simply: ```paloma-D --help``` if connected to a container
 
 ```
-singularity exec fuse_phylotree.sif paloma-D --help
+singularity exec fuse-phylotree.sif paloma-D --help
 ``` 
 
 
