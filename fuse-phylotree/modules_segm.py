@@ -12,7 +12,7 @@ import tools
 # Segmentation and modules phylogeny
 #==============================================================================
 
-def segmentation_and_modules_phylo(fasta_file) -> tuple:
+def segmentation_and_modules_phylo(fasta_file, extra_args_paloma=None, extra_args_phyml=None) -> tuple:
     """
     Modules segmentation and the phylogeny for all modules
     """
@@ -25,12 +25,12 @@ def segmentation_and_modules_phylo(fasta_file) -> tuple:
     shutil.copy(fasta_file, w_fasta_file)
     os.chdir(segm_dir)
     # Modules segmentation
-    ms_process, ms_output = tools.segmentation(w_fasta_file)
+    ms_process, ms_output = tools.segmentation(w_fasta_file, extra_args_paloma=extra_args_paloma)
     ms_process.wait()
     # Modules as fasta
     module_directory = tools.modules_fasta(ms_output)
     # Modules phylogeny
-    process_list = tools.all_phylo(module_directory)
+    process_list = tools.all_phylo(module_directory, extra_args_phyml=extra_args_phyml)
     os.chdir(current)
     return process_list, module_directory
 
@@ -61,7 +61,7 @@ def only_modules_phylo(fasta_file, plma_output) -> tuple:
 # Correct modules tree, using gene tree
 #==============================================================================
 
-def correct_modules_tree(modules_fasta_tree_dn, gene_tree_fn) -> tuple:
+def correct_modules_tree(modules_fasta_tree_dn, gene_tree_fn, extra_args_treefix=None, extra_args_raxml=None) -> tuple:
     """
     Use treefix to correct modules trees of a directory, with treefix, using the gene tree
     """
@@ -74,7 +74,7 @@ def correct_modules_tree(modules_fasta_tree_dn, gene_tree_fn) -> tuple:
             tree = Path(f"{filename.parents[0]}/{filename.stem}.phylip_phyml_tree.txt").resolve()
             new_tree = Path(f"{filename.parents[0]}/{filename.stem}.tree").resolve()
             shutil.copy(tree, new_tree)
-            treefix_process, treefix_tree = tools.treefix(fasta, new_tree, gene_tree_fn)
+            treefix_process, treefix_tree = tools.treefix(fasta, new_tree, gene_tree_fn, extra_args_treefix=extra_args_treefix, extra_args_raxml=extra_args_raxml)
             process_list.append(treefix_process)
             abs_path += f"{os.path.abspath(treefix_tree)}\n"
     tree_path_fn = Path(f"modules_paths_{modules_fasta_tree_dn.stem}.txt").resolve()

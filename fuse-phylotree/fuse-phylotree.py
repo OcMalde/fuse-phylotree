@@ -40,7 +40,17 @@ def phylo_char_mod(args) -> None:
         raise ValueError("You must provide a tree file if --infer_gene_tree is not used.")
     if args.infer_gene_tree is not None and args.gene_tree is not None : 
         raise ValueError("You use both the --infer_gene_tree option and supply a tree, choose one way only please")
-    
+    if args.leaf_functions_csv is not None and args.user_pastml_csv is not None : 
+        print("You use both the --user_pastml_csv option and supply an annotation csv, the --user_pastml_csv will be used !")
+    # Check if leaf_functions_csv looks like a tree file
+    if args.leaf_functions_csv and args.leaf_functions_csv.endswith((".nwk", ".tree", ".newick")) and not args.gene_tree:
+        # The user probably meant to skip leaf_functions_csv
+        args.gene_tree = args.leaf_functions_csv
+        args.leaf_functions_csv = None
+    # Then validate:
+    if not args.leaf_functions_csv and not args.user_pastml_csv:
+        parser.error("You must provide either leaf_functions_csv or --user_pastml_csv.")
+
     # Prepare work directory
     if args.output_directory:
         work_dir = str(args.output_directory)
@@ -64,6 +74,10 @@ def phylo_char_mod(args) -> None:
         plma_output = Path(args.plma_file).resolve()
         w_plma_output = Path(f"{work_dir}/{w_fasta_file.stem}_{'_'.join(plma_output.name.split('_')[-2:])}").resolve()
         shutil.copy(plma_output, w_plma_output)
+    if args.user_pastml_csv:
+        user_pastml_csv = Path(args.user_pastml_csv).resolve()
+        w_user_pastml_csv = Path(f"{work_dir}/{user_pastml_csv.name}").resolve()
+        shutil.copy(user_pastml_csv, w_user_pastml_csv)
     os.chdir(work_dir)
     
     # Species phylogeny
@@ -78,12 +92,14 @@ def phylo_char_mod(args) -> None:
         species_tree = species_phylo.getNCBItaxo(taxid_list)
 
     # Launch the Modules segmentation
+    extra_phyml_args = args.phyml_args.split() if args.phyml_args else None
     if args.plma_file:
-        print(f"Paloma-2 output {w_plma_output.name} is provided")
-        modules_segm_process_list, modules_fasta_tree_dn = modules_segm.only_modules_phylo(w_fasta_file, w_plma_output)
+        print(f"Paloma-D output {w_plma_output.name} is provided")
+        modules_segm_process_list, modules_fasta_tree_dn = modules_segm.only_modules_phylo(w_fasta_file, w_plma_output, extra_args_phyml=extra_phyml_args)
     else:
         print(f"Begin the modules segmentation for {fasta_file.name} ...")
-        modules_segm_process_list, modules_fasta_tree_dn = modules_segm.segmentation_and_modules_phylo(w_fasta_file)
+        extra_paloma_args = args.paloma_args.split() if args.paloma_args else None
+        modules_segm_process_list, modules_fasta_tree_dn = modules_segm.segmentation_and_modules_phylo(w_fasta_file, extra_args_paloma=extra_paloma_args, extra_args_phyml=extra_phyml_args)
     
     # Launch knwon domain / motifs recuperation
     print(f"Begin search of known domains / motifs for {fasta_file.name} ...")
@@ -117,7 +133,9 @@ def phylo_char_mod(args) -> None:
     # Write the main output with module descriptions
     modules_segm.write_2_module_descriptions(modules_fasta_tree_dn, f'{w_fasta_file.parents[1]}/2_module_descriptions.csv')
     print(f"Begin modules tree correction using {gene_tree_fn.name} ...")
-    correct_modules_tree_process_list, correct_modules_tree_path_fn = modules_segm.correct_modules_tree(modules_fasta_tree_dn, gene_tree_fn)
+    extra_treefix_args = args.treefix_args.split() if args.treefix_args else None
+    extra_raxml_args = args.raxml_args.split() if args.raxml_args else None
+    correct_modules_tree_process_list, correct_modules_tree_path_fn = modules_segm.correct_modules_tree(modules_fasta_tree_dn, gene_tree_fn, extra_args_treefix=extra_treefix_args, extra_args_raxml=extra_raxml_args)
     # Wait for the end of these corrections (need it to continue)
     for tf_proc in correct_modules_tree_process_list: 
         tf_proc.wait()
@@ -129,7 +147,8 @@ def phylo_char_mod(args) -> None:
     
     # Make the DGS-reconciliation
     print(f"Begin DGS reconciliation ...")
-    dgs_reconciliation_process, dgs_reconciliation_output_fn = tools.seadog_md(species_tree, gene_tree_fn, correct_modules_tree_path_fn)
+    extra_seadog_args = args.seadog_args.split() if args.seadog_args else None
+    dgs_reconciliation_process, dgs_reconciliation_output_fn = tools.seadog_md(species_tree, gene_tree_fn, correct_modules_tree_path_fn, extra_args=extra_seadog_args)
     # Wait for dgs reconciliation to end (need the gene-specie reconciliation)
     dgs_reconciliation_process.wait()
     print(f"DGS reconciliation finished")
@@ -138,7 +157,9 @@ def phylo_char_mod(args) -> None:
     
     # Launch the Ancestral scenario inference
     print(f"Begin ancestral scenario inference for {leaf_functions_csv.name} and {gene_tree_fn.name} ...")
-    ances_scenario_process, pastML_tab_fn = ances_scenario.acs_inference(reconc_gene_tree, w_leaf_functions_csv, sp_gene_event_csv)
+    extra_pastml_args = args.pastml_args.split() if args.pastml_args else None
+    w_user_pastml_csv = w_user_pastml_csv if args.user_pastml_csv else None
+    ances_scenario_process, pastML_tab_fn = ances_scenario.acs_inference(reconc_gene_tree, w_leaf_functions_csv, sp_gene_event_csv, extra_args=extra_pastml_args, user_pastml_csv=w_user_pastml_csv)
     # Wait for ancestral scenario
     ances_scenario_process.wait()
     print(f"Finished the ancestral scenario inference -> {pastML_tab_fn.name}")
@@ -159,12 +180,14 @@ def phylo_char_mod(args) -> None:
 
 def parser():
     parser = argparse.ArgumentParser()
+
+    # Fuse-phylotree arguments
     parser.add_argument("multi_fasta_file",
                         help = "Multi fasta file, with specific formated header >RefSeq_taxid (ex : >XP_012810820.2_8364)",
                         type=str)
     parser.add_argument("leaf_functions_csv",
                         help = "csv file containing for each of our sequence, the list of his functions (ex : XP_012810820.2, P59509 | P999999)",
-                        type=str)
+                        type=str, nargs = "?")
     parser.add_argument("gene_tree",
                         help = "Gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, must correspond to the sequences in the multi fasta file !)",
                         type=str, nargs = "?")
@@ -180,9 +203,33 @@ def parser():
     parser.add_argument("--plma_file",
                         help = "Paloma-2 output file (.agraph format, .dot, or .oplma format)",
                         type=str)
+    parser.add_argument("--user_pastml_csv",
+                        help = "PastML full input file, corresponding full custom states to use for the different sequence id (.csv format); eg, header: 'id,P59509,P999999', data: 'XP_012810820.2,1,0' or 'NP_001278744.1,0,,' ; unknown states (empty) will be inferred based on known states; sequence id will be converted to fit the reconcilied gene tree ids; ",
+                        type=str)
     parser.add_argument("--reconc_domains",
                         help = "Do a DGS reconciliation with known modules (pfam / prosite)",
                         action="store_true")
+    
+    # Custom third party software arguments (as raw strings)
+    parser.add_argument("--paloma_args", 
+                        type=str, 
+                        help='Custom arguments to pass to paloma-D (e.g, "--thr 5 --min-size 5")')
+    parser.add_argument("--phyml_args", 
+                        type=str, 
+                        help='Custom arguments to pass to PhyML for module trees inference (e.g, "--model JTT")')
+    parser.add_argument("--treefix_args", 
+                        type=str, 
+                        help='Custom arguments to pass to TreeFix for gene-modules (e.g, "--niter 100 -D 1 -L 1" - corresponds to options inside -E from treefix or to --niter)')
+    parser.add_argument("--raxml_args", 
+                        type=str, 
+                        help='Custom arguments to pass to RaxML (for TreeFix) for gene-modules (e.g, "-m PROTGAMMAJTT" - corresponds at options inside -e from treefix)')
+    parser.add_argument("--seadog_args", 
+                        type=str, 
+                        help='Custom arguments to pass to SEADOG-MD (e.g, "--DD 5 --DL 1 --DTA 20 --GD 2 --GL 1")')
+    parser.add_argument("--pastml_args", 
+                        type=str, 
+                        help='Custom arguments to pass to PastML (e.g, "--prediction_method ACCTRAN -m JTT")')
+    
     return parser.parse_args()
 
 #==============================================================================

@@ -71,7 +71,7 @@ def trimal(msa_fasta, gt="0.9", cons="05") -> tuple:
     process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
     return process, out_fn
 
-def phylo(msa_fasta, d="aa") -> tuple:
+def phylo(msa_fasta, d="aa", extra_args_phyml=None) -> tuple:
     """
     Phylogenetic inference of a given msa_file
     """
@@ -94,6 +94,9 @@ def phylo(msa_fasta, d="aa") -> tuple:
             "-d", d,
             "--no_memory_check"
             ]
+    # Add extra arguments if provided
+    if extra_args_phyml:
+        cmd += extra_args_phyml
     cmd = ' '.join(env + cmd)
     if len(node) > 2:
         process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
@@ -105,7 +108,7 @@ def phylo(msa_fasta, d="aa") -> tuple:
         process = subprocess.Popen("echo -n", shell=True, stdout=open(os.devnull, 'wb'))
     return process, out_fn
 
-def all_phylo(directory) -> tuple:
+def all_phylo(directory, extra_args_phyml=None) -> tuple:
     """
     Phylogenetic inference for all the msa_file of a given directory
     """
@@ -113,7 +116,7 @@ def all_phylo(directory) -> tuple:
     for filename in Path(directory).iterdir():
         filename.resolve()
         if filename.suffix == ".fasta":
-            process, out_fn = phylo(filename)
+            process, out_fn = phylo(filename, extra_args_phyml=extra_args_phyml)
             process_list.append(process)
     return process_list
 
@@ -171,25 +174,52 @@ def compute_branch_length(msa_fasta, treefix_tree, d="aa", o="lr") -> tuple:
         process = subprocess.Popen("echo -n", shell=True, stdout=open(os.devnull, 'wb'))
     return process, out_fn
 
-def segmentation(fasta_file, q="2", m="1", M="20", t="10") -> tuple:
+def segmentation(fasta_file, q="2", m="1", M="20", t="10", extra_args_paloma=None) -> tuple:
     """
     Module segmentation using paloma-2 (partial local multiple alignment)
     Output file being the .agraph file (yaml format)
     """
-    out_fn = Path(f"{fasta_file.stem}_t{t}m{m}M{M}.oplma").resolve()
     if config['ENV']['PALOMA-2']:
         env = config['ENV']['PALOMA'].split(' ') 
     else: 
         env = []
+
+    # Init list for not already used paloma arg
+    e_extra_args_paloma = []
+    # Parse extra args
+    if extra_args_paloma:
+        extra_split = extra_args_paloma
+        i = 0
+        while i < len(extra_split):
+            arg = extra_split[i]
+            val = extra_split[i + 1] if i + 1 < len(extra_split) else ""
+            # Override if already defined
+            if '-t' or '--thres' in arg:
+                t = int(val)
+            elif '-q' or '--quorum' in arg:
+                q = int(val)
+            elif '-m' or '--min-size' in arg:
+                m = int(val)
+            elif '-M' or '--max-size' in arg:
+                M = int(val)
+            else:
+                e_extra_args_paloma.append(f"{arg} {val}")
+            i += 2  # move to next pair
+
+    out_fn = Path(f"{fasta_file.stem}_t{t}m{m}M{M}.oplma").resolve()
+
     cmd = [
             config['PROGRAMS']['PALOMA-2'],
             "-i", f"{fasta_file}",
-            "-q", q,
-            "-m", m,
-            "-M", M,
-            "-t", t,
+            "-q", f'{q}',
+            "-m", f'{m}',
+            "-M", f'{M}',
+            "-t", f'{t}',
             "--oplma",
             ]
+    # Add extra arguments if provided
+    if len(e_extra_args_paloma) > 0:
+        cmd += e_extra_args_paloma
     cmd = ' '.join(env + cmd)
     process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
     return process, out_fn
@@ -210,11 +240,11 @@ def modules_fasta(ms_output) -> str:
             env = config['ENV']['PLMA2DOT'].split(' ') 
         else: 
             env = []
-            cmd = [
-                    config['PROGRAMS']['PLMA2DOT'],
-                    "-i", f"{ms_output}",
-                    "-o", f"{output_dot}",
-                    ]
+        cmd = [
+                config['PROGRAMS']['PLMA2DOT'],
+                "-i", f"{ms_output}",
+                "-o", f"{output_dot}",
+                ]
         cmd = ' '.join(env + cmd)
         process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
         process.wait()
@@ -226,7 +256,7 @@ def modules_fasta(ms_output) -> str:
         dot_fastaBlocs.make_module_directory(ms_output, thres, module_directory)
     return module_directory
 
-def treefix(msa_fasta, phylo_tree, species_tree, A=".fasta", model="PROTGAMMAJTT", V="0", niter="100") -> tuple:
+def treefix(msa_fasta, phylo_tree, species_tree, A=".fasta", model="PROTGAMMAJTT", V="0", niter="100", extra_args_treefix=None, extra_args_raxml=None) -> tuple:
     """
     Correction of a given tree, using a guide tree
     """
@@ -243,6 +273,35 @@ def treefix(msa_fasta, phylo_tree, species_tree, A=".fasta", model="PROTGAMMAJTT
         env = config['ENV']['TREEFIX'].split(' ') 
     else: 
         env = []
+    
+    # Set default RAxML args and allow override of niter
+    raxml_args = []
+    dtl_args = []
+    # Parse extra args
+    if extra_args_raxml:
+        extra_split = extra_args_raxml
+        i = 0
+        while i < len(extra_split):
+            arg = extra_split[i]
+            val = extra_split[i + 1] if i + 1 < len(extra_split) else ""
+            if "-m" in arg:
+                model = val  # override model
+            else:
+                raxml_args.append(f"{arg} {val}")
+            i += 2  # move to next pair
+    raxml_args.append(f"-m {model}")
+    if extra_args_treefix:
+        extra_split = extra_args_treefix
+        i = 0
+        while i < len(extra_split):
+            arg = extra_split[i]
+            val = extra_split[i + 1] if i + 1 < len(extra_split) else ""
+            if "--niter" in arg:
+                niter = val  # override niter
+            else:
+                dtl_args.append(f"{arg} {val}")
+            i += 2  # move to next pair
+
     cmd = [
             config['PROGRAMS']['TREEFIX'],
             "-i", f"{tree_to_fix_path}",
@@ -251,7 +310,8 @@ def treefix(msa_fasta, phylo_tree, species_tree, A=".fasta", model="PROTGAMMAJTT
             "-A", str(A),
             "-V", str(V),
             "--niter", f"{niter}",
-            "-e", "'-m", f"{model}'"
+            "-e", f"'{' '.join(raxml_args)}'",
+            "-E", f"'{' '.join(dtl_args)}'"
             ]
     cmd = ' '.join(env + cmd)
     process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
@@ -294,7 +354,7 @@ def make_smap(directory, specie_tree) -> str:
     smapFile.close()
     return outName
 
-def pastml(gene_tree, pastml_csv, sep=',') -> tuple:
+def pastml(gene_tree, pastml_csv, sep=',', extra_args=None) -> tuple:
     """
     Run pastML
     """
@@ -311,11 +371,14 @@ def pastml(gene_tree, pastml_csv, sep=',') -> tuple:
             "-o", f"{out_fn}",
             #"--forced_joint"
             ]
+    # Add extra arguments if provided
+    if extra_args:
+        cmd += extra_args
     cmd = ' '.join(env + cmd)
     process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
     return process, out_fn
 
-def seadog_md(species_tree, gene_tree, path_modules_tree) -> tuple:
+def seadog_md(species_tree, gene_tree, path_modules_tree, extra_args=None) -> tuple:
     """
     Make a DGS phylogenetic reconciliation, using SEADOG-MD
     """
@@ -335,6 +398,9 @@ def seadog_md(species_tree, gene_tree, path_modules_tree) -> tuple:
             "-d", f"{path_modules_tree}",
             "-o", f"{out_fn}",
             ]
+    # Add extra arguments if provided
+    if extra_args:
+        cmd += extra_args
     cmd = ' '.join(env + cmd)
     process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
     return process, out_fn

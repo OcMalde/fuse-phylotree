@@ -8,13 +8,14 @@ import argparse
 from ete3 import Tree
 import tools
 import shutil
+import csv
 from pathlib import Path
 
 #==============================================================================
 # Infers ancestral scenario from tree and function csv
 #==============================================================================
 
-def acs_inference(gene_tree_fn, gene_functions_csv, sp_gene_event_csv) -> tuple:
+def acs_inference(gene_tree_fn, gene_functions_csv, sp_gene_event_csv, extra_args=None, user_pastml_csv=None) -> tuple:
     """
     Ancestral scenario inference for a gene_tree and his leaf associated functions (from a csv)
     """
@@ -23,15 +24,20 @@ def acs_inference(gene_tree_fn, gene_functions_csv, sp_gene_event_csv) -> tuple:
     if not os.path.exists(acs_dir):
         os.makedirs(acs_dir)
     w_gene_tree_fn = Path(f"{acs_dir}/{gene_tree_fn.name}").resolve()
-    w_gene_functions_csv = Path(f"{acs_dir}/{gene_functions_csv.name}").resolve()
     w_sp_gene_event_csv = Path(f"{acs_dir}/{sp_gene_event_csv.name}").resolve()
     shutil.copy(gene_tree_fn, w_gene_tree_fn)
-    shutil.copy(gene_functions_csv, w_gene_functions_csv)
     shutil.copy(sp_gene_event_csv, w_sp_gene_event_csv)
     # Make the pastml input csv
-    p_gene_tree_fn, pastml_csv = write_pastml_csv(w_gene_tree_fn, w_gene_functions_csv, w_sp_gene_event_csv)
+    if user_pastml_csv:
+        w_user_pastml_csv = Path(f"{acs_dir}/{user_pastml_csv.name}").resolve()
+        shutil.copy(user_pastml_csv, w_user_pastml_csv)
+        p_gene_tree_fn, pastml_csv = convert_pastml_csv(w_gene_tree_fn, w_user_pastml_csv)
+    else:
+        w_gene_functions_csv = Path(f"{acs_dir}/{gene_functions_csv.name}").resolve()
+        shutil.copy(gene_functions_csv, w_gene_functions_csv)
+        p_gene_tree_fn, pastml_csv = write_pastml_csv(w_gene_tree_fn, w_gene_functions_csv, w_sp_gene_event_csv)
     # Run pastml
-    ances_scenario_process, pastML_tab_fn = tools.pastml(p_gene_tree_fn, pastml_csv)
+    ances_scenario_process, pastML_tab_fn = tools.pastml(p_gene_tree_fn, pastml_csv, extra_args=extra_args)
     return ances_scenario_process, pastML_tab_fn
 
 #==============================================================================
@@ -117,6 +123,39 @@ def write_pastml_csv(tree_file, leaf_functions_csv, sp_gene_event_csv) -> tuple:
         for leaf, pres in dict_leaf_pres.items():
             csv_file.write(f"{leaf},{','.join(pres)}\n")
     return tree_file, pastml_csv
+
+def convert_pastml_csv(tree_file, leaf_functions_csv) -> tuple:
+    """
+    Convert an pastml formated file used as a pastml input
+    to used leaf named from dgs
+    https://github.com/evolbioinfo/pastml
+    id, function1, function2
+    leaf_node_name, (0|1||), (0|1||), ...
+    """
+    tree = Tree(str(tree_file), format=1)
+    # Make a map from cleaned gene IDs to actual tree leaf names
+    tree_leaves = {leaf.name.replace("_", "").replace(".", ""): leaf.name for leaf in tree.iter_leaves()}
+    output_csv = Path(tree_file).with_suffix(".pastml.csv")
+    mapped_rows = []
+    with open(leaf_functions_csv, "r") as infile:
+        reader = csv.reader(infile)
+        headers = next(reader)
+        mapped_rows.append(headers)
+        for row in reader:
+            gene = row[0]
+            for node in tree.traverse("levelorder"):
+                if gene.replace("_","") in node.name:
+                    leaf = node.name 
+            if 'leaf' in locals():
+                #mapped_rows.append([leaf] + row[1:])
+                mapped_rows.append([leaf] + [int(float(val)) if val.strip() != '' else '' for val in row[1:]])
+            else:
+                print(f"[WARNING] Gene ID '{gene}' not matched to any leaf in tree.")
+    # Write the new CSV
+    with open(output_csv, "w", newline="") as out_csv:
+        writer = csv.writer(out_csv, delimiter=",")
+        writer.writerows(mapped_rows)
+    return tree_file, output_csv
 
 #==============================================================================
 # Consider the species - genes reconciliations event
