@@ -31,6 +31,8 @@ File required for anlayse :
 
 ## Fuse-phylotree launch on fibulins : run_singularity_fibulin
 
+This repository contains all input and output files from the analysis presented in the appendix of the manuscript *FUSE-PhyloTree: Linking functions and sequence conservation modules of a protein family through phylogenomic analysis*. The appendix, titled *Illustrated use-case of FUSE-PhyloTree on the fibulin protein family*, provides a step-by-step demonstration of the workflow applied to this protein family. These files include all necessary input data and the corresponding results generated during the analysis.
+
 Script : lanceur_singularity.sh 
 
 Input : 
