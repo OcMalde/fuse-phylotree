@@ -1,6 +1,7 @@
 # Functions for programs call of the basics MSA / phylogenetic tools
 
 import os
+import sys
 import shutil
 import subprocess
 import codecs
@@ -174,7 +175,7 @@ def compute_branch_length(msa_fasta, treefix_tree, d="aa", o="lr") -> tuple:
         process = subprocess.Popen("echo -n", shell=True, stdout=open(os.devnull, 'wb'))
     return process, out_fn
 
-def segmentation(fasta_file, q="2", m="1", M="20", t="10", extra_args_paloma=None) -> tuple:
+def segmentation(fasta_file, q="2", m="1", M="20", t="10", m_iter=0, extra_args_paloma=None) -> tuple:
     """
     Module segmentation using paloma-2 (partial local multiple alignment)
     Output file being the .agraph file (yaml format)
@@ -207,6 +208,10 @@ def segmentation(fasta_file, q="2", m="1", M="20", t="10", extra_args_paloma=Non
             i += 2  # move to next pair
 
     out_fn = Path(f"{fasta_file.stem}_t{t}m{m}M{M}.oplma").resolve()
+    # If not first iteration, just return the name of the oplma that is already computed
+    if int(m_iter) > 0:
+        process = subprocess.Popen([sys.executable, "-c", "exit(0)"], stdout=open(os.devnull, 'wb'))
+        return process, out_fn
 
     cmd = [
             config['PROGRAMS']['PALOMA-2'],
@@ -378,11 +383,11 @@ def pastml(gene_tree, pastml_csv, sep=',', extra_args=None) -> tuple:
     process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
     return process, out_fn
 
-def seadog_md(species_tree, gene_tree, path_modules_tree, extra_args=None) -> tuple:
+def seadog_md(species_tree, gene_tree, path_modules_tree, m_iter=0, extra_args=None) -> tuple:
     """
     Make a DGS phylogenetic reconciliation, using SEADOG-MD
     """
-    out_fn = Path(f"seadogMD_{gene_tree.stem.split('_')[-1].split('.')[0]}.output").resolve()
+    out_fn = Path(f"{m_iter+1}_seadogMD_{gene_tree.stem.split('_')[-1].split('.')[0]}.output").resolve()
     gene_tree_directory = Path(f"{species_tree.parents[0]}/gene_tree_{gene_tree.stem.split('.')[0]}").resolve()
     if not os.path.exists(gene_tree_directory):
         os.makedirs(gene_tree_directory)

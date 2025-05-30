@@ -12,6 +12,7 @@ Script that treat and load an seadog .output reconciliation file
 
 import argparse
 import os
+import csv
 import random
 import time
 import requests
@@ -22,6 +23,8 @@ from pathlib import Path
 from natsort import natsorted
 from ete3 import Tree
 from itertools import chain
+from collections import defaultdict
+
 
 #==============================================================================
 # Conserved module class 
@@ -33,13 +36,15 @@ class c_module:
     Represents a module and build his itol string
     """
 
-    def __init__(self, name, start, end, gene, module_node_name):
+    def __init__(self, name, start, end, gene, module_node_name='', freq=1.1):
         # Known
         self.name = name
         self.start = start
         self.end = end
         self.gene = gene
         self.module_node_name = module_node_name
+        # Default frequency use 1.1 as placeholder, it is set later
+        self.freq = freq
         # To define
         self.shape = None
         self.color = None
@@ -1177,6 +1182,84 @@ def genes_containing_modulesComp_whole(modules_composition, dict_gene_moduleList
     return gene_list
 
 #==============================================================================
+# Regroup multiples gene:modules lists into one (for iterative module evolutions outputs)
+#==============================================================================
+
+def rgrp_all_gene_module_lists(all_dict_gene_moduleList, freq_thres) -> str:
+    """
+    Regroup different dict_gene_moduleList into one, and write it into a csv file
+    The different dict_gene_moduleList are produced by the different module evolution iterations
+    Regrouping them aims to discard and filter out non robusts gene:modules mappings
+    """
+    num_dicts = len(all_dict_gene_moduleList)
+    all_genes = [set(d.keys()) for d in all_dict_gene_moduleList]
+
+    # Step 1: Check all gene keys are the same
+    if not all(genes == all_genes[0] for genes in all_genes):
+        raise ValueError("Not all gene sets are identical across module dictionaries.")
+    genes = all_genes[0]
+
+    # Step 2: Count frequencies of each gene:module association
+    freq_counter = defaultdict(int)
+    module_objects = {}
+    for d in all_dict_gene_moduleList:
+        for gene, modules in d.items():
+            for mod in modules:
+                key = (gene, mod.name, mod.start, mod.end)
+                freq_counter[key] += 1
+                module_objects[key] = mod  # Keep a representative object
+
+    # Step 3: Filter and build final regrouped dict
+    rgrp_dict_gene_moduleList = defaultdict(list)
+    for (gene, name, start, end), count in freq_counter.items():
+        freq = count / num_dicts
+        if float(freq) > float(freq_thres):
+            mod = module_objects[(gene, name, start, end)]
+            mod.freq = freq
+            rgrp_dict_gene_moduleList[gene].append(mod)
+
+    # Step 4: Write output CSV files
+    output_dir = Path("./module_output")
+    output_dir.mkdir(exist_ok=True)
+    module_list_csv = output_dir / "regrouped_gene_module_list.csv"
+    freq_map_csv = output_dir / "gene_module_frequency_map.csv"
+
+    with open(module_list_csv, "w", newline="") as out_csv:
+        writer = csv.writer(out_csv)
+        writer.writerow(["gene", "module_name", "start", "end", "freq"])
+        for gene, modules in rgrp_dict_gene_moduleList.items():
+            for mod in modules:
+                writer.writerow([gene, mod.name, mod.start, mod.end, mod.freq])
+
+    with open(freq_map_csv, "w", newline="") as freq_csv:
+        writer = csv.writer(freq_csv)
+        writer.writerow(["gene", "module_name", "start", "end", "freq"])
+        for (gene, name, start, end), count in freq_counter.items():
+            freq = count / num_dicts
+            writer.writerow([gene, name, start, end, freq])
+
+    return module_list_csv
+
+def load_gene_moduleList(module_list_csv) -> dict:
+    """
+    Load csv file containing gene:module list
+    """
+    dict_gene_moduleList = defaultdict(list)
+    with open(module_list_csv, "r") as infile:
+        reader = csv.DictReader(infile)
+        for row in reader:
+            gene = row["gene"]
+            mod = c_module(
+                name=row["module_name"],
+                start=row["start"],
+                end=row["end"],
+                gene=gene,
+                freq=row.get("freq", 0.0)
+            )
+            dict_gene_moduleList[gene].append(mod)
+    return dict_gene_moduleList
+
+#==============================================================================
 # Write output itol files
 #==============================================================================
 
@@ -1436,7 +1519,7 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
         pred_string = ""
         # Get module composition, and parent module compositions, to compare them
         if node.name in dict_gene_domainList:
-            interest_modules_list = [module.name for module in dict_gene_domainList[node.name]]
+            interest_modules_list = [f'{module.name} ({float(module.freq):.2f})' for module in dict_gene_domainList[node.name]]
         # Get the change
         news_module = dict_gene_moduleChange[node.name][0]
         lost_module = dict_gene_moduleChange[node.name][1]
@@ -1500,7 +1583,11 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
             itol_string += f"<a target='_blank' href='{func_url}{uniprot}'>{name} </a>"
         itol_string += "</p>"
         # Modules compositions and their change
-        interest_modules_list = natsorted(list(set(interest_modules_list)))
+        # Sort using only the base name for ordering (so it does not use frequencies here)
+        interest_modules_list = natsorted(
+            list(set(interest_modules_list)),
+            key=lambda x: x.split()[0]  # Sort using just "B53", ignore the freq part
+            )
         news_module =  natsorted(list(set(news_module)))
         lost_module = natsorted(list(set(lost_module)))
         itol_string += f"<B style='color:black'> Module composition ({len(interest_modules_list)}) </B> <p style='color:black'>{' '.join(interest_modules_list)}</p>"
@@ -1605,45 +1692,6 @@ def itol_uploader(zip_directory, api_keys, project_name) -> None:
         time.sleep(1)
         resp = requests.post(batch_uploader, files=files, data=param)
 
-def whole_model_itol_upload(directory, leaf_itol_directory) -> None:
-    """
-    Use bash uploader api to upload :
-    into a new project, 1 tree per internal node
-    """
-    # My itol api access key
-    api_keys = "USSOMCeOlDATvl6RheIUDw"
-    # Param request
-    batch_uploader = "https://itol.embl.de/batch_uploader.cgi"
-    #project_name = f"{directory}"
-    #project_name = "test1"
-    project_name = "9species_214sequences"
-    # For each modules signatures (= gene node)
-    for file in Path(leaf_itol_directory).iterdir():
-        if file.is_file() and file.suffix == '.txt' and 'dom_mod' in file.stem:
-            gene = file.stem.split("_")[1]
-            # Build gene visu directory
-            gene_directory = f"{directory}/visu_{gene}"
-            if not os.path.exists(gene_directory):
-                os.makedirs(gene_directory)
-            os.system(f"cp {directory}/*.txt {directory}/*.tree {file} {gene_directory}")     
-            # Zip directory
-            zip_directory = gene_directory
-            shutil.make_archive(zip_directory, "zip", gene_directory) 
-            # Set param
-            with open(f"{zip_directory}.zip", "rb") as f:
-                files = {"zipFile" : f}
-                param = {
-                    "APIkey" : api_keys,
-                    "projectName" : project_name,
-                    "treeName" : gene,
-                    "treeDescription" : f"{gene} module signature (gain / lost)"
-                    }
-                # Request
-                resp = requests.post(batch_uploader, files=files, data=param)
-                time.sleep(5)
-                print(gene)
-                print(resp.text)
-
 
 #==============================================================================
 # Argparse parser
@@ -1672,6 +1720,9 @@ def parser():
     parser.add_argument("--pastml_directory",
                         help = "Use the pastml directory (with marginal proba)",
                         type=str)
+    parser.add_argument("--module_compositions",
+                        help = "Use a csv table containing the modules compositions for all genes/gene nodes (with associated frequencies)",
+                        type=str)
     parser.add_argument("--domains_csv",
                         help = "Add an domains csv file, at the format : gene_name, domain_name, start, end",
                         type=str)
@@ -1686,14 +1737,23 @@ if __name__ == "__main__":
     # Read and extract seadog reconciliation output infos
     seadog_output = Path(args.seadog_output).resolve()
     gene_tree_file = Path(args.gene_tree).resolve()
+
+    # TODO: what to do here ? once for a given seadog ? get the different list a different way?
     gene_tree, dict_module_mappingList, dict_module_modTree, gs_mapping_list = read_seadogO(seadog_output, gene_tree_file)
 
-    # Infers modules compositions
-    dict_gene_moduleList, dict_module_mappingList = infers_modulesCompo(gene_tree, dict_module_mappingList, dict_module_modTree)    
+    # If user/pipeline provides module compositions (is expected)
+    if args.module_compositions:
+        dict_gene_moduleList = load_gene_moduleList(args.module_compositions)
+
+    # Else, Infers modules compositions for the given seadog output
+    else:
+        dict_gene_moduleList, dict_module_mappingList = infers_modulesCompo(gene_tree, dict_module_mappingList, dict_module_modTree)    
+    
+    # Infer changes from presences
     dict_gene_moduleChange = make_dict_module_change(dict_gene_moduleList, gene_tree)
 
     # Some preparations for itols files 
-    list_module_gene_recipient = make_module_gene_recipient_list(dict_gene_moduleList, dict_module_mappingList)
+    #list_module_gene_recipient = make_module_gene_recipient_list(dict_gene_moduleList, dict_module_mappingList)
     dict_gene_spGeneEvent = {gs_mapping.entity_1 : gs_mapping.event for gs_mapping in gs_mapping_list}
     
     # If there is an annotations pastml tab file, make it in a dict gene : annotations
@@ -1742,7 +1802,7 @@ if __name__ == "__main__":
     write_itol_moduleNb(f"{directory}/itolBarModulesNb_{seadog_output.stem}.txt", dict_gene_moduleList)
     write_itol_mod_heatmap(f"{directory}/itolModPresence_{seadog_output.stem}.txt", dict_gene_moduleList)
     write_itol_annot_heatmap(f"{directory}/itolAnnotPresence_{seadog_output.stem}.txt", dict_nodeName_annotationsList)
-    write_itol_connectTransfer(f"{directory}/itolModTransfer_{seadog_output.stem}.txt", list_module_gene_recipient)
+    #write_itol_connectTransfer(f"{directory}/itolModTransfer_{seadog_output.stem}.txt", list_module_gene_recipient)
     write_itol_reconcSpGene(f"{directory}/itolSpGeneEvents_{seadog_output.stem}.txt", dict_gene_spGeneEvent)
     write_itol_annotation(f"{directory}/itolGOt_{seadog_output.stem}.txt", {n : aL for n, aL in dict_nodeName_annotationsList.items() if n in gene_tree})
     
@@ -1767,8 +1827,3 @@ if __name__ == "__main__":
         shutil.make_archive(zip_directory, "zip", directory) 
         itol_uploader(f"{zip_directory}.zip", args.itol_api, args.itol_project_name)
         
-    # Big upload (1 tree per leaf file)
-    # whole_model_itol_upload(directory, leaf_itol_directory)
-
-
-

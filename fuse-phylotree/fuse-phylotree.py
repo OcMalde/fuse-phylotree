@@ -91,25 +91,6 @@ def phylo_char_mod(args) -> None:
         print(f"Recuperation of the species phylogeny for {' '.join(taxid_list)} ...")
         species_tree = species_phylo.getNCBItaxo(taxid_list)
 
-    # Launch the Modules segmentation
-    extra_phyml_args = args.phyml_args.split() if args.phyml_args else None
-    if args.plma_file:
-        print(f"Paloma-D output {w_plma_output.name} is provided")
-        modules_segm_process_list, modules_fasta_tree_dn = modules_segm.only_modules_phylo(w_fasta_file, w_plma_output, extra_args_phyml=extra_phyml_args)
-    else:
-        print(f"Begin the modules segmentation for {fasta_file.name} ...")
-        extra_paloma_args = args.paloma_args.split() if args.paloma_args else None
-        modules_segm_process_list, modules_fasta_tree_dn = modules_segm.segmentation_and_modules_phylo(w_fasta_file, extra_args_paloma=extra_paloma_args, extra_args_phyml=extra_phyml_args)
-    
-    # Launch knwon domain / motifs recuperation
-    print(f"Begin search of known domains / motifs for {fasta_file.name} ...")
-    if args.reconc_domains:
-        print(f"And domains fasta building")
-        domains_segm_process_list, domains_fasta_tree_dn, domain_csv = get_domains.domains_fasta_aln_phylo(w_fasta_file)
-        domain_process = subprocess.Popen("echo -n", shell=True, stdout=open(os.devnull, 'wb'))
-    else:    
-        domain_process, domain_csv = tools.known_domains(w_fasta_file)
-    
     # Gene tree
     if args.infer_gene_tree:
         # Launch the gene phylogeny
@@ -123,38 +104,75 @@ def phylo_char_mod(args) -> None:
         gene_tree_fn = w_gene_tree
         print(f"Gene tree {gene_tree_fn.name} is provided ...")
 
-    # Wait the modules segmentation (need the modules trees to continue)
-    for ms_proc in modules_segm_process_list: 
-        ms_proc.wait()
+    # Launch knwon domain / motifs recuperation
+    print(f"Begin search of known domains / motifs for {fasta_file.name} ...")
     if args.reconc_domains:
-        [p.wait() for p in domains_segm_process_list]
-        correct_domains_tree_process_list, correct_domains_tree_path_fn = get_domains.correct_domains_tree(domains_fasta_tree_dn, gene_tree_fn)
-    print(f"Modules segmentation for {fasta_file.name} is finished -> {modules_fasta_tree_dn.name}")
-    # Write the main output with module descriptions
-    modules_segm.write_2_module_descriptions(modules_fasta_tree_dn, f'{w_fasta_file.parents[1]}/2_module_descriptions.csv')
-    print(f"Begin modules tree correction using {gene_tree_fn.name} ...")
-    extra_treefix_args = args.treefix_args.split() if args.treefix_args else None
-    extra_raxml_args = args.raxml_args.split() if args.raxml_args else None
-    correct_modules_tree_process_list, correct_modules_tree_path_fn = modules_segm.correct_modules_tree(modules_fasta_tree_dn, gene_tree_fn, extra_args_treefix=extra_treefix_args, extra_args_raxml=extra_raxml_args)
-    # Wait for the end of these corrections (need it to continue)
-    for tf_proc in correct_modules_tree_process_list: 
-        tf_proc.wait()
-    if args.reconc_domains:
-        [p.wait() for p in correct_domains_tree_process_list]
-        subprocess.run(f"cat {correct_domains_tree_path_fn} >> {correct_modules_tree_path_fn}", shell=True)
+        print(f"And domains fasta building")
+        domains_segm_process_list, domains_fasta_tree_dn, domain_csv = get_domains.domains_fasta_aln_phylo(w_fasta_file)
+        domain_process = subprocess.Popen("echo -n", shell=True, stdout=open(os.devnull, 'wb'))
+    else:    
+        domain_process, domain_csv = tools.known_domains(w_fasta_file)
+
+    # Modules evolutions
+    # Store module:gene mappings
+    all_dict_gene_moduleList = []
+    # Start module evolution iteration (we want to do it multiple times to have a more robust module:gene mapping)
+    for i_module_evo in range(args.iter):
+
+        # Launch the Modules segmentation
+        extra_phyml_args = args.phyml_args.split() if args.phyml_args else None
+        if args.plma_file:
+            print(f"Paloma-D output {w_plma_output.name} is provided")
+            modules_segm_process_list, modules_fasta_tree_dn = modules_segm.only_modules_phylo(w_fasta_file, w_plma_output, m_iter=i_module_evo, extra_args_phyml=extra_phyml_args)
+        else:
+            print(f"{i_module_evo+1}/{args.iter} Begin the modules segmentation for {fasta_file.name} ...")
+            extra_paloma_args = args.paloma_args.split() if args.paloma_args else None
+            modules_segm_process_list, modules_fasta_tree_dn = modules_segm.segmentation_and_modules_phylo(w_fasta_file, m_iter=i_module_evo, extra_args_paloma=extra_paloma_args, extra_args_phyml=extra_phyml_args)
         
-    print(f"Modules trees correction finished -> {correct_modules_tree_path_fn.name}")
+        # Wait the modules segmentation (need the modules trees to continue)
+        for ms_proc in modules_segm_process_list: 
+            ms_proc.wait()
+        if args.reconc_domains:
+            [p.wait() for p in domains_segm_process_list]
+            correct_domains_tree_process_list, correct_domains_tree_path_fn = get_domains.correct_domains_tree(domains_fasta_tree_dn, gene_tree_fn)
+        print(f"{i_module_evo+1}/{args.iter} Modules segmentation for {fasta_file.name} is finished -> {modules_fasta_tree_dn.name}")
+        # Write the main output with module descriptions
+        modules_segm.write_2_module_descriptions(modules_fasta_tree_dn, f'{w_fasta_file.parents[1]}/2_module_descriptions.csv')
+        print(f"{i_module_evo+1}/{args.iter} Begin modules tree correction using {gene_tree_fn.name} ...")
+        extra_treefix_args = args.treefix_args.split() if args.treefix_args else None
+        extra_raxml_args = args.raxml_args.split() if args.raxml_args else None
+        correct_modules_tree_process_list, correct_modules_tree_path_fn = modules_segm.correct_modules_tree(modules_fasta_tree_dn, gene_tree_fn, extra_args_treefix=extra_treefix_args, extra_args_raxml=extra_raxml_args)
+        # Wait for the end of these corrections (need it to continue)
+        for tf_proc in correct_modules_tree_process_list: 
+            tf_proc.wait()
+        if args.reconc_domains:
+            [p.wait() for p in correct_domains_tree_process_list]
+            subprocess.run(f"cat {correct_domains_tree_path_fn} >> {correct_modules_tree_path_fn}", shell=True)
+        
+        print(f"{i_module_evo+1}/{args.iter} Modules trees correction finished -> {correct_modules_tree_path_fn.name}")
+        
+        # Make the DGS-reconciliation
+        print(f"{i_module_evo+1}/{args.iter} Begin DGS reconciliation ...")
+        extra_seadog_args = args.seadog_args.split() if args.seadog_args else None
+        dgs_reconciliation_process, dgs_reconciliation_output_fn = tools.seadog_md(species_tree, gene_tree_fn, correct_modules_tree_path_fn, m_iter=i_module_evo, extra_args=extra_seadog_args)
+        # Wait for dgs reconciliation to end (need the gene-specie reconciliation)
+        dgs_reconciliation_process.wait()
+        print(f"{i_module_evo+1}/{args.iter} DGS reconciliation finished")
+        # Get the species-gene and the gene tree reconciliation events
+        reconc_gene_tree, sp_gene_event_csv = integrate_3phylo.write_sp_gene_event(dgs_reconciliation_output_fn, gene_tree_fn)
+        # TODO: is reconcilied gene tree always the same ? is sp/gene event always the same (fixed gene/species trees)
+
+        # We only want to go until module:gene mappings (modules list associated to every genes)
+        seadog_output = Path(dgs_reconciliation_output_fn).resolve()
+        gene_tree_file = Path(gene_tree_fn).resolve()
+        gene_tree, dict_module_mappingList, dict_module_modTree, gs_mapping_list = integrate_3phylo.read_seadogO(seadog_output, gene_tree_file)
+        dict_gene_moduleList, dict_module_mappingList = integrate_3phylo.infers_modulesCompo(gene_tree, dict_module_mappingList, dict_module_modTree)    
+        # Store module:gene mappings
+        all_dict_gene_moduleList.append(dict_gene_moduleList)
     
-    # Make the DGS-reconciliation
-    print(f"Begin DGS reconciliation ...")
-    extra_seadog_args = args.seadog_args.split() if args.seadog_args else None
-    dgs_reconciliation_process, dgs_reconciliation_output_fn = tools.seadog_md(species_tree, gene_tree_fn, correct_modules_tree_path_fn, extra_args=extra_seadog_args)
-    # Wait for dgs reconciliation to end (need the gene-specie reconciliation)
-    dgs_reconciliation_process.wait()
-    print(f"DGS reconciliation finished")
-    # Get the species-gene and the gene tree reconciliation events
-    reconc_gene_tree, sp_gene_event_csv = integrate_3phylo.write_sp_gene_event(dgs_reconciliation_output_fn, gene_tree_fn)
-    
+    # Give the i produced mapping list directly to regroup them into one (filtering out every gene:modules not seen enough)
+    module_list_csv = integrate_3phylo.rgrp_all_gene_module_lists(all_dict_gene_moduleList, freq_thres=args.mf_thres)
+
     # Launch the Ancestral scenario inference
     print(f"Begin ancestral scenario inference for {leaf_functions_csv.name} and {gene_tree_fn.name} ...")
     extra_pastml_args = args.pastml_args.split() if args.pastml_args else None
@@ -168,7 +186,7 @@ def phylo_char_mod(args) -> None:
     
     # Integrate all
     print(f"Begin DGS / gene and species phylo / function ancestral scenario integration ...")
-    integrate_cmd = f"python3 {os.path.dirname(os.path.abspath(__file__))}/integrate_3phylo.py {dgs_reconciliation_output_fn} {gene_tree_fn} --pastml_tab {pastML_tab_fn} --domains_csv {domain_csv} --itol"
+    integrate_cmd = f"python3 {os.path.dirname(os.path.abspath(__file__))}/integrate_3phylo.py {dgs_reconciliation_output_fn} {gene_tree_fn} --pastml_tab {pastML_tab_fn} --domains_csv {domain_csv} --module_compositions {module_list_csv} --itol"
     integrate_process = subprocess.Popen(integrate_cmd, shell=True, stdout=open(os.devnull, 'wb'))
     integrate_process.wait()
     os.chdir(cwd)
@@ -194,6 +212,14 @@ def parser():
     parser.add_argument("--output_directory",
                         help = "output directory name",
                         type=str)
+    parser.add_argument("--iter",
+                        help = "Number of times the whole module evolution inference will be performed, ie: module tree inference; their corrections; DGS reconciliation (default: 10)",
+                        type=int,
+                        default=10)
+    parser.add_argument("--mf_thres",
+                        help = "Module frequency thresold: frequency needed to consider a module is actually present at an ancestral gene over the module evolution iterations (default: 0.5)",
+                        type=float,
+                        default=0.5)
     parser.add_argument("--species_tree",
                         help = "Species tree to use as a support for the reconciliations (WARNING, must correspond to the taxid use in the other files !)",
                         type=str)
@@ -207,7 +233,7 @@ def parser():
                         help = "PastML full input file, corresponding full custom states to use for the different sequence id (.csv format); eg, header: 'id,P59509,P999999', data: 'XP_012810820.2,1,0' or 'NP_001278744.1,0,,' ; unknown states (empty) will be inferred based on known states; sequence id will be converted to fit the reconcilied gene tree ids; ",
                         type=str)
     parser.add_argument("--reconc_domains",
-                        help = "Do a DGS reconciliation with known modules (pfam / prosite)",
+                        help = "Do a DGS reconciliation with known modules (pfam / prosite) ; not tested",
                         action="store_true")
     
     # Custom third party software arguments (as raw strings)

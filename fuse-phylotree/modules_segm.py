@@ -12,35 +12,50 @@ import tools
 # Segmentation and modules phylogeny
 #==============================================================================
 
-def segmentation_and_modules_phylo(fasta_file, extra_args_paloma=None, extra_args_phyml=None) -> tuple:
+def segmentation_and_modules_phylo(fasta_file, m_iter, extra_args_paloma=None, extra_args_phyml=None) -> tuple:
     """
     Modules segmentation and the phylogeny for all modules
     """
     current = os.getcwd()
     # Prepare directory
-    segm_dir = Path(f"{fasta_file.parents[0]}/modules_segm_dir_{fasta_file.stem}").resolve()
+    segm_dir = Path(f"{fasta_file.parents[0]}/modules_segm_dir_{fasta_file.stem}/").resolve()
     if not os.path.exists(segm_dir):
         os.makedirs(segm_dir)
     w_fasta_file = Path(f"{segm_dir}/{fasta_file.name}").resolve()
     shutil.copy(fasta_file, w_fasta_file)
     os.chdir(segm_dir)
+
     # Modules segmentation
-    ms_process, ms_output = tools.segmentation(w_fasta_file, extra_args_paloma=extra_args_paloma)
+    ms_process, ms_output = tools.segmentation(w_fasta_file, extra_args_paloma=extra_args_paloma, m_iter=m_iter)
     ms_process.wait()
     # Modules as fasta
     module_directory = tools.modules_fasta(ms_output)
+    # Module evo iteration logic: 1 directory for the different trees
+    m_iter_segm_dir = Path(f"{fasta_file.parents[0]}/modules_segm_dir_{fasta_file.stem}/{int(m_iter)+1}_mod_evo/").resolve()
+    if not os.path.exists(m_iter_segm_dir):
+        os.makedirs(m_iter_segm_dir)
+    # Copy module_directory contents into m_iter_segm_dir
+    for item in Path(module_directory).iterdir():
+        dest = m_iter_segm_dir / item.name
+        if item.is_dir():
+            shutil.copytree(item, dest)
+        else:
+            shutil.copy2(item, dest)
+    # Change working directory to m_iter_segm_dir
+    os.chdir(m_iter_segm_dir)
     # Modules phylogeny
-    process_list = tools.all_phylo(module_directory, extra_args_phyml=extra_args_phyml)
+    process_list = tools.all_phylo(m_iter_segm_dir, extra_args_phyml=extra_args_phyml)
+    # Go back
     os.chdir(current)
-    return process_list, module_directory
+    return process_list, m_iter_segm_dir
 
-def only_modules_phylo(fasta_file, plma_output) -> tuple:
+def only_modules_phylo(fasta_file, plma_output, m_iter, extra_args_phyml=None) -> tuple:
     """
     Modules phylogeny for already present module segmentation
     """
     current = os.getcwd()
     # Prepare directory
-    segm_dir = Path(f"{fasta_file.parents[0]}/modules_segm_dir_{fasta_file.stem}").resolve()
+    segm_dir = Path(f"{fasta_file.parents[0]}/modules_segm_dir_{fasta_file.stem}/").resolve()
     if not os.path.exists(segm_dir):
         os.makedirs(segm_dir)   
     w_fasta_file = Path(f"{segm_dir}/{fasta_file.name}").resolve()
@@ -52,10 +67,23 @@ def only_modules_phylo(fasta_file, plma_output) -> tuple:
     ms_output = w_plma_output
     # Modules as fasta
     module_directory = tools.modules_fasta(ms_output)
-    # Module phylogeny
-    process_list = tools.all_phylo(module_directory)
+    # Module evo iteration logic: 1 directory for the different trees
+    m_iter_segm_dir = Path(f"{fasta_file.parents[0]}/modules_segm_dir_{fasta_file.stem}/{int(m_iter)+1}_mod_evo/").resolve()
+    if not os.path.exists(m_iter_segm_dir):
+        os.makedirs(m_iter_segm_dir)
+    # Copy module_directory contents into m_iter_segm_dir
+    for item in Path(module_directory).iterdir():
+        dest = m_iter_segm_dir / item.name
+        if item.is_dir():
+            shutil.copytree(item, dest)
+        else:
+            shutil.copy2(item, dest)
+    # Change working directory to m_iter_segm_dir
+    os.chdir(m_iter_segm_dir)
+    # Modules phylogeny
+    process_list = tools.all_phylo(m_iter_segm_dir, extra_args_phyml=extra_args_phyml)
     os.chdir(current)
-    return process_list, module_directory
+    return process_list, m_iter_segm_dir
 
 #==============================================================================
 # Correct modules tree, using gene tree
