@@ -12,7 +12,7 @@ import tools
 # Segmentation and modules phylogeny
 #==============================================================================
 
-def segmentation_and_modules_phylo(fasta_file, m_iter, extra_args_paloma=None, extra_args_phyml=None) -> tuple:
+def segmentation_and_modules_phylo(fasta_file, m_iter, mod_size_thres, extra_args_paloma=None, extra_args_phyml=None) -> tuple:
     """
     Modules segmentation and the phylogeny for all modules
     """
@@ -29,7 +29,7 @@ def segmentation_and_modules_phylo(fasta_file, m_iter, extra_args_paloma=None, e
     ms_process, ms_output = tools.segmentation(w_fasta_file, extra_args_paloma=extra_args_paloma, m_iter=m_iter)
     ms_process.wait()
     # Modules as fasta
-    module_directory = tools.modules_fasta(ms_output)
+    module_directory = tools.modules_fasta(ms_output, mod_size_thres)
     # Module evo iteration logic: 1 directory for the different trees
     m_iter_segm_dir = Path(f"{fasta_file.parents[0]}/modules_segm_dir_{fasta_file.stem}/{int(m_iter)+1}_mod_evo/").resolve()
     if not os.path.exists(m_iter_segm_dir):
@@ -49,7 +49,7 @@ def segmentation_and_modules_phylo(fasta_file, m_iter, extra_args_paloma=None, e
     os.chdir(current)
     return process_list, m_iter_segm_dir
 
-def only_modules_phylo(fasta_file, plma_output, m_iter, extra_args_phyml=None) -> tuple:
+def only_modules_phylo(fasta_file, plma_output, m_iter, mod_size_thres, extra_args_phyml=None) -> tuple:
     """
     Modules phylogeny for already present module segmentation
     """
@@ -66,7 +66,7 @@ def only_modules_phylo(fasta_file, plma_output, m_iter, extra_args_phyml=None) -
     # Module segmentation is already done and provided
     ms_output = w_plma_output
     # Modules as fasta
-    module_directory = tools.modules_fasta(ms_output)
+    module_directory = tools.modules_fasta(ms_output, mod_size_thres)
     # Module evo iteration logic: 1 directory for the different trees
     m_iter_segm_dir = Path(f"{fasta_file.parents[0]}/modules_segm_dir_{fasta_file.stem}/{int(m_iter)+1}_mod_evo/").resolve()
     if not os.path.exists(m_iter_segm_dir):

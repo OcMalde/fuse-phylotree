@@ -229,7 +229,7 @@ def segmentation(fasta_file, q="2", m="1", M="20", t="10", m_iter=0, extra_args_
     process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
     return process, out_fn
 
-def modules_fasta(ms_output) -> str:
+def modules_fasta(ms_output, thres) -> str:
     """
     Create a directory containing modules fasta file, for a given paloma output file
     """
@@ -253,11 +253,9 @@ def modules_fasta(ms_output) -> str:
         cmd = ' '.join(env + cmd)
         process = subprocess.Popen(cmd, shell=True, stdout=open(os.devnull, 'wb'))
         process.wait()
-        thres = 5
         dot_fastaBlocs.make_module_directory(output_dot, thres, module_directory)
     elif ms_output.suffix == ".dot":
         # Directly from a dot
-        thres = 5
         dot_fastaBlocs.make_module_directory(ms_output, thres, module_directory)
     return module_directory
 

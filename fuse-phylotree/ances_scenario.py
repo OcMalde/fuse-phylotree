@@ -81,8 +81,8 @@ def write_pastml_csv(tree_file, leaf_functions_csv, sp_gene_event_csv) -> tuple:
             event = splited_line[1]
             dict_gene_spGeneEvent[gene] = event
         dict_gene_spGeneEvent[tree.get_tree_root().name] = ""
-    # Search of in orthologs (orthologs after the last duplication of a gene)
-    inOrtho_list = search_in_orthologs(dict_gene_spGeneEvent, tree)
+    # Search of in orthologs (orthologs after the last duplication of a gene) - deprecated
+    #inOrtho_list = search_in_orthologs(dict_gene_spGeneEvent, tree)
     # Keep only phenotype if present at least 2 times (else no sens to infers acr)
     # uniq_func_list = list(set([f for f in uniq_func_list if uniq_func_list.count(f) > 1]))
     uniq_func_list = list(set([f for f in uniq_func_list if uniq_func_list.count(f) > 0]))

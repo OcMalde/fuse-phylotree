@@ -1219,9 +1219,9 @@ def rgrp_all_gene_module_lists(all_dict_gene_moduleList, freq_thres) -> str:
             rgrp_dict_gene_moduleList[gene].append(mod)
 
     # Step 4: Write output CSV files
-    output_dir = Path("./module_output")
+    output_dir = Path("./iter_module_output")
     output_dir.mkdir(exist_ok=True)
-    module_list_csv = output_dir / "regrouped_gene_module_list.csv"
+    module_list_csv = output_dir / f"regrouped_{freq_thres}_gene_module_list.csv"
     freq_map_csv = output_dir / "gene_module_frequency_map.csv"
 
     with open(module_list_csv, "w", newline="") as out_csv:
@@ -1258,6 +1258,87 @@ def load_gene_moduleList(module_list_csv) -> dict:
             )
             dict_gene_moduleList[gene].append(mod)
     return dict_gene_moduleList
+
+def write_all_gene_module_gains_freq_csv(all_dict_gene_moduleChange, output_file="./iter_module_output/gene_module_gains_freq.csv"):
+    """
+    Write a CSV with columns: gene, module_gained, freq (normalized 0-1),
+    and return a dict mapping (gene, module_name) -> freq.
+
+    Parameters:
+        all_dict_gene_moduleChange (list): List of dicts { gene: [[gained_modules], [lost_modules]] },
+                                           where modules have a `.name` attribute.
+        output_file (str): Path to save the CSV file.
+
+    Returns:
+        dict: {(gene, module_name): freq (float between 0 and 1)}
+    """
+    gain_counts = defaultdict(int)
+    total_runs = len(all_dict_gene_moduleChange)
+
+    for gene_dict in all_dict_gene_moduleChange:
+        for gene, (gained_modules, _) in gene_dict.items():
+            for module in gained_modules:
+                gain_counts[(gene, module)] += 1
+
+    freq_dict = {
+        (gene, module): count / total_runs
+        for (gene, module), count in gain_counts.items()
+    }
+
+    with open(output_file, mode="w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["gene", "module_gained", "freq"])
+        for (gene, module), freq in sorted(freq_dict.items(), key=lambda x: -x[1]):
+            writer.writerow([gene, module, f"{freq:.3f}"])
+
+    return output_file
+
+def load_gene_module_gains_csv(input_file):
+    """
+    Load a CSV file of gene:module gain frequencies and return a dict.
+
+    Parameters:
+        input_file (str): Path to the CSV file.
+
+    Returns:
+        dict: {(gene, module_name): freq (float)}
+    """
+    gain_dict = {}
+    
+    with open(input_file, mode="r", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            gene = row["gene"]
+            module = row["module_gained"]
+            freq = float(row["freq"])
+            gain_dict[(gene, module)] = freq
+
+    return gain_dict
+
+def get_func_presence_probability(func, node_name, dir_marginal_probabilities):
+    """
+    Retrieve the presence probability of a function for a given gene
+    from a corresponding marginal_probabilities.tab file.
+    """
+    pattern = f"*character_{func}.model_F81.tab"
+    matches = list(dir_marginal_probabilities.rglob(pattern))
+    if not matches:
+        return None
+    
+    prob_file = matches[0]
+
+    with open(prob_file) as f:
+        for line in f:
+            if line.startswith(node_name + "\t"):
+                parts = line.strip().split("\t")
+                if len(parts) >= 3:
+                    try:
+                        return float(parts[2])  # Probability of presence (1)
+                    except ValueError:
+                        return None
+
+    return None  # Gene not found in file
+
 
 #==============================================================================
 # Write output itol files
@@ -1508,7 +1589,7 @@ def write_itol_domain_and_modules_gained_lost(filename, dict_gene_domainList, di
                         itol_file.write(f",{','.join([module.itol_str_lost() for module in moduleList_lost])}") 
                     itol_file.write("\n")
 
-def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_moduleChange, dict_nodeName_annotationsList, dict_nodeName_annotationsChange) -> None:
+def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_moduleChange, dict_nodeName_annotationsList, dict_nodeName_annotationsChange, dict_gene_moduleGainedList, dir_marginal_probabilities) -> None:
     # Init 
     ncbi_url = "https://www.ncbi.nlm.nih.gov/protein/"
     quickGO_url = "https://www.ebi.ac.uk/QuickGO/term/"
@@ -1535,8 +1616,9 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
             itol_string += f"<p style='color:blue'> {gene_name} -> Internal protein (ancestor inferred by phylo) </p>"
         # GOA annotations change (the full list is far to long, so only go for the changements)
         itol_string += f"<B style='color:black'> Annotation(s) ({len(dict_nodeName_annotationsList[node.name])}) </B> <p style='color:black'>"
+        dir_marginal_probabilities
         for func in dict_nodeName_annotationsList[node.name]:
-            if "GO" in func: 
+            if func.startswith("GO"): 
                 func_url = quickGO_url
                 uniprot = func.replace("O","O:")
                 name = func.replace("O","O:")
@@ -1548,11 +1630,14 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
                 else:
                     uniprot = ""
                     name = func
-            itol_string += f"<a target='_blank' href='{func_url}{uniprot}'>{name} </a>"
+            # Look up presence frequency
+            presence_prob = get_func_presence_probability(func, node.name, dir_marginal_probabilities)
+            freq_str = f" ({presence_prob:.2f})" if presence_prob is not None else ""
+            itol_string += f"<a target='_blank' href='{func_url}{uniprot}'>{name} {freq_str} </a> "
         itol_string += "</p>"
         itol_string += f"<B style='color:green'> Annotation(s) win ({len(dict_nodeName_annotationsChange[node.name][0])}) </B> <p style='color:green'>"
         for func in dict_nodeName_annotationsChange[node.name][0]:
-            if "GO" in func: 
+            if func.startswith("GO"):
                 func_url = quickGO_url
                 uniprot = func.replace("O","O:")
                 name = func.replace("O","O:")
@@ -1564,11 +1649,16 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
                 else:
                     uniprot = ""
                     name = func
-            itol_string += f"<a target='_blank' href='{func_url}{uniprot}'>{name} </a>"
+            # Look up presence frequency
+            presence_prob = get_func_presence_probability(func, node.name, dir_marginal_probabilities)
+            freq_str = f"{presence_prob:.2f}" if presence_prob is not None else ""
+            anc_presence_prob = get_func_presence_probability(func, node.up.name, dir_marginal_probabilities)
+            anc_freq_str = f"{anc_presence_prob:.2f}" if anc_presence_prob is not None else ""
+            itol_string += f"<a target='_blank' href='{func_url}{uniprot}'>{name} ({anc_freq_str} -> {freq_str}) </a> "
         itol_string += "</p>"
         itol_string += f"<B style='color:red'> Annotation(s) lost ({len(dict_nodeName_annotationsChange[node.name][1])}) </B> <p style='color:red'>"
         for func in dict_nodeName_annotationsChange[node.name][1]:
-            if "GO" in func: 
+            if func.startswith("GO"):
                 func_url = quickGO_url
                 uniprot = func.replace("O","O:")
                 name = func.replace("O","O:")
@@ -1583,15 +1673,18 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
             itol_string += f"<a target='_blank' href='{func_url}{uniprot}'>{name} </a>"
         itol_string += "</p>"
         # Modules compositions and their change
-        # Sort using only the base name for ordering (so it does not use frequencies here)
-        interest_modules_list = natsorted(
-            list(set(interest_modules_list)),
-            key=lambda x: x.split()[0]  # Sort using just "B53", ignore the freq part
-            )
+        interest_modules_list = natsorted(list(set(interest_modules_list)))
         news_module =  natsorted(list(set(news_module)))
+        news_module_with_freq = [
+                f"{mod} ({dict_gene_moduleGainedList.get((gene_name, mod), 0.0):.2f})"
+                for mod in news_module
+            ]
         lost_module = natsorted(list(set(lost_module)))
         itol_string += f"<B style='color:black'> Module composition ({len(interest_modules_list)}) </B> <p style='color:black'>{' '.join(interest_modules_list)}</p>"
-        itol_string += f"<B style='color:green'> Module(s) win ({len(news_module)}) </B> <p style='color:green'>{' '.join(news_module)}</p>"
+        itol_string += (
+                        f"<B style='color:green'> Module(s) win ({len(news_module)}) </B> "
+                        f"<p style='color:green'>{' '.join(news_module_with_freq)}</p>"
+                    )
         itol_string += f"<B style='color:red'> Module(s) lost ({len(lost_module)}) </B> <p style='color:red'>{' '.join(lost_module)}</p>"
         itol_string += "\n"
     with open(filename, "w+") as itol_file:
@@ -1723,6 +1816,9 @@ def parser():
     parser.add_argument("--module_compositions",
                         help = "Use a csv table containing the modules compositions for all genes/gene nodes (with associated frequencies)",
                         type=str)
+    parser.add_argument("--module_gain_freq",
+                        help = "Use a csv table containing the observed frequency of gene:module_gained compositions for all module gained observed during iterations (with associated frequencies)",
+                        type=str)
     parser.add_argument("--domains_csv",
                         help = "Add an domains csv file, at the format : gene_name, domain_name, start, end",
                         type=str)
@@ -1738,19 +1834,20 @@ if __name__ == "__main__":
     seadog_output = Path(args.seadog_output).resolve()
     gene_tree_file = Path(args.gene_tree).resolve()
 
-    # TODO: what to do here ? once for a given seadog ? get the different list a different way?
     gene_tree, dict_module_mappingList, dict_module_modTree, gs_mapping_list = read_seadogO(seadog_output, gene_tree_file)
 
     # If user/pipeline provides module compositions (is expected)
     if args.module_compositions:
         dict_gene_moduleList = load_gene_moduleList(args.module_compositions)
-
     # Else, Infers modules compositions for the given seadog output
     else:
         dict_gene_moduleList, dict_module_mappingList = infers_modulesCompo(gene_tree, dict_module_mappingList, dict_module_modTree)    
     
     # Infer changes from presences
     dict_gene_moduleChange = make_dict_module_change(dict_gene_moduleList, gene_tree)
+    # If user/pipeline provides module gained frequency (is expected)
+    if args.module_gain_freq:
+        dict_gene_moduleGainedList = load_gene_module_gains_csv(args.module_gain_freq)
 
     # Some preparations for itols files 
     #list_module_gene_recipient = make_module_gene_recipient_list(dict_gene_moduleList, dict_module_mappingList)
@@ -1761,6 +1858,13 @@ if __name__ == "__main__":
         dict_nodeName_annotationsList = load_pastml_ancestral_states(args.pastml_tab, gene_tree)
     else:
         dict_nodeName_annotationsList = {gene : [] for gene in dict_gene_moduleList.keys()}
+
+    # Use marginal probabilities from PastML for iTOL visu
+    if args.pastml_directory:
+        dir_marginal_probabilities = Path(args.pastml_directory).resolve()
+    else:
+        dir_marginal_probabilities = Path(f'./acs_dir_{seadog_output.stem}_gene/{seadog_output.stem}_gene_pastml/').resolve()
+
     # We also want the GO termes changes on the tree, specially the gain (same algo / different function as module change)
     dict_nodeName_annotationsChange = make_dict_annotation_change(dict_nodeName_annotationsList, gene_tree)
 
@@ -1796,7 +1900,9 @@ if __name__ == "__main__":
                         gene_tree, dict_gene_moduleList, 
                         dict_gene_moduleChange, 
                         dict_nodeName_annotationsList,
-                        dict_nodeName_annotationsChange)
+                        dict_nodeName_annotationsChange,
+                        dict_gene_moduleGainedList,
+                        dir_marginal_probabilities)
     write_itol_modulesComposChange(dict_gene_moduleChange, f"{directory}/itol_modules_PieGainsLost_{seadog_output.stem}.txt")
     write_itol_annotationsChange(dict_nodeName_annotationsChange, f"{directory}/itol_ppi_PieGainsLost_{seadog_output.stem}.txt")
     write_itol_moduleNb(f"{directory}/itolBarModulesNb_{seadog_output.stem}.txt", dict_gene_moduleList)
