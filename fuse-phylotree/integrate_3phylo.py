@@ -1213,7 +1213,7 @@ def rgrp_all_gene_module_lists(all_dict_gene_moduleList, freq_thres) -> str:
     rgrp_dict_gene_moduleList = defaultdict(list)
     for (gene, name, start, end), count in freq_counter.items():
         freq = count / num_dicts
-        if float(freq) > float(freq_thres):
+        if float(freq) >= float(freq_thres):
             mod = module_objects[(gene, name, start, end)]
             mod.freq = freq
             rgrp_dict_gene_moduleList[gene].append(mod)
@@ -1594,6 +1594,7 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
     ncbi_url = "https://www.ncbi.nlm.nih.gov/protein/"
     quickGO_url = "https://www.ebi.ac.uk/QuickGO/term/"
     uniprot_url = "https://www.uniprot.org/uniprot/"
+    genecards_url = "https://www.genecards.org/cgi-bin/carddisp.pl?gene="
     itol_string = "POPUP_INFO\nSEPARATOR COMMA\nDATA\n"
     # Iterate on all nodes
     for node in gene_tree.iter_descendants():
@@ -1628,7 +1629,8 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
                     uniprot = func.split("_")[0]
                     name = func.split("_")[1]
                 else:
-                    uniprot = ""
+                    func_url = genecards_url
+                    uniprot = func
                     name = func
             # Look up presence frequency
             presence_prob = get_func_presence_probability(func, node.name, dir_marginal_probabilities)
@@ -1647,14 +1649,15 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
                     uniprot = func.split("_")[0]
                     name = func.split("_")[1]
                 else:
-                    uniprot = ""
+                    func_url = genecards_url
+                    uniprot = func
                     name = func
             # Look up presence frequency
-            presence_prob = get_func_presence_probability(func, node.name, dir_marginal_probabilities)
-            freq_str = f"{presence_prob:.2f}" if presence_prob is not None else ""
-            anc_presence_prob = get_func_presence_probability(func, node.up.name, dir_marginal_probabilities)
-            anc_freq_str = f"{anc_presence_prob:.2f}" if anc_presence_prob is not None else ""
-            itol_string += f"<a target='_blank' href='{func_url}{uniprot}'>{name} ({anc_freq_str} -> {freq_str}) </a> "
+            #presence_prob = get_func_presence_probability(func, node.name, dir_marginal_probabilities)
+            #freq_str = f"{presence_prob:.2f}" if presence_prob is not None else ""
+            #anc_presence_prob = get_func_presence_probability(func, node.up.name, dir_marginal_probabilities)
+            #anc_freq_str = f"{anc_presence_prob:.2f}" if anc_presence_prob is not None else ""
+            itol_string += f"<a target='_blank' href='{func_url}{uniprot}'>{name} </a> "
         itol_string += "</p>"
         itol_string += f"<B style='color:red'> Annotation(s) lost ({len(dict_nodeName_annotationsChange[node.name][1])}) </B> <p style='color:red'>"
         for func in dict_nodeName_annotationsChange[node.name][1]:
@@ -1668,22 +1671,23 @@ def write_itol_popup(filename, gene_tree, dict_gene_domainList, dict_gene_module
                     uniprot = func.split("_")[0]
                     name = func.split("_")[1]
                 else:
-                    uniprot = ""
+                    func_url = genecards_url
+                    uniprot = func
                     name = func
             itol_string += f"<a target='_blank' href='{func_url}{uniprot}'>{name} </a>"
         itol_string += "</p>"
         # Modules compositions and their change
         interest_modules_list = natsorted(list(set(interest_modules_list)))
         news_module =  natsorted(list(set(news_module)))
-        news_module_with_freq = [
-                f"{mod} ({dict_gene_moduleGainedList.get((gene_name, mod), 0.0):.2f})"
-                for mod in news_module
-            ]
+        #news_module_with_freq = [
+        #        f"{mod} ({dict_gene_moduleGainedList.get((gene_name, mod), 0.0):.2f})"
+        #        for mod in news_module
+        #    ]
         lost_module = natsorted(list(set(lost_module)))
         itol_string += f"<B style='color:black'> Module composition ({len(interest_modules_list)}) </B> <p style='color:black'>{' '.join(interest_modules_list)}</p>"
         itol_string += (
                         f"<B style='color:green'> Module(s) win ({len(news_module)}) </B> "
-                        f"<p style='color:green'>{' '.join(news_module_with_freq)}</p>"
+                        f"<p style='color:green'>{' '.join(news_module)}</p>"
                     )
         itol_string += f"<B style='color:red'> Module(s) lost ({len(lost_module)}) </B> <p style='color:red'>{' '.join(lost_module)}</p>"
         itol_string += "\n"

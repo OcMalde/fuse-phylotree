@@ -199,6 +199,11 @@ def phylo_char_mod(args) -> None:
     integrate_process = subprocess.Popen(integrate_cmd, shell=True, stdout=open(os.devnull, 'wb'))
     integrate_process.wait()
     os.chdir(cwd)
+
+    # Lookup into module-function associations
+    assoc_stats_cmd = f"python3 {os.path.dirname(os.path.abspath(__file__))}/associations_module_annotation_stats.py --modules_functions_evolution 1_modules_and_functions_evolution.csv"
+    assoc_stats_process = subprocess.Popen(assoc_stats_cmd, shell=True, stdout=open(os.devnull, 'wb'))
+    assoc_stats_process.wait()
     print(f"Finished integration")
 
 #==============================================================================
