@@ -1245,6 +1245,7 @@ def load_gene_moduleList(module_list_csv) -> dict:
     Load csv file containing gene:module list
     """
     dict_gene_moduleList = defaultdict(list)
+    module_names = set()
     with open(module_list_csv, "r") as infile:
         reader = csv.DictReader(infile)
         for row in reader:
@@ -1257,6 +1258,12 @@ def load_gene_moduleList(module_list_csv) -> dict:
                 freq=row.get("freq", 0.0)
             )
             dict_gene_moduleList[gene].append(mod)
+            module_names.add(mod.name)
+    # ---- give every module its visual attributes ------------------- #
+    dict_Module_ShapeColor = make_dict_Module_ShapeColor(module_names)
+    for mods in dict_gene_moduleList.values():
+        for m in mods:
+            m.get_shapeColor(dict_Module_ShapeColor)
     return dict_gene_moduleList
 
 def write_all_gene_module_gains_freq_csv(all_dict_gene_moduleChange, output_file="./iter_module_output/gene_module_gains_freq.csv"):
