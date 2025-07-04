@@ -11,25 +11,51 @@ from scipy.stats import fisher_exact
 # Read and load files
 #==============================================================================
 
+import csv
+
+def _split_modules(cell: str) -> list[str]:
+    """
+    Turn 'B10:1.0|B12:0.9' → ['B10', 'B12'].
+    Works for empty strings too.
+    """
+    cell = cell.strip()
+    if not cell:
+        return []
+    return [part.split(":", 1)[0] for part in cell.split("|") if part]
+
 def load_evo_mod_func(filepath: str) -> dict:
     """
-    Load data of a file containing modules and functions evolutions (present,gained,lost at the different gene nodes)
-    Into a dict
+    Parse the evolution table with columns:
+        gene, modules_present, function_present,
+        modules_gained,  function_gained,
+        modules_lost,    function_lost
+    Returns {gene: {...}} where every *modules_* entry is a list of names
+    (frequencies discarded).
     """
-    dict_gene_evoModFunc = {} 
-    with open(filepath, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile) 
+    dict_gene_evoModFunc = {}
+
+    with open(filepath, newline="", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+
         for row in reader:
-            gene = row['gene'].strip()
+            gene = row["gene"].strip()
+
             dict_gene_evoModFunc[gene] = {
-                'modules_present': row['modules_present'].strip().split('|') if row['modules_present'].strip() else [],
-                'function_present': row['function_present'].strip().split('|') if row['function_present'].strip() else [],
-                'module_gained': row['module_gained'].strip().split('|') if row['module_gained'].strip() else [],
-                'function_gained': row['function_gained'].strip().split('|') if row['function_gained'].strip() else [],
-                'module_lost': row['module_lost'].strip().split('|') if row['module_lost'].strip() else [],
-                'function_lost': row['function_lost'].strip().split('|') if row['function_lost'].strip() else []
-            } 
+                "modules_present":  _split_modules(row["modules_present"]),
+                "function_present": row["function_present"].strip().split("|")
+                                    if row["function_present"].strip() else [],
+
+                "module_gained":    _split_modules(row["modules_gained"]),
+                "function_gained":  row["function_gained"].strip().split("|")
+                                    if row["function_gained"].strip() else [],
+
+                "module_lost":      _split_modules(row["modules_lost"]),
+                "function_lost":    row["function_lost"].strip().split("|")
+                                    if row["function_lost"].strip() else [],
+            }
+
     return dict_gene_evoModFunc
+
 
 #==============================================================================
 # Compute stats

@@ -5,6 +5,8 @@
 import argparse
 import subprocess
 import os
+import re
+import sys
 import time
 import shutil
 from pathlib import Path
@@ -36,9 +38,9 @@ def phylo_char_mod(args) -> None:
     leaf_functions_csv = Path(leaf_functions_csv).resolve()
 
     # Test for gene provide or not 
-    if args.infer_gene_tree is None and args.gene_tree is None : 
+    if not args.infer_gene_tree and args.gene_tree is None:
         raise ValueError("You must provide a tree file if --infer_gene_tree is not used.")
-    if args.infer_gene_tree is not None and args.gene_tree is not None : 
+    if args.infer_gene_tree and args.gene_tree is not None: 
         raise ValueError("You use both the --infer_gene_tree option and supply a tree, choose one way only please")
     if args.leaf_functions_csv is not None and args.user_pastml_csv is not None : 
         print("You use both the --user_pastml_csv option and supply an annotation csv, the --user_pastml_csv will be used !")
@@ -178,8 +180,8 @@ def phylo_char_mod(args) -> None:
         all_dict_gene_moduleChange.append(dict_gene_moduleChange)
 
     # Give the i produced mapping list directly to regroup them into one (filtering out every gene:modules not seen enough)
-    module_list_csv = integrate_3phylo.rgrp_all_gene_module_lists(all_dict_gene_moduleList, freq_thres=args.mf_thres)
-    moduleGain_list_csv = integrate_3phylo.write_all_gene_module_gains_freq_csv(all_dict_gene_moduleChange)
+    module_list_csv = integrate_3phylo.rgrp_all_gene_module_lists(all_dict_gene_moduleList)
+    moduleGain_list_csv, moduleLost_list_csv = integrate_3phylo.write_all_gene_module_gain_lost_freq_csv(all_dict_gene_moduleChange)
     print(f"Finished & integreted the results of {args.iter} iterations of modules's evolution")
 
     # Launch the Ancestral scenario inference
@@ -195,7 +197,10 @@ def phylo_char_mod(args) -> None:
     
     # Integrate all
     print(f"Begin DGS / gene and species phylo / function ancestral scenario integration ...")
-    integrate_cmd = f"python3 {os.path.dirname(os.path.abspath(__file__))}/integrate_3phylo.py {dgs_reconciliation_output_fn} {gene_tree_fn} --pastml_tab {pastML_tab_fn} --domains_csv {domain_csv} --module_compositions {module_list_csv} --module_gain_freq {moduleGain_list_csv} --itol"
+    if args.itol:
+        integrate_cmd = f"python3 {os.path.dirname(os.path.abspath(__file__))}/integrate_3phylo.py {dgs_reconciliation_output_fn} {gene_tree_fn} --pastml_tab {pastML_tab_fn} --domains_csv {domain_csv} --module_compositions {module_list_csv} --module_gain_freq {moduleGain_list_csv} --module_lost_freq {moduleLost_list_csv} --mfp_thres {args.pres_fthr} --mfg_thres {args.gain_fthr} --mfl_thres {args.lost_fthr} --itol --itol_api {args.itol_api} --itol_project_name {args.itol_project_name}"
+    else:
+        integrate_cmd = f"python3 {os.path.dirname(os.path.abspath(__file__))}/integrate_3phylo.py {dgs_reconciliation_output_fn} {gene_tree_fn} --pastml_tab {pastML_tab_fn} --domains_csv {domain_csv} --module_compositions {module_list_csv} --module_gain_freq {moduleGain_list_csv} --module_lost_freq {moduleLost_list_csv} --mfp_thres {args.pres_fthr} --mfg_thres {args.gain_fthr} --mfl_thres {args.lost_fthr}"
     integrate_process = subprocess.Popen(integrate_cmd, shell=True, stdout=open(os.devnull, 'wb'))
     integrate_process.wait()
     os.chdir(cwd)
@@ -205,6 +210,31 @@ def phylo_char_mod(args) -> None:
     assoc_stats_process = subprocess.Popen(assoc_stats_cmd, shell=True, stdout=open(os.devnull, 'wb'))
     assoc_stats_process.wait()
     print(f"Finished integration")
+
+#==============================================================================
+# Security against shell injections
+#==============================================================================
+
+_ALLOWED_CLI = re.compile(r'^[-\w\s./=+:]*$')   # safe characters
+
+def _check_free_args(ns: argparse.Namespace, strict: bool = True):
+    """
+    Scan the parsed Namespace *ns* for attributes that end with '_args'
+    and verify they contain only safe characters.
+
+    If strict=True, exit on first offence; otherwise just print a warning.
+    """
+    for name, value in vars(ns).items():
+        if not name.endswith("_args") or value is None:
+            continue
+
+        if not _ALLOWED_CLI.fullmatch(value):
+            msg = (f"Illegal character detected in --{name.replace('_', '-')}: "
+                   f'{value!r}')
+            if strict:
+                sys.exit("error: " + msg)
+            else:
+                print("warning:", msg, file=sys.stderr)
 
 #==============================================================================
 # Argparse parser
@@ -234,18 +264,26 @@ def parser():
                         help = "Module length thresold: minimum module length, shorter modules will be systematically filtered out (default: 5)",
                         type=int,
                         default=5)
-    parser.add_argument("--mf_thres",
-                        help = "Module frequency thresold: frequency needed to consider a module is actually present at an ancestral gene over the module evolution iterations (default: 0.5)",
+    parser.add_argument("--pres_fthr",
+                        help = "Sets the presence frequency threshold for modules. A module is considered present at a given gene only if its presence frequency is strictly greater than (>) the specified threshold. Default: 0.0.",
                         type=float,
-                        default=0.5)
+                        default=0.0)
+    parser.add_argument("--gain_fthr",
+                        help = "Sets the gained frequency threshold for modules. A module is considered gained at a given gene only if its gain frequency is strictly greater than (>) the specified threshold. Default: 0.0.",
+                        type=float,
+                        default=0.0)
+    parser.add_argument("--lost_fthr",
+                        help = "Sets the lost frequency threshold for modules. A module is considered lost at a given gene only if its lost frequency is strictly greater than (>) the specified threshold. Default: 0.0.",
+                        type=float,
+                        default=0.0)
     parser.add_argument("--species_tree",
                         help = "Species tree to use as a support for the reconciliations (WARNING, must correspond to the taxid use in the other files !)",
                         type=str)
     parser.add_argument("--infer_gene_tree",
                         help = "Infer gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, user should check it and reroot it - we advise to only use it if you know what you are doing !)",
-                        type=str) #boolean ?
+                        action="store_true")
     parser.add_argument("--plma_file",
-                        help = "Paloma-2 output file (.agraph format, .dot, or .oplma format)",
+                        help = "Paloma-D output file (.agraph format, .dot, or .oplma format)",
                         type=str)
     parser.add_argument("--user_pastml_csv",
                         help = "PastML full input file, corresponding full custom states to use for the different sequence id (.csv format); eg, header: 'id,P59509,P999999', data: 'XP_012810820.2,1,0' or 'NP_001278744.1,0,,' ; unknown states (empty) will be inferred based on known states; sequence id will be converted to fit the reconcilied gene tree ids; ",
@@ -257,22 +295,33 @@ def parser():
     # Custom third party software arguments (as raw strings)
     parser.add_argument("--paloma_args", 
                         type=str, 
-                        help='Custom arguments to pass to paloma-D (e.g, "--thr 5 --min-size 5")')
+                        help='Custom arguments to pass to paloma-D (e.g, --paloma_args "--thr 5 --min-size 5")')
     parser.add_argument("--phyml_args", 
                         type=str, 
-                        help='Custom arguments to pass to PhyML for module trees inference (e.g, "--model JTT")')
+                        help='Custom arguments to pass to PhyML for module trees inference (e.g, --phyml_args "--model JTT")')
     parser.add_argument("--treefix_args", 
                         type=str, 
-                        help='Custom arguments to pass to TreeFix for gene-modules (e.g, "--niter 100 -D 1 -L 1" - corresponds to options inside -E from treefix or to --niter)')
+                        help='Custom arguments to pass to TreeFix for gene-modules (e.g, --treefix_args "--niter 100 -D 1 -L 1" - corresponds to options inside -E from treefix or to --niter)')
     parser.add_argument("--raxml_args", 
                         type=str, 
-                        help='Custom arguments to pass to RaxML (for TreeFix) for gene-modules (e.g, "-m PROTGAMMAJTT" - corresponds at options inside -e from treefix)')
+                        help='Custom arguments to pass to RaxML (for TreeFix) for gene-modules (e.g, --raxml_args "-m PROTGAMMAJTT" - corresponds at options inside -e from treefix)')
     parser.add_argument("--seadog_args", 
                         type=str, 
-                        help='Custom arguments to pass to SEADOG-MD (e.g, "--DD 5 --DL 1 --DTA 20 --GD 2 --GL 1")')
+                        help='Custom arguments to pass to SEADOG-MD (e.g, --seadog_args "--DD 5 --DL 1 --DTA 20 --GD 2 --GL 1")')
     parser.add_argument("--pastml_args", 
                         type=str, 
-                        help='Custom arguments to pass to PastML (e.g, "--prediction_method ACCTRAN -m JTT")')
+                        help='Custom arguments to pass to PastML (e.g, --pastml_args "--prediction_method ACCTRAN -m JTT")')
+    
+    # Possibility to directly upload into an iTOL account
+    parser.add_argument("--itol",
+                        help = "Upload directly on my itol account (need --itol_api and --itol_project_name)",
+                        action="store_true")
+    parser.add_argument("--itol_api",
+                        help = "User iTOL api key for batch upload",
+                        type=str)
+    parser.add_argument("--itol_project_name",
+                        help = "iTOL project name where to upload",
+                        type=str)
     
     return parser.parse_args()
 
@@ -283,6 +332,8 @@ def parser():
 if __name__ == "__main__":
     # Get argparse arguments
     args = parser()
+    # Check arguments
+    _check_free_args(args)
     # Call the phylo_char_mod function
     phylo_char_mod(args)
 
