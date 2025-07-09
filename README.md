@@ -427,7 +427,7 @@ For ease of use, considering the various software and dependencies required, we 
 After installing [Docker](https://www.docker.com/get-started/), you can pull our Docker image using the following command:
 
 ```
-docker pull ghcr.io/ocmalde/fuse-phylotree:v1.0.0
+docker pull ghcr.io/ocmalde/fuse-phylotree:v1.1.0
 ```
 
 ## Run the Docker Image
@@ -467,7 +467,7 @@ docker cp <CONTAINER ID>:/path/in/container/ /path/in/local
 On most High Performance Computing clusters, you can directly pull our Singularity image using the following command:
 
 ```
-singularity pull fuse-phylotree.sif https://github.com/OcMalde/fuse-phylotree/releases/download/V1.0.0/fuse-phylotree.sif
+singularity pull fuse-phylotree.sif https://github.com/OcMalde/fuse-phylotree/releases/download/V1.1.0/fuse-phylotree.sif
 ```
 
 ## Run the Singularity Image
