@@ -348,10 +348,10 @@ The main workflow output is the list of modules and functions that are present, 
       This file contains the list of modules and functions that are present, gained or lost at the different ancestral and actual genes—i.e., at all nodes in the gene tree—and records the frequency with which each presence, gain, or loss is observed across iterations.
 
    | gene             | modules_present   | function_present | modules_gained | function_gained | modules_lost | function_lost |
-        |------------------|-------------------|------------------|----------------|-----------------|--------------|---------------|
-        | XP_0000001_9606  | B23:1.0 &#124; B27:1.0 | FBN1 &#124; MFAP2 | B24:0.8 | – | – | – |
-        | XP_0000002_10090 | B25:1.0 &#124; B30:1.0 | ACAN &#124; VCAN | B31:0.9 | VCAN | B23:0.5 | ACAN |
-        | XP_0000003_7227  | B10:1.0           | –                | B11:1.0       | –               | B10:0.4     | – |
+   |------------------|-------------------|------------------|----------------|-----------------|--------------|---------------|
+   | XP_0000001_9606  | B23:1.0 &#124; B27:1.0 | FBN1 &#124; MFAP2 | B24:0.8 | – | – | – |
+   | XP_0000002_10090 | B25:1.0 &#124; B30:1.0 | ACAN &#124; VCAN | B31:0.9 | VCAN | B23:0.5 | ACAN |
+   | XP_0000003_7227  | B10:1.0           | –                | B11:1.0       | –               | B10:0.4     | – |
 
 
 
@@ -369,10 +369,10 @@ The main workflow output is the list of modules and functions that are present, 
    
 
    | module | function | co_emergence | co-presence_jaccard_index | co-presence_FET_p_value | co-presence_FET-odds_ratio |
-        |--------|----------|--------------|---------------------------|-------------------------|---------------------------|
-        | B734   | MFAP3    | False        | 0.11764705882352941       | 0.18209949232049583     | 3.4482758620689653        |
-        | B734   | COL8A1   | True         | 0.07692307692307693       | 0.3016405747582532      | 3.888888888888889         |
-        | B734   | FBXW5    | True         | 0.07692307692307693       | 0.3016405747582532      | 3.888888888888889         |
+   |--------|----------|--------------|---------------------------|-------------------------|---------------------------|
+   | B734   | MFAP3    | False        | 0.11764705882352941       | 0.18209949232049583     | 3.4482758620689653        |
+   | B734   | COL8A1   | True         | 0.07692307692307693       | 0.3016405747582532      | 3.888888888888889         |
+   | B734   | FBXW5    | True         | 0.07692307692307693       | 0.3016405747582532      | 3.888888888888889         |
 
 
 7. *Working directory* - ```working_dir_*```:
