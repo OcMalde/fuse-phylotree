@@ -332,7 +332,7 @@ optional arguments:
                         iTOL project name where to upload
 ```
 
->**:warning: Infering the gene tree using the pipeline option ```--infer_gene_tree```** When running the analysis without a gene tree as input (with ```--infer_gene_tree INFER_GENE_TREE```), a default rooted tree will be generated (note that you must explicitly include the keyword ```INFER_GENE_TREE``` as the parameter for this option to confirm that you intend to perform this step). However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
+>**:warning: Infering the gene tree using the pipeline option ```--infer_gene_tree```** When running the analysis without a gene tree as input (with ```--infer_gene_tree```), a default rooted tree will be generated. However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
 
 </details>
 
