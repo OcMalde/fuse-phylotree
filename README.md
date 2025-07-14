@@ -210,7 +210,7 @@ class l3 legend4
 
 ## :books: Citation
 
-*Application note in preparation*
+[Application Note on bioRxiv](https://doi.org/10.1101/2025.03.28.645931)
 
 For a more detailed explanation of the methodology, refer to the following article [[Dennler et al. 2023]](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011404), or the following PhD thesis (only [available in French](https://www.theses.fr/2022REN1B079)).
 
@@ -278,7 +278,11 @@ python3 fuse-phylotree.py <sequences.fasta> <annotations.csv> <gene_tree.tree>
 >Pre-computed phylogenetic trees or/and paloma module decompositions can be use, as long as they respect the required header format. 
 
 ```
-usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--species_tree SPECIES_TREE] [--infer_gene_tree INFER_GENE_TREE] [--plma_file PLMA_FILE] [--reconc_domains] multi_fasta_file leaf_functions_csv [gene_tree]
+usage: fuse-phylotree.py [-h] [--output_directory OUTPUT_DIRECTORY] [--iter ITER] [--ml_thres ML_THRES] [--pres_fthr PRES_FTHR] [--gain_fthr GAIN_FTHR] [--lost_fthr LOST_FTHR]
+                         [--species_tree SPECIES_TREE] [--infer_gene_tree] [--plma_file PLMA_FILE] [--user_pastml_csv USER_PASTML_CSV] [--reconc_domains] [--paloma_args PALOMA_ARGS]
+                         [--phyml_args PHYML_ARGS] [--treefix_args TREEFIX_ARGS] [--raxml_args RAXML_ARGS] [--seadog_args SEADOG_ARGS] [--pastml_args PASTML_ARGS] [--itol] [--itol_api ITOL_API]
+                         [--itol_project_name ITOL_PROJECT_NAME]
+                         multi_fasta_file [leaf_functions_csv] [gene_tree]
 
 positional arguments:
   multi_fasta_file      Multi fasta file, with specific formated header >RefSeq_taxid (ex : >XP_012810820.2_8364)
@@ -289,13 +293,43 @@ optional arguments:
   -h, --help            show this help message and exit
   --output_directory OUTPUT_DIRECTORY
                         output directory name
+  --iter ITER           Number of times the whole module evolution inference will be performed, ie: module tree inference; their corrections; DGS reconciliation (default: 10)
+  --ml_thres ML_THRES   Module length thresold: minimum module length, shorter modules will be systematically filtered out (default: 5)
+  --pres_fthr PRES_FTHR
+                        Sets the presence frequency threshold for modules. A module is considered present at a given gene only if its presence frequency is strictly greater than (>) the specified
+                        threshold. Default: 0.0.
+  --gain_fthr GAIN_FTHR
+                        Sets the gained frequency threshold for modules. A module is considered gained at a given gene only if its gain frequency is strictly greater than (>) the specified threshold.
+                        Default: 0.0.
+  --lost_fthr LOST_FTHR
+                        Sets the lost frequency threshold for modules. A module is considered lost at a given gene only if its lost frequency is strictly greater than (>) the specified threshold.
+                        Default: 0.0.
   --species_tree SPECIES_TREE
                         Species tree to use as a support for the reconciliations (WARNING, must correspond to the taxid use in the other files !)
-  --infer_gene_tree INFER_GENE_TREE
-                        Infer gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, user should check it and reroot it - we advise to only use it if you know what you are doing !)
+  --infer_gene_tree     Infer gene tree to use as a support for the pastML and DGS reconciliation inference (WARNING, user should check it and reroot it - we advise to only use it if you know what you
+                        are doing !)
   --plma_file PLMA_FILE
-                        Paloma-2 output file (.agraph format, .dot, or .oplma format)
-  --reconc_domains      Do a DGS reconciliation with known modules (pfam / prosite)
+                        Paloma-D output file (.agraph format, .dot, or .oplma format)
+  --user_pastml_csv USER_PASTML_CSV
+                        PastML full input file, corresponding full custom states to use for the different sequence id (.csv format); eg, header: 'id,P59509,P999999', data: 'XP_012810820.2,1,0' or
+                        'NP_001278744.1,0,,' ; unknown states (empty) will be inferred based on known states; sequence id will be converted to fit the reconcilied gene tree ids;
+  --reconc_domains      Do a DGS reconciliation with known modules (pfam / prosite) ; not tested
+  --paloma_args PALOMA_ARGS
+                        Custom arguments to pass to paloma-D (e.g, --paloma_args "--thr 5 --min-size 5")
+  --phyml_args PHYML_ARGS
+                        Custom arguments to pass to PhyML for module trees inference (e.g, --phyml_args "--model JTT")
+  --treefix_args TREEFIX_ARGS
+                        Custom arguments to pass to TreeFix for gene-modules (e.g, --treefix_args "--niter 100 -D 1 -L 1" - corresponds to options inside -E from treefix or to --niter)
+  --raxml_args RAXML_ARGS
+                        Custom arguments to pass to RaxML (for TreeFix) for gene-modules (e.g, --raxml_args "-m PROTGAMMAJTT" - corresponds at options inside -e from treefix)
+  --seadog_args SEADOG_ARGS
+                        Custom arguments to pass to SEADOG-MD (e.g, --seadog_args "--DD 5 --DL 1 --DTA 20 --GD 2 --GL 1")
+  --pastml_args PASTML_ARGS
+                        Custom arguments to pass to PastML (e.g, --pastml_args "--prediction_method ACCTRAN -m JTT")
+  --itol                Upload directly on my itol account (need --itol_api and --itol_project_name)
+  --itol_api ITOL_API   User iTOL api key for batch upload
+  --itol_project_name ITOL_PROJECT_NAME
+                        iTOL project name where to upload
 ```
 
 >**:warning: Infering the gene tree using the pipeline option ```--infer_gene_tree```** When running the analysis without a gene tree as input (with ```--infer_gene_tree INFER_GENE_TREE```), a default rooted tree will be generated (note that you must explicitly include the keyword ```INFER_GENE_TREE``` as the parameter for this option to confirm that you intend to perform this step). However, for optimal results, **it is strongly recommended to infer a properly rooted gene tree prior to analysis and use it as the input for the gene_tree option**. The gene phylogenetic tree serves as a critical template for the entire analysis, thus it is essential that a reliable and accurately rooted gene tree is prepared and utilized.
