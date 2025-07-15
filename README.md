@@ -425,7 +425,7 @@ working_directory
     ├── iter_module_output								-----> All module presence/gain/lost observed frequencies across iterations
     │   ├── gene_module_presence_freq.csv						-----> All module-gene presence frequencies observed
     │   ├── gene_module_gain_freq.csv							-----> All module-gene gain event frequencies observed
-    │   ├── gene_module_lost_freq.csv							-----> All module-gene lost event frequencies observed
+    │   └── gene_module_lost_freq.csv							-----> All module-gene lost event frequencies observed
     │
     ├── acs_dir_seadogMD_*_gene								-----> All ancestral scenario reconstruction files from pastML
     │   ├── leaf_Manual.csv								-----> The input with gene functional annotation file
