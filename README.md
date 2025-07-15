@@ -362,7 +362,7 @@ The main workflow output is the list of modules and functions that are present, 
 
       This file contains all module descriptions: all their segments, proteins, and positions in the protein sequences.
 
-    | module | sequence_id       | start | end  | motif            |
+    | module | protein       | start | end  | segment            |
     |--------|-------------------|-------|------|------------------|
     | B723   | NP001004019.1     |  888  | 902  | LICARGYHASDDGTK  |
     | B723   | XP018668509.1     | 1252  | 1266 | LTCTAGYEISDDGES  |
