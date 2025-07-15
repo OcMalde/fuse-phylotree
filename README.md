@@ -349,9 +349,10 @@ The main workflow output is the list of modules and functions that are present, 
 
    | gene             | modules_present   | function_present | modules_gained | function_gained | modules_lost | function_lost |
    |------------------|-------------------|------------------|----------------|-----------------|--------------|---------------|
-   | XP_0000001_9606  | B23:1.0 &#124; B27:1.0 | FBN1 &#124; MFAP2 | B27:0.8 | – | – | – |
-   | XP_0000002_10090 | B25:1.0 &#124; B30:1.0 | ACAN &#124; VCAN | B30:0.9 | VCAN | B23:0.5 | BCAN |
-   | XP_0000003_7227  | B10:1.0           | –                | B10:1.0       | –               | B11:0.4     | – |
+   | XP0000041_9606_1  | B25:1.0 &#124; B30:1.0 | ACAN &#124; MFAP2 | – | MFAP2 | – | – |
+   | XP0000042_10090_2 | B25:1.0 &#124; B30:1.0 &#124; B33:1.0 | ACAN &#124; VCAN | B33:1.0 | VCAN | –  | –  |
+   | G10_1_2            | B25:1.0 &#124; B30:1.0   | ACAN                 | B30:0.9       | ACAN               | B11:0.4     | – |
+   | G11_10_3            | B25:1.0 &#124; B11:0.6      | –                | –       | –               | –      | – |
 
 
 
