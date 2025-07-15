@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15855068.svg)](https://doi.org/10.5281/zenodo.15855068)
+[![DOI:10.1101/2021.01.08.425840](http://img.shields.io/badge/DOI-10.1101/2025.03.28.645931-B31B1B.svg)]([https://doi.org/10.1101/2021.01.08.425840](https://doi.org/10.1101/2025.03.28.645931)        [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15855068.svg)](https://doi.org/10.5281/zenodo.15855068)
 
 # FUSE-PhyloTree
 *FUSE-PhyloTree enables to identify sequence conservation modules and associate them with functional annotations through phylogenomic analysis.*
