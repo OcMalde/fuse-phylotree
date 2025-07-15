@@ -359,13 +359,26 @@ The main workflow output is the list of modules and functions that are present, 
 
       This file contains all module descriptions: all their segments, proteins, and positions in the protein sequences.
 
-4. ```3_visuReconc/```:
+   <small>
+    | module | sequence_id       | start | end  | motif            |
+    |--------|-------------------|-------|------|------------------|
+    | B723   | NP001004019.1     |  888  | 902  | LICARGYHASDDGTK  |
+    | B723   | XP018668509.1     | 1252  | 1266 | LTCTAGYEISDDGES  |
+    | B723   | NP034310.2        |  341  | 355  | PNCGRGYHLNEEGTR  |
+    | B723   | NP032018.2        |  878  | 892  | LVCGRGYHANEEGSE  |
+    | B419   | NP114141.2        | 2521  | 2527 | QEDEAHH          |
+    | B419   | NP001179466.3     | 2521  | 2527 | KEDDTHH          |
+    | B419   | XP006529820.1     | 2544  | 2550 | QEDEAHH          |
+    </small>
+
+
+5. ```3_visuReconc/```:
 
       This directory contains various iTOL files for the interactive visualisation.
 
-5. ```X_module_function_assoc_stats.csv```:
+6. ```X_module_function_assoc_stats.csv```:
 
-       This file contains different co-presence statistics for every module-function pairs. Each row lists a module–function pair, flags whether they co-emerged, and reports Jaccard overlap, Fisher exact p-value, and odds ratio comparing genes that contain the module with genes annotated for the function.
+      This file contains different co-presence statistics for every module-function pairs. Each row lists a module–function pair, flags whether they co-emerged, and reports Jaccard overlap, Fisher exact p-value, and odds ratio comparing genes that contain the module with genes annotated for the function.
    
 
    | module | function | co_emergence | co-presence_jaccard_index | co-presence_FET_p_value | co-presence_FET-odds_ratio |
