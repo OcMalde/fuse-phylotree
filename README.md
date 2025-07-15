@@ -359,7 +359,6 @@ The main workflow output is the list of modules and functions that are present, 
 
       This file contains all module descriptions: all their segments, proteins, and positions in the protein sequences.
 
-   <small>
     | module | sequence_id       | start | end  | motif            |
     |--------|-------------------|-------|------|------------------|
     | B723   | NP001004019.1     |  888  | 902  | LICARGYHASDDGTK  |
@@ -369,7 +368,6 @@ The main workflow output is the list of modules and functions that are present, 
     | B419   | NP114141.2        | 2521  | 2527 | QEDEAHH          |
     | B419   | NP001179466.3     | 2521  | 2527 | KEDDTHH          |
     | B419   | XP006529820.1     | 2544  | 2550 | QEDEAHH          |
-    </small>
 
 
 5. ```3_visuReconc/```:
