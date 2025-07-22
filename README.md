@@ -508,7 +508,7 @@ docker pull ghcr.io/ocmalde/fuse-phylotree:v1.1.0
 First, you need to create a container, linked to your workspace, and connect to it interactively:
 
 ```
-docker run -it --entrypoint /bin/bash -v "$(pwd):/workspace" -w /workspace ghcr.io/ocmalde/fuse-phylotree:v1.0.0
+docker run -it --entrypoint /bin/bash -v "$(pwd):/workspace" -w /workspace ghcr.io/ocmalde/fuse-phylotree:v1.1.0
 ```
 
 Then you can simply execute the whole pipeline using:
