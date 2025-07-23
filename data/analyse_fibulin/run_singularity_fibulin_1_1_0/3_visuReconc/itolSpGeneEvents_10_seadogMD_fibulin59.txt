@@ -1,0 +1,64 @@
+DATASET_SYMBOL
+SEPARATOR COMMA
+DATASET_LABEL,Genes-Sp events
+COLOR,#BA55D3
+MAXIMUM_SIZE,15
+DATA
+G4_2_3,2,1,#8A2BE2,1,0.5,Speciation
+G8_6_7,2,1,#8A2BE2,1,0.5,Speciation
+G9_5_8,2,1,#8A2BE2,1,0.5,Speciation
+G10_4_9,3,3,#FF00FF,1,0.5,Gene duplication
+G17_15_16,2,1,#8A2BE2,1,0.5,Speciation
+G18_14_17,2,1,#8A2BE2,1,0.5,Speciation
+G19_13_18,2,1,#8A2BE2,1,0.5,Speciation
+G20_12_19,2,1,#8A2BE2,1,0.5,Speciation
+G21_11_20,2,1,#8A2BE2,1,0.5,Speciation
+G22_10_21,3,3,#FF00FF,1,0.5,Gene duplication
+G23_1_22,2,1,#8A2BE2,1,0.5,Speciation
+G24_0_23,2,1,#8A2BE2,1,0.5,Speciation
+G27_25_26,2,1,#8A2BE2,1,0.5,Speciation
+G34_32_33,2,1,#8A2BE2,1,0.5,Speciation
+G35_31_34,2,1,#8A2BE2,1,0.5,Speciation
+G36_30_35,2,1,#8A2BE2,1,0.5,Speciation
+G37_29_36,2,1,#8A2BE2,1,0.5,Speciation
+G38_28_37,3,3,#FF00FF,1,0.5,Gene duplication
+G45_43_44,2,1,#8A2BE2,1,0.5,Speciation
+G46_42_45,2,1,#8A2BE2,1,0.5,Speciation
+G47_41_46,2,1,#8A2BE2,1,0.5,Speciation
+G48_40_47,2,1,#8A2BE2,1,0.5,Speciation
+G49_39_48,2,1,#8A2BE2,1,0.5,Speciation
+G50_38_49,3,3,#FF00FF,1,0.5,Gene duplication
+G51_27_50,3,3,#FF00FF,1,0.5,Gene duplication
+G56_54_55,2,1,#8A2BE2,1,0.5,Speciation
+G59_57_58,3,3,#FF00FF,1,0.5,Gene duplication
+G60_56_59,2,1,#8A2BE2,1,0.5,Speciation
+G67_65_66,2,1,#8A2BE2,1,0.5,Speciation
+G68_64_67,2,1,#8A2BE2,1,0.5,Speciation
+G69_63_68,2,1,#8A2BE2,1,0.5,Speciation
+G70_62_69,3,3,#FF00FF,1,0.5,Gene duplication
+G71_61_70,2,1,#8A2BE2,1,0.5,Speciation
+G72_60_71,3,3,#FF00FF,1,0.5,Gene duplication
+G73_53_72,2,1,#8A2BE2,1,0.5,Speciation
+G81_79_80,2,1,#8A2BE2,1,0.5,Speciation
+G82_78_81,2,1,#8A2BE2,1,0.5,Speciation
+G83_77_82,2,1,#8A2BE2,1,0.5,Speciation
+G84_76_83,2,1,#8A2BE2,1,0.5,Speciation
+G85_75_84,2,1,#8A2BE2,1,0.5,Speciation
+G88_86_87,3,3,#FF00FF,1,0.5,Gene duplication
+G93_91_92,2,1,#8A2BE2,1,0.5,Speciation
+G94_90_93,3,3,#FF00FF,1,0.5,Gene duplication
+G95_89_94,2,1,#8A2BE2,1,0.5,Speciation
+G96_88_95,2,1,#8A2BE2,1,0.5,Speciation
+G99_97_98,3,3,#FF00FF,1,0.5,Gene duplication
+G105_103_104,2,1,#8A2BE2,1,0.5,Speciation
+G106_102_105,2,1,#8A2BE2,1,0.5,Speciation
+G107_101_106,2,1,#8A2BE2,1,0.5,Speciation
+G108_100_107,2,1,#8A2BE2,1,0.5,Speciation
+G109_99_108,2,1,#8A2BE2,1,0.5,Speciation
+G110_96_109,3,3,#FF00FF,1,0.5,Gene duplication
+G111_85_110,3,3,#FF00FF,1,0.5,Gene duplication
+G112_74_111,2,1,#8A2BE2,1,0.5,Speciation
+G113_73_112,3,3,#FF00FF,1,0.5,Gene duplication
+G114_52_113,3,3,#FF00FF,1,0.5,Gene duplication
+G115_51_114,3,3,#FF00FF,1,0.5,Gene duplication
+G116_24_115,3,3,#FF00FF,1,0.5,Gene duplication
